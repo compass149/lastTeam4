@@ -1,4 +1,4 @@
-package com.projectdemo1.config.auth;
+package com.projectdemo1.auth;
 
 import com.projectdemo1.domain.User;
 import lombok.Data;
@@ -7,22 +7,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 public class PrincipalDetails implements UserDetails {
-    private User user; //composition
-
-    public PrincipalDetails(User user) {
-        this.user = user;
-    } //User를 받아서 PrincipalDetails를 생성
-
+    private User user;
+    public  PrincipalDetails(User user){
+        this.user= user;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(() -> {return user.getRole();});
-        return authorities;
-    } //계정이 갖고 있는 권한 목록을 리턴
+        Collection<GrantedAuthority> collection=new ArrayList<GrantedAuthority>();
+        collection.add(()->{return user.getRole();});
+        return collection;
+    }
 
     @Override
     public String getPassword() {
