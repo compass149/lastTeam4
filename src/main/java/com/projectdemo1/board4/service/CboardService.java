@@ -21,7 +21,7 @@ public interface CboardService {
                 .cno(cboardDTO.getCno())
                 .title(cboardDTO.getTitle())
                 .content(cboardDTO.getContent())
-                .userId(cboardDTO.getUserId())
+                .uno(cboardDTO.getCno())
                 .build();
         if(cboardDTO.getFileNames() != null) {
             cboardDTO.getFileNames().forEach(fileName -> {
@@ -36,7 +36,7 @@ public interface CboardService {
                 .cno(cboard.getCno())
                 .title(cboard.getTitle())
                 .content(cboard.getContent())
-                .userId(cboard.getUserId())
+                .uno(cboard.getUno().toString())
                 .createdAt(cboard.getCreatedAt())
                 .updatedAt(cboard.getUpdatedAt())
                 .build();

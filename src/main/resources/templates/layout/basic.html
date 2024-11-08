@@ -16,23 +16,23 @@
         <div class="container-fluid">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">찾개냥</a>
+                    <a class="nav-link" href="/home">찾개냥</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="/board/list">Community List</a>
+                    <a class="nav-link" href="/cboard/clist">커뮤니티</a>
                 </li>
                 <li sec:authorize="hasAnyAuthority('USER')" class="nav-item">
-                    <a class="nav-link" href="/User">User</a>
+                    <a class="nav-link" href="/User">USER</a>
                 </li>
 
                 <li sec:authorize="hasAnyAuthority('ADMIN')" class="nav-item">
-                    <a class="nav-link" href="/admin/list">Admin</a>
+                    <a class="nav-link" href="/admin/list">ADMIN</a>
                 </li>
                 <li sec:authorize="!isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/user/login">Login</a>
+                    <a class="nav-link" href="/user/login">LOGIN</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/logout">Logout([[${#authentication.principal.username}]])</a>
+                    <a class="nav-link" href="/logout">LOGOUT([[${#authentication.principal.username}]])</a>
                 </li>
             </ul>
         </div>

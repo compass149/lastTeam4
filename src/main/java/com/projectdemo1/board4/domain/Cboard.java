@@ -35,7 +35,7 @@ public class Cboard {
     @Column(nullable = false, length = 1000)
     private String content;
     @Column(nullable = false)
-    private String userId;
+    private Long uno;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
