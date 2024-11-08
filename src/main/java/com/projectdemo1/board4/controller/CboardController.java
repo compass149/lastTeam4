@@ -48,11 +48,11 @@ public class CboardController {
         log.info(cpageresponseDTO);
         model.addAttribute("cpageresponseDTO", cpageRequestDTO);
     }
-    @GetMapping("/cregister")
+    @GetMapping("/cregister") //게시글 등록
     public void registerGET() {
     }
 
-    @PostMapping("/cregister")
+    @PostMapping("/cregister") //게시글 등록
     public String registerPOST(CuploadFileDTO cuploadFileDTO,
                                CboardDTO cboardDTO,
                                RedirectAttributes redirectAttributes) {

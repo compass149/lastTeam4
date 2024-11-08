@@ -4,6 +4,8 @@ package com.projectdemo1.board4.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,4 +23,10 @@ public class RootConfig {
                 return modelMapper;
 
     }
+ /*   @SpringBootApplication(scanBasePackages = "com.projectdemo1")
+    public class Projectdemo1Application {
+        public static void main(String[] args) {
+            SpringApplication.run(Projectdemo1Application.class, args);
+        }
+    }*/
 }

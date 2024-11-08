@@ -2,50 +2,112 @@ package com.projectdemo1.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.projectdemo1.domain.boardContent.BoardImage;
+import com.projectdemo1.domain.boardContent.PetType;
+import com.projectdemo1.domain.boardContent.Status;
+import com.projectdemo1.domain.boardContent.color.PetColor;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name = "tbl_board")
+@Table(name = "bno")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Entity
 public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long num;
+    @Column(name = "bno") //테이블의 컬럼명 (reposrtId에서 변경)
+    private Long bno;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uno")
+    private User user;
+
     private String title;
+
+    //board1,2 content
+    private String petDescription;
+    private Date lostDate;
+    private String lostLocation;
+    private String petBreeds;
+    private String petGender;
+    private String petAge;
+    private String petWeight;
+    @Enumerated(EnumType.STRING)
+    private PetType petType; //동물 종류
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "petColor")
+    private PetColor petColor; //동물 색상
+
+
+
+
     private String writer;
-    private String content;
+    private String content; // board3 content
+
+    @Enumerated(EnumType.STRING)
+    private Status status; //게시글 상태
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="regdate")
-    private Date regDate;
+    @Column(name="createdAt")
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="updatedAt")
+    private LocalDateTime updatedAt;
 
     @ColumnDefault("0") //기본값 0
-    private Long hitcount; //조회수
+    private Long hitCount; //조회수
+
+    public void updateHitcount() {
+        this.hitCount =  this.hitCount+1; //조회수 증가
+    }
+
     @ColumnDefault("0")
-    private Long replycount;
+    private Long replyCount;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("board")
     private List<Comment> comments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @PrePersist
-    public void prePersist() {
-        this.hitcount = this.hitcount == null ? 0 : this.hitcount;
-        this.replycount = this.replycount == null ? 0 : this.replycount;
+    public void prePersist() { //DB에 insert 되기 전에 실행 (조회수, 댓글 수 초기화)
+        this.hitCount = this.hitCount == null ? 0 : this.hitCount;
+        this.replyCount = this.replyCount == null ? 0 : this.replyCount;
     }
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = {CascadeType.ALL},
+            orphanRemoval = true)
+    @BatchSize(size = 50)
+    private Set<BoardImage> imageSet = new HashSet<>();
+
+    public void addImage(String uuid, String fileName) {
+        BoardImage image = BoardImage.builder()
+                .uuid(uuid)
+                .fileName(fileName)
+                .build();
+        imageSet.add(image);
+    }
+
+    public void ClearImages() {
+        imageSet.forEach(boardImage -> boardImage.changeBoard(null));
+        this.imageSet.clear();
+    }
+
 }

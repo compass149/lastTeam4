@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     @Column(nullable = false)
     private String username; // 계정 아이디
     private String password;

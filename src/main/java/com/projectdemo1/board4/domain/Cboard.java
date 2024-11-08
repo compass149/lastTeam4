@@ -1,6 +1,7 @@
 package com.projectdemo1.board4.domain;
 
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.projectdemo1.domain.User;
@@ -11,7 +12,9 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

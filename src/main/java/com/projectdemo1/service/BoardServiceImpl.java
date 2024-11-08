@@ -29,14 +29,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board findById(Long num) {
         Board board = boardRepository.findById(num).get();
-        board.setHitcount(board.getHitcount()+1);
+        board.setHitCount(board.getHitCount()+1);
         boardRepository.save(board);
         return board;
     }
 
     @Override
     public void update(Board board) {
-        Board b = boardRepository.findById(board.getNum()).get();
+        Board b = boardRepository.findById(board.getBno()).get();
         b.setContent(board.getContent());
         b.setTitle(board.getTitle());
     }

@@ -48,7 +48,7 @@ public class BoardController {
     public String update(Board board) {
 
         boardService.update(board);
-        return "redirect:/board/view?num="+board.getNum();
+        return "redirect:/board/view?num="+board.getBno();
     }
     @GetMapping("/delete")
     public String delete(@RequestParam Long num) {

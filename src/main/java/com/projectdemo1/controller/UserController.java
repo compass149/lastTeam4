@@ -10,31 +10,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/user")
 @Controller
-@Log4j2
 @RequiredArgsConstructor
 public class UserController {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping("/join")
+    @GetMapping("/user/join")
     public void join(){
     }
 
-    @PostMapping("/join")
+    @PostMapping("/user/join")
     public String register(User user){
-        log.info("회원가입 진행 : " + user);
+        System.out.println("register user: " + user);
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         user.setRole("USER"); // USER라는 role을 부여해서 user만 접근 가능하게
         userRepository.save(user);
-       // return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
-        return "redirect:/";
+        return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
 
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public void login(){
     }
+    @GetMapping("/home") //홈화면
+    public String home(){
+        return "home";
+    }
 }
+

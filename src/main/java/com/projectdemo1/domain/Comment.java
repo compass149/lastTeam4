@@ -4,26 +4,27 @@ package com.projectdemo1.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name="tbl_comment")
+@Entity
+@Table(name = "cno", indexes = {@Index(name = "idx_comment_board", columnList = "bno")})
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+@ToString(exclude = "board")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long rno;
+
+
     private String content;
 
     @CreationTimestamp
@@ -32,7 +33,7 @@ public class Comment {
     private Date regdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "bno", nullable = false)
     @JsonIgnore
     private Board board;
 
