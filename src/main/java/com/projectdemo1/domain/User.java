@@ -14,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true) //username은 null이면 안되고, 중복되면 안된다.
+    @Column(nullable = false)
     private String username; // 계정 아이디
     private String password;
     private String email;
