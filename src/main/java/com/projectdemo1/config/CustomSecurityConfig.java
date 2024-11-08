@@ -33,7 +33,7 @@ public class CustomSecurityConfig {
                // .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable()) // 다른 서버로 요청을 보낼 때 cors 설정을 disable로 설정해야 postman에서 테스트 가능
                 .authorizeHttpRequests(authorizeHttpRequestsConfigurer -> authorizeHttpRequestsConfigurer
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/user/login", "/user/**","/", "/comments/**").permitAll()
+                        .requestMatchers("/user/login", "/user/**","/", "/comments/**", "/creplies/**", "/all", "/home", "/cboard/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())

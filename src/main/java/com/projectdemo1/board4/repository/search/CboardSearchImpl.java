@@ -1,6 +1,7 @@
 package com.projectdemo1.board4.repository.search;
 
 import com.projectdemo1.board4.domain.Cboard;
+import com.projectdemo1.board4.domain.QCboard;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;

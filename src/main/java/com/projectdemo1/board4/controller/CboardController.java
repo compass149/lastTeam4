@@ -38,7 +38,7 @@ public class CboardController {
     @Autowired
     private CboardService cboardService;
 
-    @Value("${com.team4project.board4.upload.path}")
+    @Value("${com.projectdemo1.board4.upload.path}")
     private String uploadPath; // 업로드 경로
 
     @GetMapping("/clist")

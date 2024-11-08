@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}"
+      lang="en">
+<div layout:fragment="content">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Modify Page</h5>
+            <form action="/cboard/cmodify" method="post" enctype="multipart/form-data" id="f1">
+                <input type="hidden" name="cno" th:value="${dto.cno}">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Title</span>
+                    <input type="text" class="form-control" name="title" th:value="${dto.title}">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Content</span>
+                    <textarea name="content" class="form-control col-sm-5" rows="5">[[${dto.content}]]</textarea>
+                </div>
+
+                <div class="input-group uploadResult mb-3">
+                    <span class="input-group-text">Attached Files</span>
+                    <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
+                        <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
+                            <img class="m-3" th:each="fileName : ${dto.fileNames}"
+                                 th:src="|/cboard/view/${fileName}|" th:data-src="${fileName}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uploadHidden"></div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">File Upload</span>
+                    <input type="file" class="form-control" name="files">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Writer</span>
+                    <input type="text" class="form-control" name="writer" th:value="${dto.writer}">
+                </div>
+
+                <div class="input-group mb-3">
+                    <button type="button" id="modifyBtn" class="btn btn-primary">Modify</button>
+                    <button type="button" id="removeBtn" class="btn btn-secondary">Remove</button>
+                    <button type="button" id="listBtn" class="btn btn-secondary">List</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const formObj = document.querySelector("form");
+    document.querySelector("#modifyBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        appendFileData();
+
+        formObj.action = "/cboard/cmodify";
+        formObj.method = "post";
+        formObj.submit();
+    }, false);
+
+    document.querySelector("#removeBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        appendFileData();
+
+        formObj.action = "/cboard/remove";
+        formObj.method = "post";
+        formObj.submit();
+    }, false);
+
+    function appendFileData() {
+        const target = document.querySelector(".uploadHidden");
+        const uploadResult = document.querySelector(".uploadResult");
+        const uploadFiles = uploadResult.querySelectorAll("img");
+
+        let str = '';
+        for (let i = 0; i < uploadFiles.length; i++) {
+            const uploadFile = uploadFiles[i];
+            const imgLink = uploadFile.getAttribute("data-src");
+
+            str += `<input type="hidden" name="fileNames" value="${imgLink}">`;
+        }
+        target.innerHTML = str;
+    }
+
+    document.querySelector("#listBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        formObj.reset();
+        self.location = "/cboard/clist";
+    }, false);
+</script>
+</html>

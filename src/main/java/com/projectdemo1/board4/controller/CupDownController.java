@@ -27,7 +27,7 @@ import java.util.*;
 @RequestMapping("/updown")
 public class CupDownController {
 
-    @Value("${com.team4project.board4.upload.path}")
+    @Value("${com.projectdemo1.board4.upload.path}")
     private String uploadPath;
 
     @GetMapping("/uploadForm")
