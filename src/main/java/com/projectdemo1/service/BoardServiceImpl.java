@@ -29,21 +29,20 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board findById(Long num) {
         Board board = boardRepository.findById(num).get();
-        board.updateHitcount(); // 조회수 증가
+        board.setHitcount(board.getHitcount()+1);
+        boardRepository.save(board);
         return board;
     }
 
     @Override
-    public void update(Board board) { // 게시글 수정
-        Board oldBoard = boardRepository.findById(board.getNum()).get();
-        oldBoard.setTitle(board.getTitle());
-        oldBoard.setContent(board.getContent());
-        boardRepository.save(oldBoard); // 수정된 게시글 저장
+    public void update(Board board) {
+        Board b = boardRepository.findById(board.getNum()).get();
+        b.setContent(board.getContent());
+        b.setTitle(board.getTitle());
     }
 
     @Override
     public void delete(Long num) {
         boardRepository.deleteById(num);
-        
     }
 }

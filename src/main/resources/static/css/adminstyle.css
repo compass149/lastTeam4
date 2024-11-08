@@ -1,0 +1,133 @@
+@font-face {
+    font-family: 'PocheonMakgeolli';
+    src: url('../fonts/PochenMakgeolli.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    font-family: 'PocheonMakgeolli', sans-serif;
+    background-color: #a3d879 !important;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(19, 14, 14, 0.1);
+}
+
+nav {
+    text-align: right; /* 오른쪽 정렬 */
+    margin-top: -5px; /* 필요시 조정 */
+}
+
+nav a {
+    margin: 0 50px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #ffeb3b; /* 마우스 오버 시 색상 변경 */
+}
+
+main {
+    padding: 20px;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar label {
+    margin-right: 5px;
+}
+
+.search-bar input[type="date"] {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #2980b9; /* 버튼 마우스 오버 시 색상 변경 */
+}
+
+.write-post {
+    margin: 20px 0;
+    text-align: right; /* 오른쪽 정렬 */
+}
+
+.write-post button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.write-post button:hover {
+    background-color: #2980b9; /* 버튼 마우스 오버 시 색상 변경 */
+}
+
+.pet-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.pet-item {
+    margin: 10px;
+    text-align: center;
+    width: 150px;
+}
+
+.pet-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px;
+    margin: 0 5px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #2980b9; /* 버튼 마우스 오버 시 색상 변경 */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #fff8e0;
+    border-top: 1px solid #ffffff;
+    margin-top: 20px;
+}
