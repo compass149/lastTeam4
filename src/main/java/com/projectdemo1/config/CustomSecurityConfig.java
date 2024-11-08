@@ -28,10 +28,9 @@ public class CustomSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("---------security config------------");
 
-
         return http
-                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
-                //.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable())
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable()) // csrf 설정을 disable로 설정해야 postman에서 테스트 가능
+               // .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable()) // 다른 서버로 요청을 보낼 때 cors 설정을 disable로 설정해야 postman에서 테스트 가능
                 .authorizeHttpRequests(authorizeHttpRequestsConfigurer -> authorizeHttpRequestsConfigurer
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/user/login", "/user/**","/", "/comments/**").permitAll()
@@ -40,19 +39,17 @@ public class CustomSecurityConfig {
                         .anyRequest().authenticated())
 
                 .formLogin(formLoginConfigurer -> formLoginConfigurer
-                        .loginPage("/user/login")
-                        .loginProcessingUrl("/loginProcess")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/")
+                        .loginPage("/user/login") // 로그인 페이지 설정
+                        .loginProcessingUrl("/loginProcess") // 로그인 처리 페이지 설정
+                        .usernameParameter("username") // 로그인 페이지의 username 파라미터 설정
+                        .passwordParameter("password") // 로그인 페이지의 password 파라미터 설정
+                        .defaultSuccessUrl("/") // 로그인 성공 후 이동할 페이지
                         .permitAll())
-
                 .logout(logoutConfigurer -> logoutConfigurer
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true))
-
                 .build();
     }
 
@@ -67,17 +64,16 @@ public class CustomSecurityConfig {
         //.requestMatchers("/static/**"); // 구버전: static resource에 대한 security 설정을 무시하도록 설정
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailService)
+    @Bean // authenticationManager를 Bean 역할:
+    public AuthenticationManager authenticationManagerBean(HttpSecurity http,  // authenticationManager를 Bean을 등록하여
+                                                           BCryptPasswordEncoder bCryptPasswordEncoder,
+                                                           UserDetailsService userDetailsService)
             throws Exception {
-
-        AuthenticationManagerBuilder authenticationManagerBuilder =
+        AuthenticationManagerBuilder builder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailService).passwordEncoder(bCryptPasswordEncoder);
-        return authenticationManagerBuilder.build();
+       builder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        return builder.build();
     }
-
-
 
 
 }

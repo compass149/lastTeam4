@@ -19,7 +19,7 @@ public class BoardController {
 
     @GetMapping("/insert")
     public String insert() {
-        return "board/register";
+        return "board/join";
     }
     @PostMapping("/insert")
     public String insert(Board board, @AuthenticationPrincipal PrincipalDetails principalDetails) {
