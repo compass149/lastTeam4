@@ -24,7 +24,7 @@
             <tbody>
             <tr th:each="cboard:${clists}">
                 <td>[[${cboard.num}]]</td>
-                <td><a th:href="|@{/cboard/view(num=${cboard.num})}|">[[${board.title }]]</a></td>
+                <td><a th:href="|@{/cboard/cread.html(num=${cboard.num})}|">[[${board.title }]]</a></td>
                 <td>[[${cboard.writer }]]</td>
                 <td>[[${cboard.createAt }]]</td>
                 <td>[[${cboard.hitcount }]]</td>
