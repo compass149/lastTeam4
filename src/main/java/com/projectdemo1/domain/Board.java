@@ -21,10 +21,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Table(name = "bno")
+@Table(name = "board")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
+@ToString(exclude = {"comments", "imageSet"})
+
 public class Board {
 
     @Id
@@ -95,6 +98,8 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = {CascadeType.ALL},
             orphanRemoval = true)
     @BatchSize(size = 50)
+    @Builder.Default //윤요섭 쌤 참조
+
     private Set<BoardImage> imageSet = new HashSet<>();
 
     public void addImage(String uuid, String fileName) {
@@ -110,4 +115,9 @@ public class Board {
         this.imageSet.clear();
     }
 
+    //윤쌤 test 코드 위한  메소드
+    public void change(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
 }
