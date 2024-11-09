@@ -36,7 +36,7 @@ public class CboardSearchImpl extends QuerydslRepositorySupport implements Cboar
                         builder.or(cboard.content.contains(keyword));
                         break;
                     case "w":
-                        builder.or(cboard.uno.stringValue().contains(keyword));
+                        builder.or(cboard.cno.stringValue().contains(keyword));
                         break;
                 }
             }

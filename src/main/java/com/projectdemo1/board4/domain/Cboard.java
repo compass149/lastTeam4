@@ -30,15 +30,15 @@ public class Cboard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cno;
+
     @Column(nullable = false)
     private String title;
+
     @Column(nullable = false, length = 1000)
     private String content;
-    @Column(nullable = false)
-    private Long uno;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "uno", nullable = false)
     private User user;
 
 

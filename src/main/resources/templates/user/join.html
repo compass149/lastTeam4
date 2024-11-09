@@ -3,28 +3,81 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 
+<head>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #6c757d;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .form-control {
+            font-size: 1rem;
+            padding: 0.75rem;
+            width: 80%;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            text-align: left;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
 <div layout:fragment="content">
-    <div class="container">
-        <h3>JOIN</h3>
-        <form action="/user/join" method="post">
-            <div class="form-group mt-3">
-                <label for="username">아이디:</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3>회원가입</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="/user/join" method="post">
+                            <div class="form-group mb-3">
+                                <label for="username">아이디</label>
+                                <input type="text" class="form-control" id="username" placeholder="아이디 입력" name="username" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password">비밀번호</label>
+                                <input type="password" class="form-control" id="password" placeholder="비밀번호 입력" name="password" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email">이메일</label>
+                                <input type="email" class="form-control" id="email" placeholder="이메일 입력" name="email" required>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">회원가입</button>
+                                <button type="button" class="btn btn-secondary" onclick="location.href='/user/login'">로그인</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group mt-3">
-                <label for="password">비밀번호:</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
-            </div>
-            <div class="form-group mt-3">
-                <label for="email">이메일:</label>
-                <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
-            </div>
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-primary">Register</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-<script layout:fragment="script" th:inline="javascript">
-</script>
+</html>

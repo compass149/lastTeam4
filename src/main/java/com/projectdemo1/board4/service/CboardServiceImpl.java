@@ -2,82 +2,48 @@ package com.projectdemo1.board4.service;
 
 
 import com.projectdemo1.board4.domain.Cboard;
-import com.projectdemo1.board4.dto.CboardDTO;
-import com.projectdemo1.board4.dto.CpageRequestDTO;
-import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.board4.repository.CboardRepository;
+import com.projectdemo1.domain.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-@Log4j2
 @RequiredArgsConstructor
-@Transactional
-public class CboardServiceImpl implements CboardService {
+public class CboardServiceImpl implements CboardService{
 
-    private final ModelMapper modelMapper;
     private final CboardRepository cboardRepository;
 
     @Override
-    public Long register(CboardDTO cboardDTO) {
-        Cboard cboard = dtoToEntity(cboardDTO);
-        Long cno = cboardRepository.save(cboard).getCno();
-        return cno;
-    }
-
-    @Override
-    public CboardDTO readOne(Long cno) {
-        Optional<Cboard> result = cboardRepository.findByCnoWithImages(cno);
-        Cboard cboard = result.orElseThrow();
-        CboardDTO cboardDTO = entityToDTO(cboard);
-        return cboardDTO;
-    }
-
-    @Override
-    public void modify(CboardDTO cboardDTO) {
-        Optional<Cboard> result = cboardRepository.findById(cboardDTO.getCno());
-        Cboard cboard = result.orElseThrow();
-        cboard.change(cboardDTO.getTitle(), cboardDTO.getContent());
-        cboard.clearImages();
-        if(cboardDTO.getFileNames()!= null) {
-            for (String fileName : cboardDTO.getFileNames()) {
-                String[] arr = fileName.split("_");
-                cboard.addImage(arr[0], arr[1]);
-            }
-        }
+    public void register(Cboard cboard, User user) {
+        cboard.setUser(user);
         cboardRepository.save(cboard);
     }
 
     @Override
-    public void remove(Long cno) {
-        cboardRepository.deleteById(cno);
+    public List<Cboard> list() {
+        return cboardRepository.findAll();
     }
 
     @Override
-    public CpageResponseDTO<CboardDTO> list(CpageRequestDTO cpageRequestDTO) {
-        String[] types = cpageRequestDTO.getTypes();
-        String keyword = cpageRequestDTO.getKeyword();
-        Pageable pageable = (Pageable) cpageRequestDTO.getPageable("cno");
-        Page<Cboard> result = cboardRepository.searchAll(types, keyword, pageable);
+    public Cboard findById(Long bno) {
+        Cboard cboard = cboardRepository.findById(bno).get();
+        cboard.setHitCount(cboard.getHitCount() + 1);
+        cboardRepository.save(cboard);
+        return cboard;
+    }
 
-        List<CboardDTO> dtoList = result.getContent().stream()
-                .map(cboard -> modelMapper.map(cboard, CboardDTO.class))
-                .collect(Collectors.toList());
+    @Override
+    public void modify(Cboard cboard) {
+        Cboard c = cboardRepository.findById(cboard.getCno()).get();
+        c.setContent(cboard.getContent());
+        c.setTitle(cboard.getTitle());
+    }
 
-        return CpageResponseDTO.<CboardDTO>withAll()
-                .cpageRequestDTO(cpageRequestDTO)
-                .dtoList(dtoList)
-                .total((int) result.getTotalElements())
-                .build();
+    @Override
+    public void remove(Long bno) {
+        cboardRepository.deleteById(bno);
+
     }
 }

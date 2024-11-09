@@ -22,14 +22,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cboard:${clists}">
-                <td>[[${cboard.num}]]</td>
-                <td><a th:href="|@{/cboard/cread.html(num=${cboard.num})}|">[[${board.title }]]</a></td>
-                <td>[[${cboard.writer }]]</td>
-                <td>[[${cboard.createAt }]]</td>
-                <td>[[${cboard.hitcount }]]</td>
+            <tr th:each="cboard : ${clists}">
+                <td th:text="${cboard.cno}"></td>
+                <td><a th:href="@{/cboard/cread(cno=${cboard.cno})}" th:text="${cboard.title}"></a></td>
+                <td th:text="${cboard.user.username}"></td>
+                <td th:text="${cboard.createdAt}"></td>
+                <td th:text="${cboard.hitCount}"></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
+</html>
