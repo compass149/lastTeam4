@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/basic.html}"
       lang="en">
 <head>
@@ -10,289 +10,218 @@
 <div layout:fragment="content">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Read Page</h5>
+            <h5 class="card-title">게시글 상세 보기</h5>
             <div class="input-group mb-3">
-                <span class="input-group-text">Cno</span>
-                <input type="text" class="form-control" name="cno" th:value="${dto.cno}" readonly>
+                <span class="input-group-text">번호</span>
+                <input type="text" class="form-control" name="cno" th:value="${dto.cno}" readonly="readonly">
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text">Title</span>
-                <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
+                <span class="input-group-text">제목</span>
+                <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly="readonly">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">작성자</span>
+                <input type="text" class="form-control" name="name" th:value="${dto.user}" readonly="readonly">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Content</span>
                 <textarea name="content" class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
             </div>
-
-            <!-- 이미지 첨부파일 -->
             <div class="input-group mb-3">
-                <span class="input-group-text">Attached Files</span>
-                <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
-                    <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
-                        <img class="m-3" th:each="fileName : ${dto.fileNames}" th:src="|/cboard/view/s_${fileName}|">
-                    </div>
-                </div>
-            </div>
-
-            <div class="input-group mb-3">
-                <span class="input-group-text">Writer</span>
-                <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+                <span class="input-group-text">작성일</span>
+                <input type="text" class="form-control" name="createdAt" th:value="${dto.createdAt}"
+                       readonly="readonly">
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text">RegisterDate</span>
-                <input type="text" class="form-control" name="createdAt" th:value="${dto.createdAt}" readonly>
+                <span class="input-group-text">조회수</span>
+                <input type="text" class="form-control" name="hitCount" th:value="${dto.hitCount}" readonly="readonly">
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text">ModifyDate</span>
-                <input type="text" class="form-control" name="modDate" th:value="${dto.updatedAt}" readonly>
+                <span class="input-group-text">댓글 수</span>
+                <input type="text" class="form-control" name="replyCount" th:value="${dto.replyCount}"
+                       readonly="readonly">
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text">VisitCount</span>
-                <input type="text" class="form-control" name="visitcount" th:value="${dto.visitcount}" readonly>
-            </div>
-            <div class="input-group mb-3" th:with="link=${cpageRequestDTO.getLink()}">
-                <a th:href="|@{/cboard/cmodify(cno=${dto.cno})}&${link}|" class="text-decoration-none">
-                    <button type="button" class="btn btn-primary">Modify</button>
-                </a>
-                <a th:href="|@{/cboard/clist}?${link}|" class="text-decoration-none">
-                    <button type="button" class="btn btn-secondary">Board List</button>
+                <span sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == dto.user}">
+                    <a th:href="@{/cboard/cmodify(cno=${dto.cno})}" class="text-decoration-none">
+                        <button type="button" class="btn btn-primary">수정</button>
+                    </a>
+                    <a th:href="@{/cboard/cremove(cno=${dto.cno})}" class="text-decoration-none">
+                        <button type="button" class="btn btn-danger">삭제</button>
+                    </a>
+                </span>
+                <a th:href="@{/cboard/clist}" class="text-decoration-none">
+                    <button type="button" class="btn btn-secondary">목록</button>
                 </a>
             </div>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <div class="my-4">
-                <button class="btn btn-info addReplyBtn">ADD REPLY</button>
-            </div>
-            <ul class="list-group replyList">
-            </ul>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col">
-            <ul class="pagination replyPaging">
-            </ul>
-        </div>
-    </div>
 
-    <div class="modal registerModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Register Reply</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Reply Text</span>
-                        <input type="text" class="form-control replyText">
+            <!--  &lt;!&ndash; 이미지 첨부파일 &ndash;&gt;
+              <div class="input-group mb-3">
+                  <span class="input-group-text">Attached Files</span>
+                  <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
+                      <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
+                          <img class="m-3" th:each="fileName : ${dto.fileNames}" th:src="|/cboard/view/s_${fileName}|">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="input-group mb-3">
+                  <span class="input-group-text">Writer</span>
+                  <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+              </div>
+              <div class="input-group mb-3">
+                  <span class="input-group-text">RegisterDate</span>
+                  <input type="text" class="form-control" name="createdAt" th:value="${dto.createdAt}" readonly>
+              </div>
+              <div class="input-group mb-3">
+                  <span class="input-group-text">ModifyDate</span>
+                  <input type="text" class="form-control" name="modDate" th:value="${dto.updatedAt}" readonly>
+              </div>
+              <div class="input-group mb-3">
+                  <span class="input-group-text">VisitCount</span>
+                  <input type="text" class="form-control" name="visitcount" th:value="${dto.visitcount}" readonly>
+              </div>
+              <div class="input-group mb-3" th:with="link=${cpageRequestDTO.getLink()}">
+                  <a th:href="|@{/cboard/cmodify(cno=${dto.cno})}&${link}|" class="text-decoration-none">
+                      <button type="button" class="btn btn-primary">Modify</button>
+                  </a>
+                  <a th:href="|@{/cboard/clist}?${link}|" class="text-decoration-none">
+                      <button type="button" class="btn btn-secondary">Board List</button>
+                  </a>
+              </div>
+          </div>
+      </div>-->
+        <!--댓글 부분-->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="my-4">
+                        <button sec:authorize="isAuthenticated()" class="btn btn-info addReplyBtn">
+                            댓글 작성</button>
                     </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Replyer</span>
-                        <input type="text" class="form-control replyer">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary registerBtn">Register</button>
-                    <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal modifyModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title replyHeader"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Reply Text</span>
-                        <input type="text" class="form-control modifyText">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info modifyBtn">Modify</button>
-                    <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                    <button type="button" class="btn btn-outline-dark closeModifyBtn">Close</button>
+                    <ul class="list-group replyList">
+                        댓글 리스트
+                    </ul>
                 </div>
             </div>
-        </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <ul class="pagination replyPaging">
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal registerModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">댓글 작성</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">댓글 내용</span>
+                                <input type="text" class="form-control replyText">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">댓글 작성자</span>
+                                <input type="text" class="form-control replyer">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary registerBtn">댓글 등록</button>
+                            <button type="button" class="btn btn-outline-dark closeRegisterBtn">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="/js/reply.js"></script>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/js/reply.js"></script>
-</div>
-
-<script layout:fragment="script" th:inline="javascript">
-    const cno = [[${dto.cno}]]
-
-    const replyList = document.querySelector('.replyList')
-    const replyPaging = document.querySelector('.replyPaging')
-
-    function printList(dtoList) {
-        let str = '';
-
-        if (dtoList && dtoList.length > 0) {
-            for (const dto of dtoList) {
-                str += `<li class="list-group-item d-flex replyItem">
+        <script layout:fragment="script" th:inline="javascript">
+            const cno = [[${cboard.cno}]]
+            const replyList = document.querySelector('.replyList')
+          let str = ''
+              function printList(dtoList) {
+                  if (dtoList && dtoList.length > 0) {
+                      for (const dto of dtoList) {
+                          str += `<li class="list-group-item d-flex replyItem">
                       <span class="col-2">${dto.rno}</span>
                       <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
                       <span class="col-2">${dto.replyer}</span>
                       <span class="col-2">${dto.createdAt} </span>
+
+                      <button class="btn btn-outline-dark addReplyBtn" data-cno="${dto.cno}">댓글작성</button>
                     </li>`
-            }
-        }
-        replyList.innerHTML = str
-    }
+                          if(dto.children && dto.children.length > 0){
+                                  str += ` <ul> `
+                                      printList(dto.children)
+                                    str += ` </ul> `
+                            }
+                        }
+                    }
+                    replyList.innerHTML = str;
+                }
+                function printReplies() {
+                str = ''
+                    replyList.clear
+                    getList(cno).then(
+                        data => {
+                            printList(data)
+                        }
+                    ).catch(e => {
+                        console.error(e)
+                    })
+                }
+                printReplies();
 
-    function printPages(data) {
-        let pageStr = '';
+            const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"))
+            const registerBtn = document.querySelector(".registerBtn")
+            const replyText = document.querySelector(".replyText")
+            const replyer = document.querySelector(".replyer")
+            const closeRegisterBtn = document.querySelector(".closeRegisterBtn")
+                let parentId = ''
+                    document.querySelector(".addReplyBtn").addEventListener("click", function (e) {
+                        registerModal.show()
+                    }, false)
 
-        if (data.prev) {
-            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">PRE</a></li>`
-        }
+                    closeRegisterBtn.addEventListener("click", function (e) {
+                        registerModal.hide()
+                    }, false)
 
-        for (let i = data.start; i <= data.end; i++) {
-            pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" data-page="${i}">${i}</a></li>`
-        }
+                        registerBtn.addEventListener("click", function (e) {
+                            let replyObj = null
+                            if (parentId = '') {
+                                replyObj = {
+                                    content: replyText.value,
+                                    replyer: replyer.value
+                                }
+                            } else {
+                                replyObj = {
+                                    content: replyText.value,
+                                    replyer: replyer.value,
+                                    parentId: parentId
+                                }
+                            }
+                            addReply(replyObj, cno).then(result => {
+                                alert(result)
+                                registerModal.hide()
+                                replyText.value = ''
+                                replyer.value = ''
+                                printReplies()
+                            }).catch(e => {
+                                alert("Exception...")
+                            })
+                        }, false)
 
-        if (data.next) {
-            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">NEXT</a></li>`
-        }
-        replyPaging.innerHTML = pageStr
-    }
+                            // 대댓글
+            const addReplyBtns = document.querySelector(".replyList")
+            addReplyBtns.addEventListener("click", function (e) {
+                parentId = e.target.getAttribute("data-rno")
+                registerModal.show()
+            }, false)
 
-    function printReplies(page, size, goLast) {
-        getList({cno, page, size, goLast}).then(
-            data => {
-                printList(data.dtoList)
-                printPages(data)
-            }
-        ).catch(e => {
-            console.error(e)
-        })
-    }
-
-    printReplies(1, 3, true)
-
-    const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"))
-    const registerBtn = document.querySelector(".registerBtn")
-    const replyText = document.querySelector(".replyText")
-    const replyer = document.querySelector(".replyer")
-    const closeRegisterBtn = document.querySelector(".closeRegisterBtn")
-
-    document.querySelector(".addReplyBtn").addEventListener("click", function (e) {
-        registerModal.show()
-    }, false)
-
-    closeRegisterBtn.addEventListener("click", function (e) {
-        registerModal.hide()
-    }, false)
-
-    registerBtn.addEventListener("click", function (e) {
-        const replyObj = {
-            cno: cno,
-            replyText: replyText.value,
-            replyer: replyer.value
-        }
-
-        addReply(replyObj).then(result => {
-            alert(result.rno)
-            registerModal.hide()
-            replyText.value = ''
-            replyer.value = ''
-            printReplies(1, 3, true)
-        }).catch(e => {
-            alert("Exception...")
-        })
-    }, false)
-
-    let page = 1
-    let size = 3
-
-    replyPaging.addEventListener("click", function (e) {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const target = e.target
-
-        if (!target || target.tagName != 'A') {
-            return
-        }
-
-        const pageNum = target.getAttribute("data-page")
-        page = pageNum
-        printReplies(page, size)
-    }, false)
-
-    const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
-
-    const replyHeader = document.querySelector(".replyHeader")
-    const modifyText = document.querySelector(".modifyText")
-    const modifyBtn = document.querySelector(".modifyBtn")
-    const removeBtn = document.querySelector(".removeBtn")
-    const closeModifyBtn = document.querySelector(".closeModifyBtn")
-
-    replyList.addEventListener("click", function (e) {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const target = e.target
-
-        if (!target || target.tagName != 'SPAN') {
-            return
-        }
-
-        const rno = target.getAttribute("data-rno")
-
-        if (!rno) {
-            return
-        }
-
-        getReply(rno).then(reply => {
-            replyHeader.innerHTML = reply.rno
-            modifyText.value = reply.replyText
-            modifyModal.show()
-        }).catch(e => alert('error'))
-    }, false)
-
-    modifyBtn.addEventListener("click", function (e) {
-        const replyObj = {
-            cno: cno,
-            rno: replyHeader.innerHTML,
-            replyText: modifyText.value
-        }
-
-        modifyReply(replyObj).then(result => {
-            alert(result.rno + ' 댓글이 수정되었습니다.')
-            replyText.value = ''
-            modifyModal.hide()
-            printReplies(page, size)
-        }).catch(e => {
-            console.log(e)
-        })
-    }, false)
-
-    closeModifyBtn.addEventListener("click", function (e) {
-        modifyModal.hide()
-    }, false)
-
-    removeBtn.addEventListener("click", function (e) {
-        removeReply(replyHeader.innerHTML).then(result => {
-            alert(result.rno + ' 댓글이 삭제되었습니다.')
-            replyText.value = ''
-            modifyModal.hide()
-
-            page = 1
-
-            printReplies(page, size)
-        }).catch(e => {
-            console.log(e)
-        })
-    }, false)
-</script>
+        </script>
 </body>
 </html>
