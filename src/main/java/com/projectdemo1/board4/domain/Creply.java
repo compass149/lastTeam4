@@ -29,7 +29,7 @@ public class Creply {
     private String replyText;
 
     @ManyToOne
-    @JoinColumn(name = "cboard_id")
+    @JoinColumn(name = "cno")
     private Cboard cboard;
 
     @CreationTimestamp

@@ -36,6 +36,7 @@ public class CustomSecurityConfig {
                         .requestMatchers("/user/login", "/board/**", "/user/**","/", "/home", "/cboard/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/creplies/**").authenticated()
                         .anyRequest().authenticated())
 
                 .formLogin(formLoginConfigurer -> formLoginConfigurer

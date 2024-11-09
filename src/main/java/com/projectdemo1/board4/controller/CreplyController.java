@@ -22,16 +22,21 @@ public class CreplyController {
     public ResponseEntity<Long> registerCreply(
             @PathVariable Long cno,
             @RequestBody CreplyDTO creplyDTO) {
-
+        log.debug("Received request to register reply for cno: {}", cno);
+        log.debug("CreplyDTO: {}", creplyDTO);
         Creply creply = creplyService.registerCreply(cno, creplyDTO);
+        log.debug("Saved Creply: {}", creply);
         return ResponseEntity.ok(creply.getRno());
+    }
 
-        }
     @GetMapping("/{cno}")
     public ResponseEntity<List<Creply>> getCreplies(@PathVariable Long cno) {
+        log.debug("Received request to get replies for cno: {}", cno);
         List<Creply> creplies = creplyService.getCreplies(cno);
+        log.debug("Retrieved Creplies: {}", creplies);
         return ResponseEntity.ok(creplies);
     }
+
     @DeleteMapping("/{rno}")
     public ResponseEntity<String> deleteCreply(@PathVariable("rno") Long rno) {
         creplyService.deleteCreply(rno);

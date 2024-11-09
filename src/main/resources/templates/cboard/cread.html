@@ -21,7 +21,7 @@
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">작성자</span>
-                <input type="text" class="form-control" name="name" th:value="${dto.user}" readonly="readonly">
+                <input type="text" class="form-control" name="name" th:value="${dto.user.username}" readonly="readonly">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Content</span>
@@ -97,11 +97,9 @@
             <div class="row mt-3">
                 <div class="col-md-12">
                     <div class="my-4">
-                        <button sec:authorize="isAuthenticated()" class="btn btn-info addReplyBtn">
-                            댓글 작성</button>
+                        <button sec:authorize="isAuthenticated()" class="btn btn-info addReplyBtn">댓글 작성</button>
                     </div>
                     <ul class="list-group replyList">
-                        댓글 리스트
                     </ul>
                 </div>
             </div>
@@ -137,22 +135,22 @@
                 </div>
             </div>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="/js/reply.js"></script>
+        <script src="/js/creply.js"></script>
     </div>
-        <script layout:fragment="script" th:inline="javascript">
-            const cno = [[${cboard.cno}]]
+        <script layout:fragment="creply" th:inline="javascript">
+            const cno = [[${dto.cno}]]
             const replyList = document.querySelector('.replyList')
           let str = ''
               function printList(dtoList) {
                   if (dtoList && dtoList.length > 0) {
                       for (const dto of dtoList) {
                           str += `<li class="list-group-item d-flex replyItem">
-                      <span class="col-2">${dto.rno}</span>
-                      <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
-                      <span class="col-2">${dto.replyer}</span>
-                      <span class="col-2">${dto.createdAt} </span>
+                      <span class="col-2">${dto.rno || ''}</span>
+                      <span class="col-6" data-rno="${dto.rno || ''}">${dto.replyText || ''}</span>
+                      <span class="col-2">${dto.replyer || ''}</span>
+                      <span class="col-2">${dto.createdAt || ''} </span>
 
-                      <button class="btn btn-outline-dark addReplyBtn" data-cno="${dto.cno}">댓글작성</button>
+                      <button class="btn btn-outline-dark addReplyBtn" data-rno="${dto.rno || ''}">댓글작성</button>
                     </li>`
                           if(dto.children && dto.children.length > 0){
                                   str += ` <ul> `
@@ -163,18 +161,16 @@
                     }
                     replyList.innerHTML = str;
                 }
-                function printReplies() {
+                function printCreplies() {
                 str = ''
-                    replyList.clear
-                    getList(cno).then(
-                        data => {
-                            printList(data)
+                    getList({cno: cno}).then(data => {
+                        printList(data);
                         }
                     ).catch(e => {
                         console.error(e)
                     })
                 }
-                printReplies();
+                printCreplies();
 
             const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"))
             const registerBtn = document.querySelector(".registerBtn")
@@ -191,36 +187,22 @@
                     }, false)
 
                         registerBtn.addEventListener("click", function (e) {
-                            let replyObj = null
-                            if (parentId = '') {
-                                replyObj = {
-                                    content: replyText.value,
+                               let replyObj = {
+                                    replyText: replyText.value,
                                     replyer: replyer.value
-                                }
-                            } else {
-                                replyObj = {
-                                    content: replyText.value,
-                                    replyer: replyer.value,
-                                    parentId: parentId
-                                }
-                            }
-                            addReply(replyObj, cno).then(result => {
+                                };
+                               if (parentId !== '') {
+                                   replyObj.parentId = parentId
+                            } addReply(replyObj, cno).then(result => {
                                 alert(result)
                                 registerModal.hide()
                                 replyText.value = ''
                                 replyer.value = ''
-                                printReplies()
+                                printCreplies();
                             }).catch(e => {
                                 alert("Exception...")
-                            })
-                        }, false)
-
-                            // 대댓글
-            const addReplyBtns = document.querySelector(".replyList")
-            addReplyBtns.addEventListener("click", function (e) {
-                parentId = e.target.getAttribute("data-rno")
-                registerModal.show()
-            }, false)
+                            });
+                            }, false);
 
         </script>
 </body>
