@@ -24,7 +24,7 @@ public class CboardDTO {
     @NotEmpty
     private String content;
     @NotEmpty
-    private String userId;
+    private String uno;
 
     private int visitCount;
 
