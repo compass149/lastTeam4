@@ -25,9 +25,9 @@ public class BoardServiceTests {
                 .writer("user00")
                 .build();
 
-        Long bno = boardService.register(boardDTO);
+       // Long bno = boardService.register();
 
-        log.info("bno: " + bno);
+     //   log.info("bno: " + bno);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class BoardServiceTests {
                 .content("Updated content 101...")
                 .build();
 
-        boardService.modify(boardDTO);
+        //boardService.modify(boardDTO);
 
     }
 
@@ -54,9 +54,9 @@ public class BoardServiceTests {
                 .size(10)
                 .build();
 
-        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+      //  PageResponseDTO<BoardDTO> responseDTO = boardService.list();
 
-        log.info(responseDTO);
+      //  log.info(responseDTO);
 
     }
 

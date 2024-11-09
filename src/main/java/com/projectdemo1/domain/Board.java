@@ -4,6 +4,7 @@ package com.projectdemo1.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projectdemo1.domain.boardContent.BoardImage;
 import com.projectdemo1.domain.boardContent.PetType;
+import com.projectdemo1.domain.boardContent.PostType;
 import com.projectdemo1.domain.boardContent.Status;
 import com.projectdemo1.domain.boardContent.color.PetColor;
 import jakarta.persistence.*;
@@ -56,9 +57,6 @@ public class Board {
     @JoinColumn(name = "petColor")
     private PetColor petColor; //동물 색상
 
-
-
-
     private String writer;
     private String content; // board3 content
 
@@ -94,6 +92,10 @@ public class Board {
         this.hitCount = this.hitCount == null ? 0 : this.hitCount;
         this.replyCount = this.replyCount == null ? 0 : this.replyCount;
     }
+
+    @Enumerated(EnumType.STRING)
+    private PostType postType;
+
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = {CascadeType.ALL},
             orphanRemoval = true)

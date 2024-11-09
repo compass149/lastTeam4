@@ -1,6 +1,7 @@
 package com.projectdemo1.service;
 
 
+import com.projectdemo1.board4.domain.Cboard;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
 import com.projectdemo1.dto.BoardDTO;
@@ -17,7 +18,14 @@ public interface BoardService {
 //    public Board findById(Long bno);
 //    public void update(Board board);
 //    public void delete(Long num);
-//}
+void register(Board board, User user);
+    public List<Board> list();
+    public Board findById(Long bno);
+    public void modify(Board board);
+    public void remove(Long bno);
+
+}
+/*
 
     //윤요섭쌤 참조
 Long register(BoardDTO boardDTO);
@@ -32,4 +40,4 @@ Long register(BoardDTO boardDTO);
 
     //댓글의 숫자까지 처리
     PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO);
-}
+}*/
