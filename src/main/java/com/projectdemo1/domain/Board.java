@@ -26,6 +26,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Builder
+@ToString(exclude = {"comments", "imageSet"})
+
 public class Board {
 
     @Id
