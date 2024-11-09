@@ -47,7 +47,8 @@ public class CboardController {
 
     @GetMapping("/cread")
     public String read(@RequestParam("cno") Long cno, Model model) {
-        model.addAttribute("cboard", cboardService.findById(cno));
+        Cboard dto = cboardService.findById(cno);
+        model.addAttribute("dto", dto);
         return "/cboard/cread";
     }
 

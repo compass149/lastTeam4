@@ -55,9 +55,9 @@ public class Cboard {
 
 
     @ColumnDefault("0")
-    private Long hitCount;
+    private Long hitCount = 0L;
     @ColumnDefault("0")
-    private Long replyCount;
+    private Long replyCount = 0L;
 
 
 
