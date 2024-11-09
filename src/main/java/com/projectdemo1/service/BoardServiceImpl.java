@@ -2,6 +2,10 @@ package com.projectdemo1.service;
 
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
+import com.projectdemo1.dto.BoardDTO;
+import com.projectdemo1.dto.BoardListReplyCountDTO;
+import com.projectdemo1.dto.PageRequestDTO;
+import com.projectdemo1.dto.PageResponseDTO;
 import com.projectdemo1.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +18,8 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
 
-    @Override
+  /* 박경미 쌤 참조
+  @Override
     public void insert(Board board, User user) {
         board.setUser(user);
         boardRepository.save(board);
@@ -44,5 +49,37 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void delete(Long num) {
         boardRepository.deleteById(num);
+    }*/
+
+
+    //윤요섭쌤 참조
+    @Override
+    public Long register(BoardDTO boardDTO) {
+        return 0L;
+    }
+
+    @Override
+    public BoardDTO readOne(Long bno) {
+        return null;
+    }
+
+    @Override
+    public void modify(BoardDTO boardDTO) {
+
+    }
+
+    @Override
+    public void remove(Long bno) {
+
+    }
+
+    @Override
+    public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
+        return null;
+    }
+
+    @Override
+    public PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO) {
+        return null;
     }
 }
