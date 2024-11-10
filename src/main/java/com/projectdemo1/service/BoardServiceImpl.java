@@ -41,9 +41,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void modify(Board board) {
-        Board b = boardRepository.findById(board.getBno()).get();
+       // Board b = boardRepository.findById(board.getBno()).get();
+        Board b = boardRepository.findById(board.getBno())
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         b.setContent(board.getContent());
         b.setTitle(board.getTitle());
+        boardRepository.save(b);
     }
 
     @Override

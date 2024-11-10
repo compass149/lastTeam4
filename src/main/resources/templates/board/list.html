@@ -24,7 +24,8 @@
                 <div class="card-body">
                     <a th:href="@{/board/read(bno=${boardItem.bno})}">
                         <h5 class="card-title" th:text="${boardItem.title}"></h5>
-                        <p>공고번호: <span th:text="${boardItem.status}"></span></p>
+                        <p>상태: <span th:text="${boardItem.status}"></span></p>
+                        <p>제목: <span th:text="${boardItem.title}"></span></p>
                         <p>성별: <span th:text="${boardItem.petGender}"></span></p>
                         <p>발견장소: <span th:text="${boardItem.lostLocation}"></span></p>
                         <p>특징: <span th:text="${boardItem.content}"></span></p>

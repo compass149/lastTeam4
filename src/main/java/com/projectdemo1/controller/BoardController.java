@@ -99,6 +99,7 @@ public class BoardController {
 
     @PostMapping("/modify")
     public String modify(Board board) {
+        System.out.println(board);
         boardService.modify(board);
         return "redirect:/board/read?bno=" + board.getBno();
     }

@@ -25,19 +25,3 @@ void register(Board board, User user);
     public void remove(Long bno);
 
 }
-/*
-
-    //윤요섭쌤 참조
-Long register(BoardDTO boardDTO);
-
-    BoardDTO readOne(Long bno);
-
-    void modify(BoardDTO boardDTO);
-
-    void remove(Long bno);
-
-    PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO);
-
-    //댓글의 숫자까지 처리
-    PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO);
-}*/

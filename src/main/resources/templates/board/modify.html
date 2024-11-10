@@ -5,24 +5,31 @@
 
 <div layout:fragment="content">
     <div class="container">
-        <h3>[[${board.writer}]]의 글 수정</h3>
-        <form action="/board/modify" method="post" >
-        <input type="hidden" name="num" id="num" value="${board.num }">
-        <div class="form-group">
-            <label for="title">제목:</label>
-            <input type="text" class="form-control" id="title" name="title" th:value="${board.title}">
-        </div>
-        <div class="form-group">
-            <label for="writer">글쓴이:</label>
-            <input type="text" class="form-control" id="writer" name="writer" th:value="${board.writer}" readonly="readonly">
-        </div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea class="form-control" rows="5" id="content" name="content">[[${board.content}]]</textarea>
-        </div>
-        <div class="form-group text-right">
-            <button type="button" class="btn btn-secondary btn-sm" id="btnModify">수정하기</button>
-        </div>
+        <h3>[[${board.title}]] 수정</h3>
+        <form action="/board/modify" method="post">
+            <input type="hidden" name="bno" id="bno" th:value="${board.bno}">
+            <div class="form-group">
+                <label for="title">제목:</label>
+                <input type="text" class="form-control" id="title" name="title" th:value="${board.title}">
+            </div>
+            <div class="form-group">
+                <label for="writer">글쓴이:</label>
+                <input type="text" class="form-control" id="writer" name="writer" th:value="${board.writer}" readonly="readonly">
+            </div>
+            <div class="form-group">
+                <label for="content">내용:</label>
+                <textarea class="form-control" rows="5" id="content" name="content" th:text="${board.content}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="createdAt">수정일 테스트용:</label>
+                <input type="text" class="form-control" id="createdAt" name="createdAt" th:value="${board.updatedAt}"
+                       readonly="readonly">
+            </div>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-secondary btn-sm" id="btnModify">수정하기</button>
+            </div>
         </form>
     </div>
 </div>
+
+</html>
