@@ -65,8 +65,8 @@ public class CboardServiceImpl implements CboardService{
     }
 
     @Override
-    public void remove(Long bno) {
-        cboardRepository.deleteById(bno);
+    public void remove(Long cno) {
+        cboardRepository.deleteById(cno);
 
     }
 
@@ -74,7 +74,7 @@ public class CboardServiceImpl implements CboardService{
     public CpageResponseDTO<CboardDTO> list(CpageRequestDTO cpageRequestDTO) {
         String[] types = cpageRequestDTO.getTypes();
         String keyword = cpageRequestDTO.getKeyword();
-        Pageable pageable = cpageRequestDTO.getPageable("bno");
+        Pageable pageable = cpageRequestDTO.getPageable("cno");
         Page<Cboard> result = cboardRepository.searchAll(types,keyword, pageable);
 
         List<CboardDTO> dtoList = result.getContent().stream()

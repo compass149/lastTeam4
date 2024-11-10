@@ -56,6 +56,7 @@ public class CboardController {
         CpageResponseDTO<CboardDTO> cresponseDTO = cboardService.list(cpageRequestDTO);
         log.info(cresponseDTO);
         model.addAttribute("cresponseDTO", cresponseDTO);
+        model.addAttribute("cpageRequestDTO", cpageRequestDTO);
     }
 
     @GetMapping("/cregister") //게시글 등록
