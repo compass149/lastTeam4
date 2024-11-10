@@ -30,59 +30,43 @@ import java.util.Set;
 public class BoardDTO {
 
     private Long bno;
-
-    @NotEmpty
-    @Size(min = 3, max = 100)
     private String title;
-
-    @NotEmpty
     private String content;
-
-    @NotEmpty
     private String writer;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
     private LocalDateTime createdAt;
-    @JsonIgnore
-    private LocalDateTime modDate;
     private LocalDateTime updatedAt;
 
-
     private List<String> fileNames;
-
     private PostType postType;
-
     private Long hitCount;
-
     private Set<BoardImage> imageSet;
     private List<Comment> comments;
     private Status status;
     private String petDescription;
     private Date lostDate;
     private String lostLocation;
-    private String petBreeds; //동물 품종
+    private String petBreeds;
     private String petGender;
     private String petAge;
     private String petWeight;
-    @Enumerated(EnumType.STRING)
-    private PetType petType; //동물 종류(개, 고양이 등)
+    private PetType petType;
     private String petName;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "petColor")
-    private PetColorType petColor; //동물 색상
+    // PetColor 객체로 수정
+    private PetColor petColor;
+   // private String petColor;
+
     private User user;
     private String mobile;
     private String email;
-    private PetColorType color;
-
 
     public BoardDTO(Board board) {
         this.bno = board.getBno();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.petColor = board.getPetColor().getColor(); // PetColor 설정
+        this.petColor = board.getPetColor();  // PetColor 객체 그대로 사용
         this.createdAt = board.getCreatedAt();
         this.updatedAt = board.getUpdatedAt();
         this.user = board.getUser();

@@ -4,9 +4,97 @@
       layout:decorate="~{layout/basic.html}">
 <head>
     <title>Board List</title>
+    <style>
+        /* 법령 문구와 반려동물 이미지 섹션 스타일 */
+        .law-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #F0F8F8;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .law-section p {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+            padding-right: 10px;
+        }
+
+        .animal-image {
+            width: 100px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        /* 카드 갤러리 스타일 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: #08A88A;
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 동물찾기 라벨 */
+        .board-type {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            background-color: #f6e5c6;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* 주인찾기 라벨 */
+        .owner-find .board-type {
+            background-color: #76b1c3;
+        }
+
+        .card-body img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .card-footer {
+            background-color: #f7f7f7;
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="law-section">
+        <p>＊동물보호법 제12조 제1항 및 같은 법 시행규칙 제8조 제1항 및 제9조제2항에 따라 동물분실신고를 하는 공간입니다.</p>
+    </div>
     <div class="form-group text-right">
         <a href="/board/register">
             <button type="button" class="btn btn-secondary btn-sm" id="writeBtn">임시 글쓰기</button>
@@ -46,7 +134,9 @@
                 </div>
                 <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image">
                 <div class="card-body">
-                    <a th:href="@{/board/read(bno=${boardItem.bno})}">
+                    <a style="text-decoration: none; text-decoration-line: none; text-decoration-color: #333333;
+                        color: #333333"
+                       th:href="@{/board/read(bno=${boardItem.bno})}">
                         <h5 class="card-title" th:text="${boardItem.title}"></h5>
                         <p>상태: <span th:text="${boardItem.status}"></span></p>
                         <p>제목: <span th:text="${boardItem.title}"></span></p>

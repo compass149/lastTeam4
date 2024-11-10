@@ -5,6 +5,7 @@ import com.projectdemo1.board4.dto.CboardDTO;
 import com.projectdemo1.board4.dto.CpageRequestDTO;
 import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.domain.Board;
+import com.projectdemo1.domain.User;
 import com.projectdemo1.domain.boardContent.color.PetColor;
 import com.projectdemo1.domain.boardContent.color.PetColorType;
 import com.projectdemo1.dto.BoardDTO;
@@ -115,38 +116,40 @@ public class BoardController {
     }
     @GetMapping("/read")
     public String read(@RequestParam("bno") Long bno, Model model) {
-      //  Board dto = boardService.findById(bno);
-        Board board = boardService.findById(bno);
-        BoardDTO dto = new BoardDTO(board);
+        Board board = boardService.findById(bno);  // Board 엔티티 조회
+        BoardDTO dto = new BoardDTO(board);  // BoardDTO로 변환
+
+        // 기본값 설정 - PetColor 객체 생성 후 PetColorType 설정
         if (dto.getPetColor() == null) {
-            dto.setPetColor(new PetColor(PetColorType.OTHER).getColor()); // 기본값 설정
+            dto.setPetColor(new PetColor(PetColorType.OTHER)); // 기본값을 PetColor 객체로 설정
         }
+
+        // user 객체가 null이면 기본값 설정
+        if (dto.getUser() == null) {
+            dto.setUser(new User());  // 기본 User 객체 설정
+        }
+
         model.addAttribute("dto", dto);
-        return "board/read";
+        return "board/read";  // "board/read" 템플릿을 반환
     }
 
-    @GetMapping("/modify")
-    public String modify(@RequestParam Long bno, Model model) {
-        model.addAttribute("board", boardService.findById(bno));
-        return "board/modify";
-    }
+
+//    @GetMapping("/modify")
+//    public String modify(@RequestParam Long bno, Model model) {
+//        model.addAttribute("board", boardService.findById(bno));
+//        return "board/modify";
+//    }
 
     @PostMapping("/modify")
-    public String modify(Board board, @RequestParam("petColor") PetColorType petColorType) {
+    public String modify(Board board, @RequestParam("petColorType") PetColorType petColorType) {
         System.out.println(board);
-        PetColor petColor = new PetColor();
-        petColor.setColor(petColorType);
+        PetColor petColor = new PetColor(petColorType);
+       // petColor.setColor(petColorType);
         board.setPetColor(petColor);  // Board에 PetColor 설정
         boardService.modify(board);
         return "redirect:/board/read?bno=" + board.getBno();
     }
 
-//    @GetMapping("/list")
-//    public String list(Model model) {
-//        List<Board> lists = boardService.list();
-//        model.addAttribute("lists", lists);
-//        return "board/list";
-//    }
 
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {

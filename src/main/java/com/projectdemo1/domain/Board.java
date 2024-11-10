@@ -29,7 +29,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Builder
-@ToString(exclude = {"comments", "imageSet"})
+@ToString(exclude = {"comments", "imageSet", "petColor"})
 
 public class Board {
 
@@ -53,7 +53,6 @@ public class Board {
     private String petAge;
     private String petWeight;
     private String petName;
-
     @Enumerated(EnumType.STRING)
     private PetType petType; //동물 종류(개, 고양이 등)
 

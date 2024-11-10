@@ -17,4 +17,8 @@ public enum PetColorType {
     public static PetColorType fromString(String value) {
         return PetColorType.valueOf(value.toUpperCase());
     }
+
+    public String getColor() {
+        return "";
+    }
 }

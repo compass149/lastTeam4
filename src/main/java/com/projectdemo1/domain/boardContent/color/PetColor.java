@@ -2,7 +2,13 @@ package com.projectdemo1.domain.boardContent.color;
 
 import com.projectdemo1.domain.Board;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString(exclude = "board")
 @Entity
 public class PetColor {
 
@@ -17,19 +23,9 @@ public class PetColor {
     @OneToOne(mappedBy = "petColor", fetch = FetchType.LAZY)
     private Board board;
 
-    public PetColor(PetColorType petColorType) {
-        this.color = petColorType; // PetColorType을 사용하여 color 초기화
-    }
-
     public PetColor() {} // 기본 생성자
 
-    public PetColorType getColor() {
-        return null;
-    }
-
-    public void setColor(PetColorType petColorType) {
+    public PetColor(PetColorType color) {
         this.color = color;
     }
-
-    // Getter, Setter 등 추가적인 메서드들
 }

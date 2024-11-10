@@ -49,7 +49,7 @@ void register(Board board, User user);
                 .content(board.getContent())
                 .writer(board.getWriter())
                 .regDate(board.getCreatedAt())
-                .modDate(board.getUpdatedAt())
+                .updatedAt(board.getUpdatedAt())
                 .postType(board.getPostType())  // 추가된 필드들
                 .hitCount(board.getHitCount())
                 .status(board.getStatus())
