@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      layout:decorate="~{layout/basic.html}">
+
+<div layout:fragment="content">
+    <div class="container mt-3">
+        <h3>Board View</h3>
+        <br/>
+        <div class="form-group">
+            <label for="num">글번호:</label>
+            <input type="text" class="form-control" id="num" name="num" th:value="${dto.bno}" readonly="readonly">
+        </div>
+        <div class="form-group">
+            <label for="title">제목:</label>
+            <input type="text" class="form-control" id="title" name="title" th:value="${dto.title}" readonly="readonly">
+        </div>
+        <div class="form-group">
+            <label for="writer">글쓴이:</label>
+            <input type="text" class="form-control" id="writer" name="writer" th:value="${dto.writer}"
+                   readonly="readonly">
+        </div>
+        <div class="form-group">
+            <label for="content">내용:</label>
+            <textarea name="content" id="content" class="form-control" readonly="readonly">[[${dto.content}]]</textarea>
+        </div>
+        <div class="form-group">
+            <label for="createdAt">등록일:</label>
+            <input type="text" class="form-control" id="createdAt" name="createdAt" th:value="${dto.createdAt}"
+                   readonly="readonly">
+        </div>
+        <div class="form-group">
+            <label for="hitCount">조회수:</label>
+            <input type="text" class="form-control" id="hitCount" name="hitCount" th:value="${dto.hitCount}"
+                   readonly="readonly">
+        </div>
+        <div class="form-group">
+            <label for="replyCount">댓글 수:</label>
+            <input type="text" class="form-control" id="replyCount" name="replyCount" th:value="${dto.replyCount}"
+                   readonly="readonly">
+        </div>
+        <div class="form-group mt-5">
+
+          <span sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username==dto.getWriter()}">
+            <a th:href="|@{/board/modify(num=${dto.bno})}|">
+                <button type="button" id="btnUpdate" class="btn btn-secondary">수정</button>
+            </a>
+              <!--<a th:href="|@{/board/remove(num=${dto.bno})}|">
+                  <button type="button" id="btnDelete" class="btn btn-danger">삭제</button>
+              </a>-->
+              <form th:action="|@{/board/remove}|"
+                    method="post"
+                    onsubmit="return confirm('정말로 삭제하시겠습니까?')">
+    <input type="hidden" name="bno" th:value="${dto.bno}"/>
+    <button type="submit" class="btn btn-danger">삭제</button>
+</form>
+          </span>
+            <a th:href="|@{/board/list}|">
+                <button type="button" id="btnList" class="btn btn-info">List</button>
+            </a>
+        </div>
+    </div>
+
+    <!--    댓글 영역-->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="my-4 ">
+                <button sec:authorize="isAuthenticated()" class="btn btn-info  addCommentBtn">ADD Comment</button>
+            </div>
+            <ul class="list-group commentList">
+                댓글 리스트 영역
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <ul class="pagination commentPaging">
+            </ul>
+        </div>
+    </div>
+
+    <div class="modal registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register Replyer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Reply Text</span>
+                        <input type="text" class="form-control replyText">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Replyer</span>
+                        <input type="text" class="form-control replyer">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary registerBtn">Register</button>
+                    <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/reply.js"></script>
+
+</div>
+
+</html>

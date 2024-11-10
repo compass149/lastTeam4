@@ -1,5 +1,6 @@
 package com.projectdemo1.controller; //  박경미 쌤 코드
 import com.projectdemo1.auth.PrincipalDetails;
+import com.projectdemo1.board4.domain.Cboard;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.dto.BoardDTO;
 import com.projectdemo1.dto.PageRequestDTO;
@@ -45,130 +46,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/register")
-    public void registerGET(){
-
-    }
-
-    @PostMapping("/register")
-    public String registerPost(UploadFileDTO uploadFileDTO,
-                               BoardDTO boardDTO,
-                               BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes){
-        List<String> strFileNames=null;
-        if(uploadFileDTO.getFiles()!=null &&
-                !uploadFileDTO.getFiles().get(0).getOriginalFilename().equals("") ){
-            strFileNames=fileUload(uploadFileDTO);
-            log.info("-------------------"+strFileNames.size()+"-------------------");
-        }
-        boardDTO.setFileNames(strFileNames);
-
-        log.info("board POST register.......");
-
-        log.info(boardDTO);
-        Long bno  = boardService.register(boardDTO);
-        redirectAttributes.addFlashAttribute("result", bno);
-        return "redirect:/board/list";
-    }
-
-  /*  @GetMapping("/list")
-    public String view(@RequestParam("num") Long num, Model model) {
-        model.addAttribute("board", boardService.(num));
-        return "/board/view";
-    }*/
-  @GetMapping("/list")
-  public void list(PageRequestDTO pageRequestDTO, Model model){
-
-      PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
-      log.info(responseDTO);
-      model.addAttribute("responseDTO", responseDTO);
-  }
-   /* @GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("lists", boardService.list());
-        return "/board/list";
-    }*/
-
-    @GetMapping({"/read", "/modify"})
-    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
-        BoardDTO boardDTO = boardService.readOne(bno);
-        log.info(boardDTO);
-        model.addAttribute("dto", boardDTO);
-    }
-
-   /* @GetMapping("/modify")
-    public String update(@RequestParam Long num, Model model) {
-        model.addAttribute("board", boardService.findById(num));
-        return "/board/modify";
-    }*/
-
-  /*
-    @PostMapping("/modify")
-    public String update(Board board) {
-
-        boardService.modify(board );
-        return "redirect:/board/view?num="+board.getBno();
-    }*/
-  @PostMapping("/modify")
-  public String modify(UploadFileDTO uploadFileDTO,
-                       PageRequestDTO pageRequestDTO,
-                       @Valid BoardDTO boardDTO,
-                       BindingResult bindingResult,
-                       RedirectAttributes redirectAttributes){
-
-      log.info("board modify post......." + boardDTO);
-
-      List<String> strFileNames=null;
-      if(uploadFileDTO.getFiles()!=null &&
-              !uploadFileDTO.getFiles().get(0).getOriginalFilename().equals("") ){
-
-          List<String> fileNames = boardDTO.getFileNames();
-
-          if(fileNames != null && fileNames.size() > 0){
-              removeFile(fileNames);
-          }
-
-          strFileNames=fileUload(uploadFileDTO);
-          log.info("!!!!!!!!!!!!!!!!"+strFileNames.size());
-          boardDTO.setFileNames(strFileNames);
-      }
-
-      if(bindingResult.hasErrors()) {
-          log.info("has errors.......");
-          String link = pageRequestDTO.getLink();
-          redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
-          redirectAttributes.addAttribute("bno", boardDTO.getBno());
-          return "redirect:/board/modify?"+link;
-      }
-
-      boardService.modify(boardDTO);
-      redirectAttributes.addFlashAttribute("result", "modified");
-      redirectAttributes.addAttribute("bno", boardDTO.getBno());
-      return "redirect:/board/read";
-  }
-
-  /*
-    @GetMapping("/delete")
-    public String delete(@RequestParam Long num) {
-        boardService.delete(num);
-        return "redirect:/board/list";
-    }
-*/
-  @PostMapping("/delete")
-  public String delete(BoardDTO boardDTO, RedirectAttributes redirectAttributes) {
-      log.info("remove post.. " + boardDTO);
-
-      List<String> fileNames=boardDTO.getFileNames();
-      if(fileNames !=null && fileNames.size()>0) {
-          log.info("remove controller"+fileNames.size());
-          removeFile(fileNames);
-      }
-      boardService.remove(boardDTO.getBno());
-
-      redirectAttributes.addFlashAttribute("result", "removed");
-      return "redirect:/board/list";
-  }
-
+   
     private List<String> fileUload(UploadFileDTO uploadFileDTO){
 
         List<String> list = new ArrayList<>();
@@ -194,6 +72,60 @@ public class BoardController {
         });
         return list;
     }
+
+    @GetMapping("/register") //게시글 등록
+    public String register() {
+        return "/board/register";
+    }
+
+    @PostMapping("/register")
+    public String register(Board board, @AuthenticationPrincipal PrincipalDetails principal) {
+        boardService.register(board, principal.getUser());
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/read")
+    public String read(@RequestParam("bno") Long bno, Model model) {
+        Board dto = boardService.findById(bno);
+        model.addAttribute("dto", dto);
+        return "board/read";
+    }
+
+    @GetMapping("/modify")
+    public String modify(@RequestParam Long bno, Model model) {
+        model.addAttribute("board", boardService.findById(bno));
+        return "board/modify";
+    }
+
+    @PostMapping("/modify")
+    public String modify(Board board) {
+        boardService.modify(board);
+        return "redirect:/board/read?bno=" + board.getBno();
+    }
+
+    @GetMapping("/list")
+    public String list(Model model) {
+        List<Board> lists = boardService.list();
+        model.addAttribute("lists", lists);
+        return "board/list";
+    }
+
+    @PostMapping("/remove")
+    public String remove(@RequestParam Long bno) {
+
+        boardService.remove(bno);
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/board/{id}")
+    public String getBoard(@PathVariable Long id, Model model) {
+        Board board = boardService.findById(id);
+        model.addAttribute("board", board);
+        model.addAttribute("postType", board.getPostType()); // 추가된 필드 사용
+
+        return "board/list"; // 템플릿 이름
+    }
+
 
     @GetMapping("/view/{fileName}")
     @ResponseBody
