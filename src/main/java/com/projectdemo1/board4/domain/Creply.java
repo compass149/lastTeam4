@@ -4,10 +4,7 @@ package com.projectdemo1.board4.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.ArrayList;
@@ -18,9 +15,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@ToString(exclude = "board")
+@ToString(exclude = "board")
 @Entity
-@Table(name = "community_reply")
+@Table(name = "community_reply", indexes = {@Index(name = "idx_cboard_cno", columnList = "cno")})
 public class Creply {
 
     @Id
@@ -28,8 +25,9 @@ public class Creply {
     private Long rno;
     private String replyText;
 
-    @ManyToOne
-    @JoinColumn(name = "cboard_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cno", nullable = false)
+    @JsonIgnore
     private Cboard cboard;
 
     @CreationTimestamp
@@ -37,13 +35,9 @@ public class Creply {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
-    private String replyer;
+    private String replyer; //댓글 작성자
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    @JsonIgnore
-    private Creply parent; //부모 댓글
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Creply> children = new ArrayList<>(); //자식 댓글
+    public void changeText(String text) {
+        this.replyText = text;
+    }
 }

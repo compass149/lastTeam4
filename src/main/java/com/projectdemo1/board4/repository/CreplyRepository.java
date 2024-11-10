@@ -16,5 +16,4 @@ public interface CreplyRepository extends JpaRepository<Creply, Long> {
 
     void deleteByCboardCno(Long rno);
 
-    List<Creply> findByCboardAndParentIsNull(Cboard cboard);
 }

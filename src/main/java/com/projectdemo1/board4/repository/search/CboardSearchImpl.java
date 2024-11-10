@@ -2,6 +2,7 @@ package com.projectdemo1.board4.repository.search;
 
 import com.projectdemo1.board4.domain.Cboard;
 import com.projectdemo1.board4.domain.QCboard;
+import com.projectdemo1.domain.Board;
 import com.querydsl.core.BooleanBuilder;
 
 import com.querydsl.jpa.JPQLQuery;
@@ -14,9 +15,37 @@ import java.util.List;
 
 
 
+
 public class CboardSearchImpl extends QuerydslRepositorySupport implements CboardSearch {
     public CboardSearchImpl() {
         super(Cboard.class);
+    }
+
+    @Override
+    public Page<Board> search1(Pageable pageable) {
+        QCboard cboard = QCboard.cboard;
+
+        JPQLQuery<Cboard> query = from(cboard);
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
+
+        booleanBuilder.or(cboard.title.contains("11")); // title like ...
+
+        booleanBuilder.or(cboard.content.contains("11")); // content like ....
+
+        query.where(booleanBuilder);
+        query.where(cboard.cno.gt(0L));
+
+
+        //paging
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        List<Cboard> list = query.fetch();
+
+        long count = query.fetchCount();
+
+
+        return null;
     }
 
     @Override

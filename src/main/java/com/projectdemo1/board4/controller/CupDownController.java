@@ -1,11 +1,14 @@
 package com.projectdemo1.board4.controller;
 
 
+import com.projectdemo1.board4.domain.Cboard;
 import com.projectdemo1.board4.dto.CboardDTO;
 import com.projectdemo1.board4.dto.upload.CuploadFileDTO;
 import com.projectdemo1.board4.dto.upload.CuploadResultDTO;
+import com.projectdemo1.board4.service.CboardService;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -24,17 +27,20 @@ import java.util.*;
 
 @Controller
 @Log4j2
-@RequestMapping("/updown")
+@RequestMapping("/upload")
 public class CupDownController {
 
     @Value("${com.projectdemo1.board4.upload.path}")
     private String uploadPath;
 
+   /* @Autowired
+    private CboardService cboardService;*/
+
     @GetMapping("/uploadForm")
     public void uploadForm() {
     }
 
-    @PostMapping(value = "/uploadPro")
+    @PostMapping( "/uploadPro")
     public void uploadPro(CuploadFileDTO cuploadFileDTO, CboardDTO cboardDTO,
                           Model model) {
         log.info(cboardDTO);
@@ -67,6 +73,8 @@ public class CupDownController {
                 );
                 model.addAttribute("list", list);
                 model.addAttribute("uploadPath", uploadPath);
+
+
             });
         }
 

@@ -24,8 +24,8 @@
             <tbody>
             <tr th:each="cboard : ${clists}">
                 <td th:text="${cboard.cno}"></td>
-                <td><a th:href="@{/cboard/cread(cno=${cboard.cno})}" th:text="${cboard.title}"></a></td>
-                <td th:text="${cboard.user.username}"></td>
+                <td><a th:href="|@{/cboard/cread(cno=${cboard.cno})}|">[[${cboard.title}]]></a></td>
+                <td th:text="${cboard.userId}"></td>
                 <td th:text="${cboard.createdAt}"></td>
                 <td th:text="${cboard.hitCount}"></td>
             </tr>

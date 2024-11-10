@@ -14,5 +14,5 @@ public interface CboardRepository extends JpaRepository<Cboard, Long>, CboardSea
 
     @EntityGraph(attributePaths = {"imageSet"})
     @Query("select b from Cboard b where b.cno = :cno")
-    Optional<Cboard> findByCnoWithImages(Long cno);
+    Optional<Cboard> findByIdWithImages(Long cno);
 }
