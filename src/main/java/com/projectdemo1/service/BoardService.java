@@ -7,6 +7,8 @@ import com.projectdemo1.board4.dto.CpageRequestDTO;
 import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
+import com.projectdemo1.domain.boardContent.color.PetColor;
+import com.projectdemo1.domain.boardContent.color.PetColorType;
 import com.projectdemo1.dto.BoardDTO;
 import com.projectdemo1.dto.BoardListReplyCountDTO;
 import com.projectdemo1.dto.PageRequestDTO;
@@ -48,12 +50,35 @@ void register(Board board, User user);
                 .writer(board.getWriter())
                 .regDate(board.getCreatedAt())
                 .modDate(board.getUpdatedAt())
+                .postType(board.getPostType())  // 추가된 필드들
+                .hitCount(board.getHitCount())
+                .status(board.getStatus())
+                .petDescription(board.getPetDescription())
+                .lostDate(board.getLostDate())
+                .lostLocation(board.getLostLocation())
+                .petBreeds(board.getPetBreeds())
+                .petGender(board.getPetGender())
+                .petAge(board.getPetAge())
+                .petWeight(board.getPetWeight())
+                .petType(board.getPetType())
+                .mobile(User.getMobile)
                 .build();
 
+        // 파일 이름 처리
         List<String> fileNames = board.getImageSet().stream()
-                .sorted().map(boardImage -> boardImage.getUuid()+"_"+boardImage.getFileName())
+                .sorted()
+                .map(boardImage -> boardImage.getUuid() + "_" + boardImage.getFileName())
                 .collect(Collectors.toList());
         boardDTO.setFileNames(fileNames);
+
+        // User 객체에서 mobile과 email 값 가져오기
+        if (board.getUser() != null) {
+            boardDTO.setMobile(board.getUser().getMobile());  // User의 mobile 값
+            boardDTO.setEmail(board.getUser().getEmail());    // User의 email 값
+        }
+
         return boardDTO;
     }
+
+    void savePetColor(PetColorType petColorType);
 }

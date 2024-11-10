@@ -5,6 +5,8 @@ import com.projectdemo1.board4.dto.CboardDTO;
 import com.projectdemo1.board4.dto.CpageRequestDTO;
 import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.domain.Board;
+import com.projectdemo1.domain.boardContent.color.PetColor;
+import com.projectdemo1.domain.boardContent.color.PetColorType;
 import com.projectdemo1.dto.BoardDTO;
 import com.projectdemo1.dto.PageRequestDTO;
 import com.projectdemo1.dto.PageResponseDTO;
@@ -23,11 +25,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.beans.PropertyEditorSupport;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -81,15 +85,42 @@ public class BoardController {
         return "/board/register";
     }
 
+
     @PostMapping("/register")
-    public String register(Board board, @AuthenticationPrincipal PrincipalDetails principal) {
+    public String register(@Valid @ModelAttribute Board board,
+                           @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
+                           PrincipalDetails principal) {
+        PetColor petColor = new PetColor(petColorType);  // PetColorType을 사용하여 PetColor 객체 생성
+        board.setPetColor(petColor);
         boardService.register(board, principal.getUser());
+
         return "redirect:/board/list";
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(PetColor.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                try {
+                    PetColor petColor = new PetColor(PetColorType.valueOf(text));
+                    setValue(petColor);
+                } catch (IllegalArgumentException e) {
+                    // 예외 처리 로직 추가 (예: 기본 색상 설정)
+                    PetColor petColor = new PetColor(PetColorType.OTHER);  // 기본값 설정
+                    setValue(petColor);
+                }
+            }
+        });
+    }
     @GetMapping("/read")
     public String read(@RequestParam("bno") Long bno, Model model) {
-        Board dto = boardService.findById(bno);
+      //  Board dto = boardService.findById(bno);
+        Board board = boardService.findById(bno);
+        BoardDTO dto = new BoardDTO(board);
+        if (dto.getPetColor() == null) {
+            dto.setPetColor(new PetColor(PetColorType.OTHER).getColor()); // 기본값 설정
+        }
         model.addAttribute("dto", dto);
         return "board/read";
     }
@@ -101,8 +132,11 @@ public class BoardController {
     }
 
     @PostMapping("/modify")
-    public String modify(Board board) {
+    public String modify(Board board, @RequestParam("petColor") PetColorType petColorType) {
         System.out.println(board);
+        PetColor petColor = new PetColor();
+        petColor.setColor(petColorType);
+        board.setPetColor(petColor);  // Board에 PetColor 설정
         boardService.modify(board);
         return "redirect:/board/read?bno=" + board.getBno();
     }
