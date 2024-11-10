@@ -1,6 +1,9 @@
 package com.projectdemo1.controller; //  박경미 쌤 코드
 import com.projectdemo1.auth.PrincipalDetails;
 import com.projectdemo1.board4.domain.Cboard;
+import com.projectdemo1.board4.dto.CboardDTO;
+import com.projectdemo1.board4.dto.CpageRequestDTO;
+import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.dto.BoardDTO;
 import com.projectdemo1.dto.PageRequestDTO;
@@ -104,11 +107,21 @@ public class BoardController {
         return "redirect:/board/read?bno=" + board.getBno();
     }
 
+//    @GetMapping("/list")
+//    public String list(Model model) {
+//        List<Board> lists = boardService.list();
+//        model.addAttribute("lists", lists);
+//        return "board/list";
+//    }
+
     @GetMapping("/list")
-    public String list(Model model) {
+    public void list(PageRequestDTO pageRequestDTO, Model model) {
         List<Board> lists = boardService.list();
-        model.addAttribute("lists", lists);
-        return "board/list";
+       model.addAttribute("lists", lists);
+        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        log.info(responseDTO);
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
     }
 
     @PostMapping("/remove")

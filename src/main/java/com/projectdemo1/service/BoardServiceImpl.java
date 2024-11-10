@@ -1,6 +1,9 @@
 package com.projectdemo1.service;
 
 import com.projectdemo1.board4.domain.Cboard;
+import com.projectdemo1.board4.dto.CboardDTO;
+import com.projectdemo1.board4.dto.CpageRequestDTO;
+import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
 import com.projectdemo1.dto.BoardDTO;
@@ -9,15 +12,21 @@ import com.projectdemo1.dto.PageRequestDTO;
 import com.projectdemo1.dto.PageResponseDTO;
 import com.projectdemo1.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final ModelMapper modelMapper;
+
 
     @Override
     public void register(Board board, User user) {
@@ -27,9 +36,32 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Board> list() {
-       // return List.of();
-        return boardRepository.findAll();
+        return List.of();
     }
+
+    //    @Override
+//    public List<Board> list() {
+//       // return List.of();
+//        return boardRepository.findAll();
+//    }
+    @Override
+    public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+        Page<Board> result = boardRepository.searchAll(types,keyword, pageable);
+
+        List<BoardDTO> dtoList = result.getContent().stream()
+                .map(board -> modelMapper.map(board,BoardDTO.class))
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<BoardDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
 
     @Override
     public Board findById(Long bno) {
