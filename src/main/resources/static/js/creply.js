@@ -10,13 +10,13 @@ async function addReply(replyObj, cno) {
 }
 
 async function addReReply(replyObj, parentId) {
-    const result = await axios.post(`/creplies/${parentId}`, replyObj);
-    return result.data;
+    const response = await axios.post(`/creplies/${parentId}`, replyObj);
+    return response.data;
 }
 
 async function getReply(rno) {
-    const result = await axios.get(`/creplies/${rno}`);
-    return result.data;
+    const response = await axios.get(`/creplies/${replyObj.rno}`, replyObj);
+    return response.data;
 }
 
 async function modifyReply(replyObj) {
@@ -25,6 +25,6 @@ async function modifyReply(replyObj) {
 }
 
 async function removeReply(rno) {
-    const response = await axios.delete(`/creplies/${rno}`);
+    const response = await axios.remove(`/creplies/${rno}`);
     return response.data;
 }

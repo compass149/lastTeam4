@@ -32,6 +32,9 @@ public class Cboard {
     private Long cno;
 
     @Column(nullable = false)
+    private String userId; // 작성자
+
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false, length = 1000)
@@ -41,6 +44,25 @@ public class Cboard {
     @JoinColumn(name = "uno", nullable = false)
     private User user;
 
+    //image
+    @OneToMany(mappedBy = "cboard", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @Builder.Default
+    @BatchSize(size = 20)
+    private Set<CboardImage> imageSet = new HashSet<>();
+    //image
+    public void addImage(String uuid, String fileName) {
+        CboardImage image = CboardImage.builder()
+                .uuid(uuid)
+                .fileName(fileName)
+                .cboard(this)
+                .ord(imageSet.size())
+                .build();
+        imageSet.add(image);
+    }
+    public void clearImages() {
+        imageSet.forEach(boardImage -> boardImage.changeBoard(null));
+        this.imageSet.clear();
+    }
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -59,44 +81,25 @@ public class Cboard {
     @ColumnDefault("0")
     private Long replyCount = 0L;
 
+    public void incrementReplyCount() {
+        this.replyCount++;
+    }
+
+    public void decrementReplyCount() {
+        this.replyCount--;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.hitCount = this.hitCount == null ? 0 : this.hitCount;
+        this.replyCount = this.replyCount == null ? 0 : this.replyCount;
+    }
+
 
 
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    @ColumnDefault("0")
-    private int visitCount;
-
-    public void updateVisitcount() {
-        this.visitCount = this.visitCount++;
-    }
-
-    //reply
-    @OneToMany(mappedBy = "cboard", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("cboard")
-    private List<Creply> creplies;
-
-    //image
-    @OneToMany(mappedBy = "cboard", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @Builder.Default
-    @BatchSize(size = 20)
-    private Set<CboardImage> imageSet = new HashSet<>();
-
-    //image
-    public void addImage(String uuid, String fileName) {
-        CboardImage image = CboardImage.builder()
-                .uuid(uuid)
-                .fileName(fileName)
-                .cboard(this)
-                .ord(imageSet.size())
-                .build();
-        imageSet.add(image);
-    }
-    public void clearImages() {
-        imageSet.forEach(boardImage -> boardImage.changeBoard(null));
-        this.imageSet.clear();
     }
 
 

@@ -24,9 +24,7 @@ public class CboardDTO {
     @NotEmpty
     private String content;
     @NotEmpty
-    private String uno;
-
-    private int visitCount;
+    private String userId; //작성자
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
