@@ -54,11 +54,16 @@ public class Cboard {
 
 
 
-    @ColumnDefault("0")
+ /*   @ColumnDefault("0")
     private Long hitCount = 0L;
     @ColumnDefault("0")
-    private Long replyCount = 0L;
+    private Long replyCount = 0L;*/
 
+    @Builder.Default
+    private Long hitCount = 0L;
+
+    @Builder.Default
+    private Long replyCount = 0L;
 
 
     public void change(String title, String content) {

@@ -88,19 +88,19 @@ public class BoardController {
     public String read(@RequestParam("bno") Long bno, Model model) {
         Board dto = boardService.findById(bno);
         model.addAttribute("dto", dto);
-        return "/board/read";
+        return "board/read";
     }
 
     @GetMapping("/modify")
     public String modify(@RequestParam Long bno, Model model) {
         model.addAttribute("board", boardService.findById(bno));
-        return "/board/modify";
+        return "board/modify";
     }
 
     @PostMapping("/modify")
     public String modify(Board board) {
         boardService.modify(board);
-        return "redirect:/board/cread?bno=" + board.getBno();
+        return "redirect:/board/read?bno=" + board.getBno();
     }
 
     @GetMapping("/list")

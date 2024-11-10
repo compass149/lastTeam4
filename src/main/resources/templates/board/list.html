@@ -7,20 +7,28 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="form-group text-right">
+        <a href="/board/register">
+            <button type="button" class="btn btn-secondary btn-sm" id="writeBtn">글쓰기</button>
+        </a>
+    </div>
     <div class="row mt-3">
         <div class="gallery">
-            <div th:each="boardItem : ${lists}" class="card" th:classappend="${boardItem.postType} == '주인찾기' ? ' owner-find' : ''">
+            <div th:each="boardItem : ${lists}" class="card"
+                 th:classappend="${boardItem.postType} == '주인찾기' ? ' owner-find' : ''">
                 <div class="card-header">
                     <span class="board-type" th:text="${boardItem.postType}"></span>
                     <span th:text="${boardItem.createdAt}"></span>
                 </div>
                 <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${boardItem.title}"></h5>
-                    <p>공고번호: <span th:text="${boardItem.status}"></span></p>
-                    <p>성별: <span th:text="${boardItem.petGender}"></span></p>
-                    <p>발견장소: <span th:text="${boardItem.lostLocation}"></span></p>
-                    <p>특징: <span th:text="${boardItem.content}"></span></p>
+                    <a th:href="@{/board/read(bno=${boardItem.bno})}">
+                        <h5 class="card-title" th:text="${boardItem.title}"></h5>
+                        <p>공고번호: <span th:text="${boardItem.status}"></span></p>
+                        <p>성별: <span th:text="${boardItem.petGender}"></span></p>
+                        <p>발견장소: <span th:text="${boardItem.lostLocation}"></span></p>
+                        <p>특징: <span th:text="${boardItem.content}"></span></p>
+                    </a>
                 </div>
                 <div class="card-footer text-center">
                     조회수: <span th:text="${boardItem.hitCount}"></span>
