@@ -46,15 +46,17 @@ public class Board {
 
     //board1,2 content
     private String petDescription;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lostDate;
-    private String lostLocation;
+    private String location;
+    private String postType;
+    private String locationDetail;
     private String petBreeds; //품종
     private String petGender;
     private String petAge;
     private String petWeight;
     private String petName;
-    @Enumerated(EnumType.STRING)
-    private PetType petType; //동물 종류(개, 고양이 등)
+    private String petType; //동물 종류(개, 고양이 등)
 
 
 /*    @JoinColumn(name = "petColor")
@@ -103,9 +105,6 @@ public class Board {
         this.hitCount = this.hitCount == null ? 0 : this.hitCount;
         this.replyCount = this.replyCount == null ? 0 : this.replyCount;
     }
-
-    @Enumerated(EnumType.STRING)
-    private PostType postType;
 
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = {CascadeType.ALL},

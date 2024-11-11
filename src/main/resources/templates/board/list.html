@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-//7개에 1페이지로 되어있음 그거 수정해야함 그리고 페이지 추가 됐음
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
@@ -89,6 +88,39 @@
             font-size: 1rem;
             margin-bottom: 5px;
         }
+        /* 페이지네이션 스타일 */
+        .page {
+            text-align: center; /* 페이지 번호를 중앙으로 정렬 */
+            margin-top: 20px;
+        }
+
+        .page a {
+            text-decoration: none;
+            margin: 0 5px; /* 페이지 번호 간의 간격 설정 */
+        }
+
+        .page span {
+            padding: 5px 10px;
+            border: 1px solid #ccc; /* 테두리 스타일 */
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page .on {
+            background-color: #007bff; /* 현재 페이지 활성화 스타일 */
+            color: white;
+        }
+
+        .page .off {
+            background-color: #f8f9fa; /* 비활성화된 페이지 스타일 */
+            color: #007bff;
+        }
+
+        .page .off:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -101,6 +133,9 @@
             <button type="button" class="btn btn-secondary btn-sm" id="writeBtn">임시 글쓰기</button>
         </a>
     </div>
+    <!-- 날짜 범위 검색 추가 (시작 날짜만)-->
+    <!--   <input type="date" class="form-control" name="startDate" th:value="${pageRequestDTO.startDate}" placeholder="시작 날짜">-->
+
     <div class="row mt-3">
         <form action="/board/list" method="get">
             <div class="col">
@@ -142,7 +177,7 @@
                         <p>상태: <span th:text="${boardItem.status}"></span></p>
                         <p>제목: <span th:text="${boardItem.title}"></span></p>
                         <p>성별: <span th:text="${boardItem.petGender}"></span></p>
-                        <p>발견장소: <span th:text="${boardItem.lostLocation}"></span></p>
+                        <p>발견장소: <span th:text="${boardItem.location}+${boardItem.locationDetail}"></span></p>
                         <p>특징: <span th:text="${boardItem.content}"></span></p>
                     </a>
                 </div>
@@ -151,7 +186,37 @@
                 </div>
             </div>
         </div>
+        <ul class="pagination flex-wrap">
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${1}">처음</a>
+            </li>
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${responseDTO.start -1}">이전</a>
+            </li>
+            <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i}?'page-item active':'page-item'" >
+                    <a class="page-link"  th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link"  th:data-num="${responseDTO.end + 1}">다음</a>
+            </li>
+        </ul>
     </div>
-</div>
+    </div>
 </body>
+<script th:inline="javascript">
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = e.target;
+        if (target.tagName !== 'A') {
+            return;
+        }
+        const num = target.getAttribute("data-num");
+        const formObj = document.querySelector("form");
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+        formObj.submit();
+    }, false);
+</script>
 </html>

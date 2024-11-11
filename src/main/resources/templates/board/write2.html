@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic1.html}">
+      layout:decorate="~{layout/basic.html}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="'연락처 정보'">연락처 정보</title>
+  <title th:text="'반려동물 찾기'">반려동물 찾기</title>
   <link rel="stylesheet" href="../../static/css/write2.css">
 </head>
-<body>
-<header class="header">
-  <span style="font-size: 2rem; display: inline;"> 여기서</span>
-  <h1 style="display: inline; font-size: 5rem;">찾개냥</h1>
-  <nav class="nav justify-content-end mt-3">
-    <a class="nav-link text-black" href="../signup.html">SIGN UP</a>
-    <a class="nav-link text-black" href="../login.html">LOGIN</a>
-    <a class="nav-link text-black" href="../home1.html">HOME</a>
-  </nav>
-</header>
+<body layout:fragment="content">
 <main>
   <h2>반려동물을 찾아요</h2>
-  <form action="@{/write3}" method="post" id="contact-form">
+  <form th:action="@{/board/write3}" method="post" id="contact-form">
     <div class="form-group">
       <label for="name">이름*:</label>
       <input type="text" id="name" name="name" required>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic1.html}">
+      layout:decorate="~{layout/basic.html}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="'애완동물 정보'">애완동물 정보</title>
+  <title th:text="'반려동물 정보'">반려동물 정보</title>
   <link rel="stylesheet" href="../../static/css/write3.css">
   <script>
     function toggleOtherInput() {
@@ -28,12 +28,12 @@
   <nav class="nav justify-content-end mt-3">
     <a class="nav-link text-black" href="../signup.html">SIGN UP</a>
     <a class="nav-link text-black" href="../login.html">LOGIN</a>
-    <a class="nav-link text-black" href="../home1.html">HOME</a>
+    <a class="nav-link text-black" href="../home.html">HOME</a>
   </nav>
 </header>
 <main>
   <h2>반려동물을 찾아요</h2>
-  <form action="@{/writeOK}" method="post" id="pet-info-form" enctype="multipart/form-data">
+  <form th:action="@{/board/register}" method="post" id="pet-info-form" enctype="multipart/form-data">
     <div class="form-group">
       <label for="lostDate">잃어버린 날짜:</label>
       <input type="date" id="lostDate" name="lostDate" required>
