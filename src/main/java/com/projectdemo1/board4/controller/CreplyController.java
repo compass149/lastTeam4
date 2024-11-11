@@ -1,7 +1,6 @@
 package com.projectdemo1.board4.controller;
 
 
-import com.projectdemo1.board4.domain.Creply;
 import com.projectdemo1.board4.dto.CpageRequestDTO;
 import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.board4.dto.CreplyDTO;
@@ -10,13 +9,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

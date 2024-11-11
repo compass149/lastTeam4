@@ -3,41 +3,147 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판 목록</title>
-    <link rel="stylesheet" href="../../static/css/style.css"> <!-- 스타일 시트 추가 -->
+    <title>게시글 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .table thead th {
+            background-color: #f8f9fa;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .pagination .page-link {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-<div layout:fragment="content">
-    <div class="container mt-3">
-        <div class="form-group text-right">
-            <a href="/cboard/insert">
-                <button type="button" class="btn btn-secondary btn-sm" id="writeBtn">글쓰기</button>
-            </a>
+<div layout:fragment="content" class="container mt-5">
+    <div class="row mb-3">
+        <div class="col">
+            <form action="/cboard/clist" method="get" class="form-inline">
+                <input type="hidden" name="size" th:value="${cpageRequestDTO.size}">
+                <div class="input-group">
+                    <select class="form-select mr-2" name="type">
+                        <option value="">-----</option>
+                        <option value="t" th:selected="${cpageRequestDTO.type == 't'}">제목</option>
+                        <option value="c" th:selected="${cpageRequestDTO.type == 'c'}">내용</option>
+                        <option value="w" th:selected="${cpageRequestDTO.type == 'w'}">작성자</option>
+                        <option value="tc" th:selected="${cpageRequestDTO.type == 'tc'}">제목+내용</option>
+                        <option value="tcw" th:selected="${cpageRequestDTO.type == 'tcw'}">제목+내용+작성자</option>
+                    </select>
+                    <input type="text" class="form-control mr-2" name="keyword" th:value="${cpageRequestDTO.keyword}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-outline-secondary mr-2 searchBtn">검색</button>
+                        <button type="button" class="btn btn-outline-secondary clearBtn">목록</button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cboard : ${clists}">
-                <td th:text="${cboard.num}">번호</td>
-                <td><a th:href="@{/cboard/cview(num=${cboard.num})}" th:text="${cboard.title}">제목</a></td>
-                <td th:text="${cboard.writer}">작성자</td>
-                <td th:text="${#temporals.format(cboard.regdate, 'yyyy-MM-dd HH:mm')}">작성일</td>
-                <td th:text="${cboard.hitcount}">조회수</td>
-            </tr>
-            </tbody>
-        </table>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <a th:href="@{/cboard/cregister}" class="btn btn-primary mb-3">글쓰기</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">게시글 목록</h5>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">작성일</th>
+                        </tr>
+                        </thead>
+                        <tbody th:with="link=${cpageRequestDTO.getLink()}">
+                        <tr th:each="dto : ${cresponseDTO.dtoList}">
+                            <th scope="row">[[${dto.cno}]]</th>
+                            <td>
+                                <a th:href="|@{/cboard/cread(cno=${dto.cno})}&${link}|">[[${dto.title}]]</a>
+                            </td>
+                            <td>[[${dto.writer}]]</td>
+                            <td>[[${#temporals.format(dto.createdAt, 'yyyy-MM-dd')}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end">
+                        <ul class="pagination">
+                            <li class="page-item" th:if="${cresponseDTO.prev}">
+                                <a class="page-link" th:data-num="${cresponseDTO.start - 1}">Previous</a>
+                            </li>
+                            <th:block th:each="i : ${#numbers.sequence(cresponseDTO.start, cresponseDTO.end)}">
+                                <li th:class="${cresponseDTO.page == i} ? 'page-item active' : 'page-item'">
+                                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li class="page-item" th:if="${cresponseDTO.next}">
+                                <a class="page-link" th:data-num="${cresponseDTO.end + 1}">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = e.target;
+        if (target.tagName !== 'A') {
+            return;
+        }
+        const num = target.getAttribute("data-num");
+        const formObj = document.querySelector("form");
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+        formObj.submit();
+    }, false);
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self.location = '/cboard/clist';
+    }, false);
+
+    // show modal
+    const result = [[${result}]];
+    const modal = new bootstrap.Modal(document.querySelector(".modal"));
+    if (result) {
+        modal.show();
+    }
+</script>
 </body>
 </html>

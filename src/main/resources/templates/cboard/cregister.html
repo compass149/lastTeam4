@@ -1,47 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic1.html}"
+      layout:decorate="~{layout/basic.html}"
       lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
-    <link rel="stylesheet" href="../../static/css/style.css"> <!-- 스타일 시트 추가 -->
+    <title>커뮤니티 게시글 작성</title>
 </head>
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content"> <!--현재 페이지에서 이걸 새로 작업하게됨 -->
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Register Page</h5>
-            <form action="@{/board/register}" method="post" enctype="multipart/form-data">
+            <h5 class="card-title">커뮤니티 게시글 작성</h5>
+            <form action="cregister" method="post" enctype="multipart/form-data">
                 <div class="input-group mb-3">
                     <span class="input-group-text">Title</span>
-                    <input type="text" class="form-control" name="title" placeholder="Title" required>
+                    <input type="text" class="form-control" name="title" placeholder="Title">
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text">Content</span>
-                    <textarea name="content" class="form-control" rows="5" placeholder="Content" required></textarea>
+                    <textarea name="content" class="form-control col-sm-5" rows="5"></textarea>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text">Writer</span>
-                    <input type="text" class="form-control" name="writer" placeholder="Writer" required>
+                    <input type="text" class="form-control" name="writer" placeholder="Writer">
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text">File Upload</span>
-                    <input type="file" class="form-control" name="files" multiple>
+                    <span class="input-group-text">FileUpload</span>
+                    <input type="file" class="form-control" name="files">
                 </div>
 
                 <div class="input-group mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
+<script layout:fragment="script" th:inline="javascript">
+    const error = [[${error}]];
+    console.log(error);
+
+    let errorMsg = '';
+
+    if (error) {
+        for (let i = 0; i < error.length; i++) {
+            errorMsg += `${error[i].field}은(는) ${error[i].code} \n`;
+        }
+        alert(errorMsg);
+    }
+</script>
 </body>
 </html>
