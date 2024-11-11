@@ -1,11 +1,54 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
-
-<div layout:fragment="content">
+      layout:decorate="~{layout/basic1.html}" lang="ko">
+<head>
+  <title>Home</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+  <div layout:fragment="content">
     <div class="container">
-        <h3>Home page</h3>
-        <img src="/images/abc.png">
+      <a th:href="@{/home}">
+        <img th:src="@{/photo/banner.PNG}" class="img-fluid" alt="강아지와 고양이">
+      </a>
     </div>
-</div>
+    <div class="container my-4">
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <div class="item">
+            <p style="font-family: 'Nunito', sans-serif;">반려동물을 찾아요</p>
+            <a th:href="@{/find-pet}">
+              <img th:src="@{/photo/find-pet.PNG}" class="img-fluid rounded" alt="반려동물 찾기">
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="item">
+            <p style="font-family: 'Nunito', sans-serif;">주인을 기다리고 있어요</p>
+            <a th:href="@{/wait}">
+              <img th:src="@{/photo/wait.PNG}" class="img-fluid rounded" alt="주인을 기다리는">
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="item">
+            <p style="font-family: 'Nunito', sans-serif;">커뮤니티</p>
+            <a th:href="@{/community}">
+              <img th:src="@{/photo/comu.PNG}" class="img-fluid rounded" alt="커뮤">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- /container -->
+
+<footer th:replace="layout/footer :: footer"></footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
