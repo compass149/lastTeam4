@@ -1,18 +1,110 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic1.html}">
+      layout:decorate="~{layout/basic.html}">
 <link rel="stylesheet" href="../static/css/view.css">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${title}">찾개냥</title>
-<!--    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="@{/css/home.css}">
+    <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f4f4f4;
+            padding-top: 20px;
+        }
 
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
+        /* 제목 스타일 */
+        .header h1 {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* 이미지 스타일링 */
+        .board-image {
+            width: 100%; /* 전체 너비로 이미지 표시 */
+            height: auto; /* 비율 유지 */
+            object-fit: cover; /* 잘리지 않게 조정 */
+            margin-bottom: 20px; /* 이미지와 글 사이의 간격 */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .board-info {
+            margin-top: 30px;
+        }
+
+        .board-info .form-group {
+            font-size: 1.1rem;
+        }
+
+        .board-comment-list {
+            margin-top: 50px;
+        }
+
+        .board-comment-list table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .board-comment-list th, .board-comment-list td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .board-comment-list th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .board-comment-list td {
+            color: #666;
+        }
+
+        .btn-custom {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            color: #333;
+            background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+        }
+    </style>
 </head>
+
+<body>
 
 <header class="header">
     <h1>찾개냥</h1>
@@ -135,7 +227,7 @@
 
 <script>
     // 게시글 번호 (서버에서 동적으로 설정)
-    const bno = [[$,{board:num}]];
+    const bno = [[${board.num}]];
 
     const replyList = document.querySelector('#replyList');
 

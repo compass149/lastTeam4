@@ -31,8 +31,8 @@ public class CreplyServiceImpl implements CreplyService{
     @Override
     public Long register(CreplyDTO creplyDTO) {
         Creply creply = modelMapper.map(creplyDTO, Creply.class);
-        Long rno = creplyRepository.save(creply).getRno();
-        return rno;
+        creplyRepository.save(creply);
+        return creply.getRno();
     }
 
     @Override
