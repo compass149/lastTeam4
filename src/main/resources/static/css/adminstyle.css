@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'PocheonMakgeolli';
-    src: url('../fonts/PochenMakgeolli.ttf') format('truetype');
+    src: url('../../templates/fonts/mainfont.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
