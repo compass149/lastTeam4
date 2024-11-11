@@ -1,4 +1,5 @@
-package com.projectdemo1.controller; //  박경미 쌤 코드
+package com.projectdemo1.controller;
+
 import com.projectdemo1.auth.PrincipalDetails;
 import com.projectdemo1.board4.domain.Cboard;
 import com.projectdemo1.board4.dto.CboardDTO;
@@ -17,7 +18,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -25,10 +25,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 @Controller
 @RequestMapping("/board")
 @Log4j2
@@ -54,44 +53,41 @@ public class BoardController {
 
     private final BoardService boardService;
 
-   
-    private List<String> fileUload(UploadFileDTO uploadFileDTO){
-
+    private List<String> fileUpload(UploadFileDTO uploadFileDTO) {
         List<String> list = new ArrayList<>();
         uploadFileDTO.getFiles().forEach(multipartFile -> {
             String originalName = multipartFile.getOriginalFilename();
             log.info(originalName);
 
             String uuid = UUID.randomUUID().toString();
-            Path savePath = Paths.get(uploadPath, uuid+"_"+ originalName);
+            Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
             boolean image = false;
             try {
                 multipartFile.transferTo(savePath); // 서버에 파일저장
-                //이미지 파일의 종류라면
-                if(Files.probeContentType(savePath).startsWith("image")){
+                // 이미지 파일의 경우 썸네일 생성
+                if (Files.probeContentType(savePath).startsWith("image")) {
                     image = true;
-                    File thumbFile = new File(uploadPath, "s_" + uuid+"_"+ originalName);
-                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200,200);
+                    File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            list.add(uuid+"_"+originalName);
+            list.add(uuid + "_" + originalName);
         });
         return list;
     }
 
-    @GetMapping("/register") //게시글 등록
+    @GetMapping("/register") // 게시글 등록
     public String register() {
         return "/board/register";
     }
 
-
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute Board board,
-                           @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
+                           @RequestParam PetColorType petColorType,
                            PrincipalDetails principal) {
-        PetColor petColor = new PetColor(petColorType);  // PetColorType을 사용하여 PetColor 객체 생성
+        PetColor petColor = new PetColor(petColorType);
         board.setPetColor(petColor);
         boardService.register(board, principal.getUser());
 
@@ -107,54 +103,42 @@ public class BoardController {
                     PetColor petColor = new PetColor(PetColorType.valueOf(text));
                     setValue(petColor);
                 } catch (IllegalArgumentException e) {
-                    // 예외 처리 로직 추가 (예: 기본 색상 설정)
-                    PetColor petColor = new PetColor(PetColorType.OTHER);  // 기본값 설정
+                    PetColor petColor = new PetColor(PetColorType.OTHER);
                     setValue(petColor);
                 }
             }
         });
     }
+
     @GetMapping("/read")
     public String read(@RequestParam("bno") Long bno, Model model) {
-        Board board = boardService.findById(bno);  // Board 엔티티 조회
-        BoardDTO dto = new BoardDTO(board);  // BoardDTO로 변환
+        Board board = boardService.findById(bno);
+        BoardDTO dto = new BoardDTO(board);
 
-        // 기본값 설정 - PetColor 객체 생성 후 PetColorType 설정
         if (dto.getPetColor() == null) {
-            dto.setPetColor(new PetColor(PetColorType.OTHER)); // 기본값을 PetColor 객체로 설정
+            dto.setPetColor(new PetColor(PetColorType.OTHER));
         }
 
-        // user 객체가 null이면 기본값 설정
         if (dto.getUser() == null) {
-            dto.setUser(new User());  // 기본 User 객체 설정
+            dto.setUser(new User());
         }
 
         model.addAttribute("dto", dto);
-        return "board/read";  // "board/read" 템플릿을 반환
+        return "board/read";
     }
-
-
-//    @GetMapping("/modify")
-//    public String modify(@RequestParam Long bno, Model model) {
-//        model.addAttribute("board", boardService.findById(bno));
-//        return "board/modify";
-//    }
 
     @PostMapping("/modify")
     public String modify(Board board, @RequestParam("petColorType") PetColorType petColorType) {
-        System.out.println(board);
         PetColor petColor = new PetColor(petColorType);
-       // petColor.setColor(petColorType);
-        board.setPetColor(petColor);  // Board에 PetColor 설정
+        board.setPetColor(petColor);
         boardService.modify(board);
         return "redirect:/board/read?bno=" + board.getBno();
     }
 
-
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
         List<Board> lists = boardService.list();
-       model.addAttribute("lists", lists);
+        model.addAttribute("lists", lists);
         PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
         log.info(responseDTO);
         model.addAttribute("responseDTO", responseDTO);
@@ -163,7 +147,6 @@ public class BoardController {
 
     @PostMapping("/remove")
     public String remove(@RequestParam Long bno) {
-
         boardService.remove(bno);
         return "redirect:/board/list";
     }
@@ -172,46 +155,55 @@ public class BoardController {
     public String getBoard(@PathVariable Long id, Model model) {
         Board board = boardService.findById(id);
         model.addAttribute("board", board);
-        model.addAttribute("postType", board.getPostType()); // 추가된 필드 사용
+        model.addAttribute("postType", board.getPostType());
 
-        return "board/list"; // 템플릿 이름
+        return "board/list";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editPost(@PathVariable Long id, Model model) {
+        Board board = boardService.findById(id);
+        model.addAttribute("board", board);
+        return "board/edit"; // 수정 페이지로 이동하는 템플릿 이름
+    }
 
     @GetMapping("/view/{fileName}")
     @ResponseBody
-    public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName){
-        Resource resource = new FileSystemResource(uploadPath+File.separator + fileName);
+    public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName) {
+        Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
         String resourceName = resource.getFilename();
         HttpHeaders headers = new HttpHeaders();
 
-        try{
-            headers.add("Content-Type", Files.probeContentType( resource.getFile().toPath() ));
-        } catch(Exception e){
+        try {
+            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
         return ResponseEntity.ok().headers(headers).body(resource);
     }
 
-    private void removeFile(List<String> fileNames){
-        log.info("AAAAA"+fileNames.size());
+    // @GetMapping을 통해 삭제 요청을 GET 방식으로 처리하도록 수정
+    @GetMapping("/delete/{id}")
+    public String deletePost(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        boardService.remove(id);  // id에 해당하는 게시글을 삭제
+        redirectAttributes.addFlashAttribute("result", "removed");
+        return "redirect:/board/list";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+    }
 
-        for(String fileName:fileNames){
-            log.info("fileRemove method: "+fileName);
-            Resource resource = new FileSystemResource(uploadPath+File.separator + fileName);
-            String resourceName = resource.getFilename();
+    private void removeFile(List<String> fileNames) {
+        log.info("File removal list size: " + fileNames.size());
 
-            // Map<String, Boolean> resultMap = new HashMap<>();
-            boolean removed = false;
+        for (String fileName : fileNames) {
+            log.info("Removing file: " + fileName);
+            Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
 
             try {
                 String contentType = Files.probeContentType(resource.getFile().toPath());
-                removed = resource.getFile().delete();
+                resource.getFile().delete();
 
-                //섬네일이 존재한다면
-                if(contentType.startsWith("image")){
-                    String fileName1=fileName.replace("s_","");
-                    File originalFile = new File(uploadPath+File.separator + fileName1);
+                if (contentType != null && contentType.startsWith("image")) {
+                    String originalFileName = fileName.replace("s_", "");
+                    File originalFile = new File(uploadPath + File.separator + originalFileName);
                     originalFile.delete();
                 }
 
@@ -221,6 +213,8 @@ public class BoardController {
         }
     }
 }
+
+
 /*
 package com.projectdemo1.controller;
 
