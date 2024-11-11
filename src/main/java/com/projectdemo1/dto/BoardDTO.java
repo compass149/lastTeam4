@@ -15,6 +15,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -39,19 +40,22 @@ public class BoardDTO {
     private LocalDateTime updatedAt;
 
     private List<String> fileNames;
-    private PostType postType;
+    private String postType;
     private Long hitCount;
     private Set<BoardImage> imageSet;
     private List<Comment> comments;
     private Status status;
     private String petDescription;
+
     private Date lostDate;
-    private String lostLocation;
+
+    private String location;
+    private String locationDetail;
     private String petBreeds;
     private String petGender;
     private String petAge;
     private String petWeight;
-    private PetType petType;
+    private String petType;
     private String petName;
 
     // PetColor 객체로 수정
@@ -76,7 +80,8 @@ public class BoardDTO {
         this.status = board.getStatus();
         this.petDescription = board.getPetDescription();
         this.lostDate = board.getLostDate();
-        this.lostLocation = board.getLostLocation();
+        this.location = board.getLocation();
+        this.locationDetail = board.getLocationDetail();
         this.petBreeds = board.getPetBreeds();
         this.petGender = board.getPetGender();
         this.petAge = board.getPetAge();

@@ -86,7 +86,7 @@
       </tr>
       <tr>
         <th scope="row" class="first">분실장소</th>
-        <td class="text-left last">[[${dto.lostLocation}]]</td>
+        <td class="text-left last">[[${dto.location}]]  [[${dto.locationDetail}]]</td>
       </tr>
       </tbody>
     </table>
@@ -124,7 +124,7 @@
       </tr>
       <tr>
         <th scope="row" class="first">잃어버린 장소</th> <!--타입에 따라 용어-->
-        <td class="text-left last" colspan="3">[[${dto.lostLocation}]]</td>
+        <td class="text-left last" colspan="3">[[${dto.location}]] [[${dto.locationDetail}]]</td>
       </tr>
       </tbody>
     </table>
@@ -154,7 +154,7 @@
         }
       };
 
-      places.keywordSearch('dto.lostLocation', callback);
+      places.keywordSearch('dto.location', callback);
     </script>
 
     <div class="form-group">

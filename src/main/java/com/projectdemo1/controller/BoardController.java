@@ -91,7 +91,10 @@ public class BoardController {
 
         return "redirect:/board/list";
     }
-
+    @RequestMapping("write.do") //폼으로 이동
+    public String write() {
+        return "board/register";
+    }
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(PetColor.class, new PropertyEditorSupport() {
@@ -159,8 +162,7 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String getBoard(@PathVariable Long id, Model model) {
         Board board = boardService.findById(id);
-        model.addAttribute("board", board);
-        model.addAttribute("postType", board.getPostType()); // 추가된 필드 사용
+        model.addAttribute("board", board); // 추가된 필드 사용
 
         return "board/list"; // 템플릿 이름
     }

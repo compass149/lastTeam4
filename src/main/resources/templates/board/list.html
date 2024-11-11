@@ -177,7 +177,7 @@
                         <p>상태: <span th:text="${boardItem.status}"></span></p>
                         <p>제목: <span th:text="${boardItem.title}"></span></p>
                         <p>성별: <span th:text="${boardItem.petGender}"></span></p>
-                        <p>발견장소: <span th:text="${boardItem.lostLocation}"></span></p>
+                        <p>발견장소: <span th:text="${boardItem.location}+${boardItem.locationDetail}"></span></p>
                         <p>특징: <span th:text="${boardItem.content}"></span></p>
                     </a>
                 </div>
