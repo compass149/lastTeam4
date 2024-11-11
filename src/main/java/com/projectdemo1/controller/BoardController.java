@@ -1,4 +1,5 @@
 package com.projectdemo1.controller; //  박경미 쌤 코드
+
 import com.projectdemo1.auth.PrincipalDetails;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
@@ -19,9 +20,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.beans.PropertyEditorSupport;
@@ -75,8 +75,7 @@ public class BoardController {
 
     @GetMapping("/register") //게시글 등록
     public String register() {
-        //return "register";
-        return "board/write2";
+        return "/board/register";
     }
 
 
@@ -85,6 +84,22 @@ public class BoardController {
                            @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
                            PrincipalDetails principal) {
         PetColor petColor = new PetColor(petColorType);  // PetColorType을 사용하여 PetColor 객체 생성
+        board.setPetColor(petColor);
+        boardService.register(board, principal.getUser());
+
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/register1")
+    public String register1() {
+        return "board/register1";
+    }
+
+    @PostMapping("/register1")
+    public String register1(@Valid @ModelAttribute Board board,
+                            @RequestParam PetColorType petColorType,  // PetColorType as a request parameter
+                            PrincipalDetails principal) {
+        PetColor petColor = new PetColor(petColorType);  // Create PetColor object using PetColorType
         board.setPetColor(petColor);
         boardService.register(board, principal.getUser());
 
