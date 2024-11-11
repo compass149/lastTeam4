@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic1.html}" lang="ko">
+      layout:decorate="~{layout/basic.html}" lang="ko">
 <head>
   <title>Home</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -35,7 +35,7 @@
         <div class="col-md-4 text-center">
           <div class="item">
             <p style="font-family: 'Nunito', sans-serif;">커뮤니티</p>
-            <a th:href="@{/community}">
+            <a th:href="@{/cboard/clist}">
               <img th:src="@{/photo/comu.PNG}" class="img-fluid rounded" alt="커뮤">
             </a>
           </div>

@@ -12,28 +12,39 @@
 </head>
 <body>
 <div class="container mt-3 mb-3">
-    <nav class="navbar navbar-expand-sm bg-light">
+    <nav class="navbar navbar-expand-sm navbar-custom">
         <div class="container-fluid">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">찾개냥</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/board/list">Community List</a>
-                </li>
-                <li sec:authorize="hasAnyAuthority('USER')" class="nav-item">
-                    <a class="nav-link" href="/User">User</a>
-                </li>
-                <li sec:authorize="hasAnyAuthority('ADMIN')" class="nav-item">
-                    <a class="nav-link" href="/admin/list">Admin</a>
-                </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/user/login">Login</a>
-                </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/logout">Logout ([[${#authentication.principal.username}]])</a>
-                </li>
-            </ul>
+            <a class="navbar-brand" href="/home">
+                <span style="font-size: 1.0rem;">여기서</span>
+                <span style="font-size: 2.0rem;">찾개냥</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cboard/clist">커뮤니티</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/list">글목록</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('USER')" class="nav-item">
+                        <a class="nav-link" href="/User">USER</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('ADMIN')" class="nav-item">
+                        <a class="nav-link" href="/admin/list">ADMIN</a>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()" class="nav-item">
+                        <a class="nav-link" href="/user/login">LOGIN</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link" href="/logout">LOGOUT([[${#authentication.principal.username}]])</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 </div>
