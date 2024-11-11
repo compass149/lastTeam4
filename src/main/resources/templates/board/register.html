@@ -2,66 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}"
-      lang="en">
-<meta charset="UTF-8">
-<meta charset="UTF-8">
-<h4>내정보</h4>
-<table class="table detail-table mt-0 mb-30">
-    <caption>분실신고자 정보로 신고자, 연락처</caption>
-    <colgroup>
-        <col style="width: 500px">
-        <col style="width: 160px"><col style="width: 500px"><col style="width: 160px">
-    </colgroup>
-    <tbody>
-    <tr>
-        <th scope="row" class="first">신고자</th>
-        <td class="text-left">
-            성함
-        </td>
-        <th scope="row">연락처</th>
-        <td class="text-left last">
-            <a href="tel:010-4755-8091">010-XXXX-XXXX</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+      lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반려동물을 찾아요</title>
+    <link rel="stylesheet" href="../../static/css/write1.css">
+</head>
 
-<h4>내가 쓴 분실동물 정보</h4>
-<table class="table detail-table mt-0 mb-30">
-    <caption>분실동물 정보로 품종, 성별, 특징, 몸무게, 털색상, 길이, 나이, 발견장소</caption>
-    <colgroup>
-        <col style="width: 160px">
-        <col style="width: 500px">
-        <col style="width: 160px">
-        <col style="width: 500px">
-    </colgroup>
-    <tbody>
-    <tr>
-        <th scope="row" class="first">품종</th>
-        <td class="text-left">선택</td>
-        <th scope="row">털 색상</th>
-        <td class="text-left last">선택</td>
-        <th scope="row">이름</th>
-        <td class="text-left last">입력</td>
-    </tr>
-    <tr>
-        <th scope="row" class="first">성별</th>
-        <td class="text-left">선택</td>
-        <th scope="row">나이</th>
-        <td class="text-left last">선택</td>
-        <th scope="row">길이</th>
-        <td class="text-left last">입력(*단위 필수 기입)</td>
-    </tr>
-    <tr>
-        <th scope="row" class="first">특징(구체적 묘사)</th>
-        <td class="text-left last" colspan="3">입력</td>
-        <th scope="row" class="first">몸무게</th>
-        <td class="text-left last" colspan="3">입력</td>
-    </tr>
-    <tr>
-        <th scope="row" class="first">발견 날짜와 장소</th>
-        <td class="text-left last" colspan="3">입력</td>
-        <th scope="row" class="first">처리현황</th>
-        <td class="text-left last" colspan="3">접수 완료(미처리)</td>
-    </tr>
-    </tbody>
+<body>
+<div layout:fragment="content">
+    <header class="header">
+        <span style="font-size: 2rem; display: inline;"> 여기서</span>
+        <h1 style="display: inline; font-size: 5rem;">찾개냥</h1>
+        <!-- 작은 텍스트 추가 -->
+        <nav class="nav justify-content-end mt-3">
+
+            <a class="nav-link text-black" href="../signup.html">SIGN UP</a>
+            <a class="nav-link text-black" href="../login.html">LOGIN</a>
+            <a class="nav-link text-black" href="../home1.html">HOME</a>
+        </nav>
+    </header>
+    <main>
+        <h2>반려동물을 찾아요</h2>
+        <form action="/board/register" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="type">Type:</label>
+                <select id="type" name="type" required>
+                    <option value="dog">개</option>
+                    <option value="cat">고양이</option>
+                    <option value="bird">조류</option>
+                    <option value="rodent">설치류</option>
+                    <option value="reptile">파충류</option>
+                    <option value="fish">어류</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pet-name">애완동물 이름:</label>
+                <input type="text" id="pet-name" name="pet-name" required>
+            </div>
+            <div class="form-group">
+                <label for="owner-name">보호자 이름:</label>
+                <input type="text" id="owner-name" name="owner-name" required>
+            </div>
+            <div class="form-group">
+                <label for="lostLocation">잃어버린 장소:</label>
+                <select id="lostLocation" name="lostLocation" required> // text에서 변경 및 옵션추가 //
+                    <option value="">선택하세요</option>
+                    <option value="Haeundae">해운대구</option>
+                    <option value="Suyeong">수영구</option>
+                    <option value="Dongnae">동래구</option>
+                    <option value="Busanjin">부산진구</option>
+                    <option value="Buk">북구</option>
+                    <option value="Nam">남구</option>
+                    <option value="Sasang">사상구</option>
+                    <option value="Seo">서구</option>
+                    <option value="Yeonje">연제구</option>
+                    <option value="Gangseo">강서구</option>
+                    <option value="Geumjeong">금정구</option>
+                    <option value="Jung">중구</option>
+                    <option value="Yeongdo">영도구</option>
+                    <option value="Saha">사하구</option>
+                    <option value="Gijang">기장군</option>
+                </select>
+            </div>
+            <div class="form-buttons">
+                <button type="reset">리셋</button>
+                <button type="submit">다음</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>© 2024 .찾개냥. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>
