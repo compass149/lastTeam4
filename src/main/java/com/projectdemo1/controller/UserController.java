@@ -32,7 +32,8 @@ public class UserController {
     }
 
     @GetMapping("/user/login")
-    public void login(){
+    public String login(){
+        return "user/login";
     }
     @GetMapping("/home") //홈화면
     public String home(){

@@ -32,8 +32,8 @@ public class CustomSecurityConfig {
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests(authorizeHttpRequestsConfigurer -> authorizeHttpRequestsConfigurer
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/user/login", "/board/**", "/user/**", "/", "/home", "/cboard/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                        .requestMatchers("/user/login", "/board/read","/board/list", "/user/**", "/", "/home", "/cboard/**").permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/creplies/**").authenticated()
                         .anyRequest().authenticated())

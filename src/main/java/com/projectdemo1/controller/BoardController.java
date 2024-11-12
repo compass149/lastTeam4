@@ -91,10 +91,7 @@ public class BoardController {
 
         return "redirect:/board/list";
     }
-    @RequestMapping("write.do") //폼으로 이동
-    public String write() {
-        return "board/register";
-    }
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(PetColor.class, new PropertyEditorSupport() {
