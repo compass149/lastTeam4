@@ -1,3 +1,4 @@
+/*
 package com.projectdemo1.controller;
 
 import com.projectdemo1.domain.Comment;
@@ -48,3 +49,4 @@ public class AdminController {
         commentService.remove(cno);
     }
 }
+*/

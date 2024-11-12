@@ -35,7 +35,6 @@ public class BoardDTO {
     private String content;
     private String writer;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime regDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
