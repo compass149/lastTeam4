@@ -40,6 +40,7 @@ public class CommentServiceImpl implements CommentService{
         comment.setWriter(commentDTO.getWriter());
         comment.setBoard(board);
 
+
         if (commentDTO.getParentId()!= null) {
             Comment parentComment = commentRepository.findById(commentDTO.getParentId())
                     .orElseThrow(() -> new IllegalArgumentException("Parent comment not found"));
@@ -47,6 +48,26 @@ public class CommentServiceImpl implements CommentService{
         }
 
         return commentRepository.save(comment);
+    }
+
+    @Override
+    public void register(Comment comment) {
+
+    }
+
+    @Override
+    public List<Comment> listByBoard(Long bno) {
+        return List.of();
+    }
+
+    @Override
+    public void modify(Comment comment) {
+
+    }
+
+    @Override
+    public Comment findById(Long cno) {
+        return null;
     }
 
     @Override

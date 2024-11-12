@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 댓글 관리</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>댓글 관리</h1>
+<div>
+  <h2>댓글 목록</h2>
+  <table id="commentTable">
+    <thead>
+    <tr>
+      <th>댓글 ID</th>
+      <th>내용</th>
+      <th>작성자</th>
+      <th>작성일</th>
+      <th>조치</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 댓글 목록이 여기에 동적으로 추가됩니다. -->
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <h2>댓글 추가</h2>
+  <textarea id="commentContent" placeholder="댓글 내용을 입력하세요"></textarea>
+  <button id="addCommentBtn">댓글 추가</button>
+</div>
+
+<script>
+  const bno = 1; // 예시로 게시글 ID를 1로 설정
+
+  function loadComments() {
+    $.get(`/admin/comments/${bno}`, function(comments) {
+      const tbody = $('#commentTable tbody');
+      tbody.empty(); // 기존 댓글 목록 초기화
+      comments.forEach(comment => {
+        tbody.append(`
+                        <tr>
+                            <td>${comment.cno}</td>
+                            <td>${comment.content}</td>
+                            <td>${comment.writer}</td>
+                            <td>${comment.regDate}</td>
+                            <td>
+                                <button onclick="modifyComment(${comment.cno})">수정</button>
+                                <button onclick="removeComment(${comment.cno})">삭제</button>
+                            </td>
+                        </tr>
+                    `);
+      });
+    });
+  }
+
+  $('#addCommentBtn').click(function() {
+    const content = $('#commentContent').val();
+    $.post('/admin/comments', { content: content, bno: bno, writer: '관리자' })
+            .done(function() {
+              loadComments();
+            });
+  });
+
+  function modifyComment(cno) {
+    const newContent = prompt("수정할 내용을 입력하세요:");
+    if (newContent) {
+      $.ajax({
+        url: `/admin/comments/${cno}`,
+        type: 'PUT',
+        data: { content: newContent },
+        success: function() {
+          loadComments();
+        }
+      });
+    }
+  }
+
+  function removeComment(cno) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      $.ajax({
+        url: `/admin/comments/${cno}`,
+        type: 'DELETE',
+        success: function() {
+          loadComments();
+        }
+      });
+    }
+  }
+
+  $(document).ready(function() {
+    loadComments();
+  });
+</script>
+</body>
+</html>
