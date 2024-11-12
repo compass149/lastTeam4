@@ -14,3 +14,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>,  BoardSearc
     @Query("select b from Board b where b.bno = :bno")
     Optional<Board> findByBnoWithImages(Long bno);
 }
+
+
+
+
+

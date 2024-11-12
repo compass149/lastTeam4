@@ -1,3 +1,118 @@
+//package com.projectdemo1.controller;
+//
+//import com.projectdemo1.domain.Post;
+//import com.projectdemo1.domain.User;
+//import com.projectdemo1.repository.PostRepository;
+//import com.projectdemo1.repository.UserRepository;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model;
+//import org.springframework.web.bind.annotation.*;
+//
+//import java.util.List;
+//
+//@Controller
+//@RequiredArgsConstructor
+//@RequestMapping("/user") // 클래스 레벨에서 /user로 설정
+//public class UserController {
+//    private final UserRepository userRepository;
+//    private final PostRepository postRepository;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//
+//    @GetMapping("/join")
+//    public void join() {
+//        // 회원가입 페이지로 이동
+//    }
+//
+//    @PostMapping("/join")
+//    public String register(User user) {
+//        String rawPassword = user.getPassword();
+//        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+//        user.setPassword(encPassword);
+//        user.setRole("USER"); // USER 권한 부여
+//        userRepository.save(user);
+//        return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
+//    }
+//
+//    @GetMapping("/login")
+//    public String login() {
+//        return "user/login"; // 로그인 페이지로 이동
+//    }
+//
+//    @GetMapping("/edit-profile") // 프로필 수정 페이지
+//    public String editProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        model.addAttribute("user", user);
+//        return "user/edit-profile"; // 프로필 수정 페이지로 이동
+//    }
+//
+//    @GetMapping("/home") // 홈 화면
+//    public String home() {
+//        return "home"; // 홈 페이지로 이동
+//    }
+//
+//    @GetMapping("/my-posts") // 내가 작성한 글 보기
+//    public String viewMyPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        List<Post> posts = postRepository.findByUser(user);
+//        model.addAttribute("posts", posts);
+//        return "user/my-posts"; // 내 게시글 페이지로 이동
+//    }
+//
+//    @GetMapping("/delete-account") // 계정 삭제 페이지
+//    public String deleteAccountPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        model.addAttribute("username", user.getNickname());
+//        return "user/delete-account"; // 계정 삭제 페이지로 이동
+//    }
+//
+//    @PostMapping("/delete-account") // 계정 삭제
+//    public String deleteAccount(@AuthenticationPrincipal UserDetails userDetails) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        userRepository.delete(user);
+//        return "redirect:/logout"; // 로그아웃으로 리디렉션
+//    }
+//
+//    @GetMapping("/edit-post/{id}") // 게시글 수정 페이지
+//    public String editPostPage(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        Post post = postRepository.findById(id).orElse(null);
+//
+//        if (post != null && post.getUser().getUno().equals(user.getUno())) {
+//            model.addAttribute("post", post);
+//            return "user/edit-post"; // 게시글 수정 페이지로 이동
+//        }
+//        return "redirect:/user/my-posts"; // 게시글이 없거나 권한이 없을 경우 리디렉션
+//    }
+//
+//    @PostMapping("/edit-post/{id}") // 게시글 수정 기능
+//    public String editPost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, @ModelAttribute Post post) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        Post existingPost = postRepository.findById(id).orElse(null);
+//
+//        if (existingPost != null && existingPost.getUser().getUno().equals(user.getUno())) {
+//            existingPost.setTitle(post.getTitle());
+//            existingPost.setContent(post.getContent());
+//            postRepository.save(existingPost);
+//        }
+//        return "redirect:/user/my-posts"; // 수정 후 내 게시글 페이지로 리디렉션
+//    }
+//
+//    @PostMapping("/delete-post/{id}") // 게시글 삭제 기능
+//    public String deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+//        User user = userRepository.findByUsername(userDetails.getUsername());
+//        Post post = postRepository.findById(id).orElse(null);
+//
+//        if (post != null && post.getUser().getUno().equals(user.getUno())) {
+//            postRepository.delete(post);
+//        }
+//        return "redirect:/user/my-posts"; // 삭제 후 내 게시글 페이지로 리디렉션
+//    }
+//}
+//
 package com.projectdemo1.controller;
 
 import com.projectdemo1.domain.Post;
@@ -5,103 +120,92 @@ import com.projectdemo1.domain.User;
 import com.projectdemo1.repository.PostRepository;
 import com.projectdemo1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/user") // 클래스 레벨에서 /user로 설정
-
 public class UserController {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/join")
-    public void join(){
+    public void join() {
+        // 회원가입 페이지로 이동
     }
 
     @PostMapping("/join")
-    public String register(User user){
-        System.out.println("register user: " + user);
+    public String register(User user) {
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
-        user.setRole("USER"); // USER라는 role을 부여해서 user만 접근 가능하게
+        user.setRole("USER"); // USER 권한 부여
         userRepository.save(user);
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
 
- /*   @GetMapping("/login")
-    public void login(){
-    }*/
-
     @GetMapping("/login")
-    public String login(){
-        return "user/login";
+    public String login() {
+        return "user/login"; // 로그인 페이지로 이동
     }
 
-    @GetMapping("/edit-profile") // /user/edit-profile로 매핑
+    @GetMapping("/edit-profile") // 프로필 수정 페이지
     public String editProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        // 로그인한 사용자의 username을 통해 DB에서 User 엔티티를 조회
         User user = userRepository.findByUsername(userDetails.getUsername());
-
-        // 조회한 사용자 정보를 모델에 추가
         model.addAttribute("user", user);
-        return "user/edit-profile"; // 'edit-profile.html' 파일 경로 반환
+        return "user/edit-profile"; // 프로필 수정 페이지로 이동
     }
 
-    @GetMapping("home") // 홈화면
+    @GetMapping("/home") // 홈 화면
     public String home() {
-        return "home";
+        return "home"; // 홈 페이지로 이동
     }
 
-    // "내가 작성한 글 보기" 매핑 추가
-    @GetMapping("/my-posts") // "/user/my-posts"로 매핑
+    @GetMapping("/my-posts") // 내가 작성한 글 보기
     public String viewMyPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername());
-        List<Post> posts = postRepository.findByUser(user); // 작성한 글 리스트 조회
+        List<Post> posts = postRepository.findByUser(user);
         model.addAttribute("posts", posts);
-        return "user/my-posts"; // my-posts.html 템플릿 반환
+        return "user/my-posts"; // 내 게시글 페이지로 이동
     }
 
-    @GetMapping("/delete-account")
+    @GetMapping("/delete-account") // 계정 삭제 페이지
     public String deleteAccountPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         model.addAttribute("username", user.getNickname());
-        return "user/delete-account";
+        return "user/delete-account"; // 계정 삭제 페이지로 이동
     }
 
-    @PostMapping("/delete-account")
+    @PostMapping("/delete-account") // 계정 삭제
     public String deleteAccount(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername());
-        userRepository.delete(user); // 사용자 삭제
+        userRepository.delete(user);
         return "redirect:/logout"; // 로그아웃으로 리디렉션
     }
 
-    // 게시글 수정 페이지로 이동
-    @GetMapping("/edit-post/{id}")
+    @GetMapping("/edit-post/{id}") // 게시글 수정 페이지
     public String editPostPage(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         Post post = postRepository.findById(id).orElse(null);
 
         if (post != null && post.getUser().getUno().equals(user.getUno())) {
             model.addAttribute("post", post);
-            return "user/edit-post";
+            return "user/edit-post"; // 게시글 수정 페이지로 이동
         }
         return "redirect:/user/my-posts"; // 게시글이 없거나 권한이 없을 경우 리디렉션
     }
 
-    // 게시글 수정 기능
-    @PostMapping("/edit-post/{id}")
+    @PostMapping("/edit-post/{id}") // 게시글 수정 기능
     public String editPost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, @ModelAttribute Post post) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         Post existingPost = postRepository.findById(id).orElse(null);
@@ -111,11 +215,10 @@ public class UserController {
             existingPost.setContent(post.getContent());
             postRepository.save(existingPost);
         }
-        return "redirect:/user/my-posts";
+        return "redirect:/user/my-posts"; // 수정 후 내 게시글 페이지로 리디렉션
     }
 
-    // 게시글 삭제 기능
-    @PostMapping("/delete-post/{id}")
+    @PostMapping("/delete-post/{id}") // 게시글 삭제 기능
     public String deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         Post post = postRepository.findById(id).orElse(null);
@@ -123,7 +226,27 @@ public class UserController {
         if (post != null && post.getUser().getUno().equals(user.getUno())) {
             postRepository.delete(post);
         }
-        return "redirect:/user/my-posts";
+        return "redirect:/user/my-posts"; // 삭제 후 내 게시글 페이지로 리디렉션
+    }
+
+    // 아이디 중복 체크
+    @GetMapping("/check-userId")
+    @ResponseBody
+    public Map<String, Object> checkUserId(@RequestParam String userId) {
+        Map<String, Object> response = new HashMap<>();
+        boolean isAvailable = userRepository.findByUsername(userId) == null; // 아이디 중복 체크
+        response.put("available", isAvailable);
+        return response;
+    }
+
+    // 닉네임 중복 체크
+    @GetMapping("/check-nickname")
+    @ResponseBody
+    public Map<String, Object> checkNickname(@RequestParam String nickname) {
+        Map<String, Object> response = new HashMap<>();
+        boolean isAvailable = userRepository.findByNickname(nickname) == null; // 닉네임 중복 체크
+        response.put("available", isAvailable);
+        return response;
     }
     @GetMapping("/admin/list")
     public String adminList() {
