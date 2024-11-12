@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 @NoArgsConstructor
 public class PageRequestDTO {
     private LocalDate startDate;//list추가
+    private LocalDate lastDate;//list추가
     @Builder.Default
     private int page = 1;
 

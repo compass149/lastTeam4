@@ -60,7 +60,7 @@ public class BoardDTO {
 
     // PetColor 객체로 수정
     private PetColor petColor;
-   // private String petColor;
+    // private String petColor;
 
     private User user;
     private String mobile;
