@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,12 +33,15 @@ public class UserController {
     }
 
     @PostMapping("/user/join")
-    public String register(User user){
+    public String register(User user, BindingResult bindingResult){
         System.out.println("register user: " + user);
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         user.setRole("USER"); // USER라는 role을 부여해서 user만 접근 가능하게
+        if (bindingResult.hasErrors()) {
+            return "user/join";  // 폼 검증 에러가 있으면 회원가입 페이지로 돌아감
+        }
         userRepository.save(user);
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
@@ -55,6 +59,15 @@ public class UserController {
         // 조회한 사용자 정보를 모델에 추가
         model.addAttribute("user", user);
         return "user/edit-profile"; // 'edit-profile.html' 파일 경로 반환
+    }
+    @PostMapping("/user/edit-profile")
+    public String editProfile(@AuthenticationPrincipal UserDetails userDetails, Model model, User user){
+        String rawPassword = user.getPassword();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        user.setPassword(encPassword);
+        userRepository.save(user);
+        System.out.println("수정완료" + user);
+        return "redirect:/user/edit-profile";
     }
 
     @GetMapping("/home") // 홈화면
@@ -125,11 +138,11 @@ public class UserController {
     }
 
     // 아이디 중복 체크
-    @GetMapping("/check-userId")
+    @GetMapping("/check-username")
     @ResponseBody
-    public Map<String, Object> checkUserId(@RequestParam String userId) {
+    public Map<String, Object> checkUserId(@RequestParam String username) {
         Map<String, Object> response = new HashMap<>();
-        boolean isAvailable = userRepository.findByUsername(userId) == null; // 아이디 중복 체크
+        boolean isAvailable = userRepository.findByUsername(username) == null; // 아이디 중복 체크
         response.put("available", isAvailable);
         return response;
     }
@@ -143,8 +156,13 @@ public class UserController {
         response.put("available", isAvailable);
         return response;
     }
-    @GetMapping("/admin/list")
-    public String adminList() {
-        return "admin/list";
+        @GetMapping("/admin/list") // "/user/my-posts"로 매핑
+    public String adminList(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+            List<User> users = userRepository.findAll();
+
+            // 모든 사용자 정보를 모델에 추가
+            model.addAttribute("users", users);
+
+        return "admin/list"; // my-posts.html 템플릿 반환
     }
 }

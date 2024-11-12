@@ -32,7 +32,7 @@ public class CustomSecurityConfig {
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests(authorizeHttpRequestsConfigurer -> authorizeHttpRequestsConfigurer
                         .requestMatchers("/home", "/user/**").permitAll() // antMatchers -> requestMatchers로 변경
-                        .requestMatchers("/user/login", "/board/**", "/user/**", "/", "/home", "/cboard/**").permitAll()
+                        .requestMatchers("/board/**", "/user/**", "/", "/home", "/cboard/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/creplies/**").authenticated()

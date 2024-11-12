@@ -3,6 +3,10 @@ package com.projectdemo1.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,4 +27,9 @@ public class User {
     private String role;
     private String mobile;
     private String nickname;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="createdAt")
+    @DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+    private LocalDateTime createdAt;
 }
