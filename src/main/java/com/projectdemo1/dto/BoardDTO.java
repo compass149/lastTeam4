@@ -56,6 +56,8 @@ public class BoardDTO {
     private String petWeight;
     private String petType;
     private String petName;
+    private Long uno;
+
 
     // PetColor 객체로 수정
     private PetColor petColor;
@@ -87,5 +89,7 @@ public class BoardDTO {
         this.petWeight = board.getPetWeight();
         this.petType = board.getPetType();
         this.petName = board.getPetName();
+        this.uno =board.getUser().getUno();
+
     }
 }

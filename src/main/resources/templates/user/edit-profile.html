@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
     <title>회원정보 수정</title>
@@ -145,7 +147,7 @@
     </style>
 </head>
 <body>
-<div class="header">
+<div layout:fragment="content" class="header">
     <div class="logo">찾개냥</div> <!-- 왼쪽 상단 로고 -->
     <div class="user-info">
         <a href="/mypage">마이페이지</a>

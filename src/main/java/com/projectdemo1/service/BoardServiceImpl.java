@@ -9,7 +9,6 @@ import com.projectdemo1.dto.PageRequestDTO;
 import com.projectdemo1.dto.PageResponseDTO;
 import com.projectdemo1.repository.BoardRepository;
 import com.projectdemo1.repository.PetColorRepository;
-import com.projectdemo1.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -121,5 +120,41 @@ public class BoardServiceImpl implements BoardService {
         PetColor petColor = new PetColor(petColorType);  // PetColor 객체 생성
         petColorRepository.save(petColor);  // PetColor 저장
     }
+
+    public PageResponseDTO<BoardDTO> findByUserName(String username, PageRequestDTO pageRequestDTO) {
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+        Page<Board> result = boardRepository.findByUser_UserName(username, pageable);
+
+        List<BoardDTO> dtoList = result.getContent().stream()
+                .map(board -> modelMapper.map(board, BoardDTO.class))
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<BoardDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int) result.getTotalElements())
+                .build();
+    }
+    @Override
+    public PageResponseDTO<BoardDTO> findBoardsByUser(String username, PageRequestDTO pageRequestDTO) {
+        // Pageable 객체 생성
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+
+        // 페이징된 게시물 목록 조회
+        Page<Board> result = boardRepository.findByUser_UserName(username, pageable);  // 수정된 메서드 호출
+
+        // Board를 BoardDTO로 변환하여 dtoList에 담기
+        List<BoardDTO> dtoList = result.getContent().stream()
+                .map(board -> modelMapper.map(board, BoardDTO.class))
+                .collect(Collectors.toList());
+
+        // PageResponseDTO 반환
+        return PageResponseDTO.<BoardDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int) result.getTotalElements())
+                .build();
+    }
+
 
 }

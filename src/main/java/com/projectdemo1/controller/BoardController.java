@@ -10,6 +10,7 @@ import com.projectdemo1.dto.BoardDTO;
 import com.projectdemo1.dto.PageRequestDTO;
 import com.projectdemo1.dto.PageResponseDTO;
 import com.projectdemo1.dto.upload.UploadFileDTO;
+import com.projectdemo1.repository.UserRepository;
 import com.projectdemo1.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,8 @@ public class BoardController {
     private String uploadPath;
 
     private final BoardService boardService;
+    private final UserRepository userRepository;
+
 
 
     private List<String> fileUload(UploadFileDTO uploadFileDTO) {

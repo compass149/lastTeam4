@@ -82,4 +82,6 @@ void register(Board board, User user);
     }
 
     void savePetColor(PetColorType petColorType);
+
+    PageResponseDTO<BoardDTO> findBoardsByUser(String username, PageRequestDTO pageRequestDTO);
 }

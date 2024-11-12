@@ -2,8 +2,13 @@ package com.projectdemo1.controller;
 
 import com.projectdemo1.domain.Post;
 import com.projectdemo1.domain.User;
+import com.projectdemo1.dto.BoardDTO;
+import com.projectdemo1.dto.PageRequestDTO;
+import com.projectdemo1.dto.PageResponseDTO;
 import com.projectdemo1.repository.PostRepository;
 import com.projectdemo1.repository.UserRepository;
+import com.projectdemo1.service.BoardService;
+import com.projectdemo1.service.BoardServiceImpl;
 import com.projectdemo1.service.UserService;
 import com.projectdemo1.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +35,7 @@ public class UserController {
     private final PostRepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserServiceImpl userServiceImpl;
+    private final BoardServiceImpl boardServiceImpl;
 
     @GetMapping("user/join")
     public void join() {
@@ -81,10 +87,12 @@ public class UserController {
     // "내가 작성한 글 보기" 매핑 추가
     @GetMapping("/user/my-posts") // "/user/my-posts"로 매핑
     public String viewMyPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        User user = userRepository.findByUsername(userDetails.getUsername());
-        List<Post> posts = postRepository.findByUser(user); // 작성한 글 리스트 조회
-        model.addAttribute("posts", posts);
-        return "user/my-posts"; // my-posts.html 템플릿 반환
+        String username = userDetails.getUsername();
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(); // 필요한 페이지 요청 정보 설정
+        PageResponseDTO<BoardDTO> responseDTO = boardServiceImpl.findByUserName(username, pageRequestDTO);
+
+        model.addAttribute("responseDTO", responseDTO);
+        return "user/my-posts";
     }
 
     @GetMapping("/user/delete-account")
