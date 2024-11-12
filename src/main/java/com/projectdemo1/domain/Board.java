@@ -96,6 +96,10 @@ public class Board {
     @ColumnDefault("0")
     private Long replyCount;
 
+    @Enumerated(EnumType.STRING)
+    private PetColorType petColorType;
+
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("board")
     private List<Comment> comments;
@@ -132,4 +136,6 @@ public class Board {
         this.title = title;
         this.content = content;
     }
+
+
 }

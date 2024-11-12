@@ -56,4 +56,7 @@ public class Comment {
     @Builder.Default //윤요섭 쌤 참조
     private List<Comment> children = new ArrayList<>();
 
+    public void setCno(Long cno) {
+
+    }
 }
