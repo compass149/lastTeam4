@@ -18,7 +18,9 @@ public class CreplyDTO {
 
     private Long rno;
 
+
     private Long cno;
+
 
     @NotEmpty
     private String replyText;
