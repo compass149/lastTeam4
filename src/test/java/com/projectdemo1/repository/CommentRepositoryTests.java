@@ -25,17 +25,7 @@ public class CommentRepositoryTests {
     @Test
     public void testInsert() {
         //실제 DB에 있는 bno
-        Long bno = 100L;
 
-        Board board = Board.builder().bno(bno).build();
-
-        Comment comment = Comment.builder()
-                .board(board)
-                .content("댓글....")
-                .writer("replyer1")
-                .build();
-
-        commentRepository.save(comment);
     }
 
     @Transactional

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,7 +30,12 @@ public class User {
     private String nickname;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="createdAt")
+    @Column(name = "createdAt")
     @DateTimeFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Board> boards;
 }
+
+

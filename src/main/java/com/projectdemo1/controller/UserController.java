@@ -4,6 +4,8 @@ import com.projectdemo1.domain.Post;
 import com.projectdemo1.domain.User;
 import com.projectdemo1.repository.PostRepository;
 import com.projectdemo1.repository.UserRepository;
+import com.projectdemo1.service.UserService;
+import com.projectdemo1.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,6 +29,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserServiceImpl userServiceImpl;
 
     @GetMapping("user/join")
     public void join() {
@@ -91,11 +94,11 @@ public class UserController {
         return "user/delete-account";
     }
 
+
     @PostMapping("/user/delete-account")
-    public String deleteAccount(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userRepository.findByUsername(userDetails.getUsername());
-        userRepository.delete(user); // 사용자 삭제
-        return "redirect:/logout"; // 로그아웃으로 리디렉션
+    public String deleteAccount() {
+        userServiceImpl.deleteAccount(); // UserServiceImpl의 deleteAccount 메서드를 호출
+        return "redirect:/logout"; // 삭제 후 로그아웃으로 리디렉션
     }
 
     // 게시글 수정 페이지로 이동
@@ -137,7 +140,7 @@ public class UserController {
         return "redirect:/user/my-posts"; // 삭제 후 내 게시글 페이지로 리디렉션
     }
 
-    // 아이디 중복 체크
+    // 아이디 중복 체크 동작 안 됨
     @GetMapping("/check-username")
     @ResponseBody
     public Map<String, Object> checkUserId(@RequestParam String username) {
@@ -147,7 +150,7 @@ public class UserController {
         return response;
     }
 
-    // 닉네임 중복 체크
+    // 닉네임 중복 체크 //동작 안 됨
     @GetMapping("/check-nickname")
     @ResponseBody
     public Map<String, Object> checkNickname(@RequestParam String nickname) {
