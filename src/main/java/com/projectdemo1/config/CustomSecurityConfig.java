@@ -55,7 +55,6 @@ public class CustomSecurityConfig {
 
                 .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer
                         .accessDeniedPage("/user/login"))  // 접근 거부 시 로그인 페이지로 리다이렉션
-
                 .build();
     }
 

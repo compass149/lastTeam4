@@ -137,13 +137,13 @@
             <div class="form-group">
                 <label for="writer">작성자</label>
                 <input type="text" class="form-control" id="writer" name="writer"
-                       th:value="${#authentication.principal.username}" readonly>
+                       th:value="${#authentication != null ? #authentication.principal.username : 'Guest'}" readonly>
             </div>
             <div class="form-group">
                 <label for="contact">연락처</label>
                 <input type="number" class="form-control" id="contact" name="contact"
                        placeholder="숫자만 입력해주십시오." maxlength="11" minlength="9"
-                       th:value="${#authentication.principal.username}" required>
+                       required>
             </div>
             <div class="form-group">
                 <label for="petColor">동물 색상:</label>
@@ -257,20 +257,12 @@
                 <input type="number" class="form-control" id="petWeight" name="petWeight" placeholder="몸무게">
                 <p>kg</p>
             </div>
-            <div class="form-group">
-                <label for="location">잃어버린 장소:</label>
-                <a name="location" href="${path}/member/address.do">도로명주소</a> |
-            </div>
             <div class="form-buttons">
                 <button type="reset">전체 삭제</button>
                 <button type="submit">저장</button>
             </div>
         </form>
     </main>
-    <footer>
-        <p>© 2024 .찾개냥. All rights reserved.</p>
-    </footer>
 </div>
 </body>
-
 </html>

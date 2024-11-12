@@ -21,7 +21,9 @@
                 <div class="col-md-4 text-center">
                     <div class="item">
                         <p style="font-family: 'Nunito', sans-serif;">내 반려동물 찾기</p>
-                        <a th:href="@{/board/register}" title="동물찾기 글쓰기">
+                        <a th:href="@{/board/register}" title="동물찾기 글쓰기"
+                           th:unless="${#authentication != null}"
+                           onclick="alert('로그인이 필요합니다. 로그인 후 이용해 주세요.')">
                             <img th:src="@{/images/find-pet.PNG}" class="img-fluid rounded" alt="내 반려동물 찾기">
                         </a>
                     </div>
@@ -29,7 +31,9 @@
                 <div class="col-md-4 text-center">
                     <div class="item">
                         <p style="font-family: 'Nunito', sans-serif;">주인을 기다리고 있어요</p>
-                        <a th:href="@{/board/register1}" title="주인찾기 글쓰기">
+                        <a th:href="@{/board/register1}" title="주인찾기 글쓰기"
+                           th:unless="${#authentication != null}"
+                           onclick="alert('로그인이 필요합니다. 로그인 후 이용해 주세요.')">
                             <img th:src="@{/images/wait.PNG}" class="img-fluid rounded" alt="주인을 기다리고 있어요">
                         </a>
                     </div>
