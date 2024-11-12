@@ -22,19 +22,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 
-
-//@RequestMapping("/user") // 클래스 레벨에서 /user로 설정
 public class UserController {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // @GetMapping("/join")
-    @GetMapping("/user/join")
+    @GetMapping("user/join")
     public void join() {
     }
 
-    @PostMapping("/join")
+    @PostMapping("/user/join")
     public String register(User user){
         System.out.println("register user: " + user);
         String rawPassword = user.getPassword();
@@ -45,16 +42,12 @@ public class UserController {
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
 
- /*   @GetMapping("/login")
-    public void login(){
-    }*/
-
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public String login(){
         return "user/login";
     }
 
-    @GetMapping("/edit-profile") // /user/edit-profile로 매핑
+    @GetMapping("/user/edit-profile") // /user/edit-profile로 매핑
     public String editProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         // 로그인한 사용자의 username을 통해 DB에서 User 엔티티를 조회
         User user = userRepository.findByUsername(userDetails.getUsername());
@@ -64,13 +57,13 @@ public class UserController {
         return "user/edit-profile"; // 'edit-profile.html' 파일 경로 반환
     }
 
-    @GetMapping("home") // 홈화면
+    @GetMapping("/home") // 홈화면
     public String home() {
         return "home";
     }
 
     // "내가 작성한 글 보기" 매핑 추가
-    @GetMapping("/my-posts") // "/user/my-posts"로 매핑
+    @GetMapping("/user/my-posts") // "/user/my-posts"로 매핑
     public String viewMyPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         List<Post> posts = postRepository.findByUser(user); // 작성한 글 리스트 조회
@@ -78,14 +71,14 @@ public class UserController {
         return "user/my-posts"; // my-posts.html 템플릿 반환
     }
 
-    @GetMapping("/delete-account")
+    @GetMapping("/user/delete-account")
     public String deleteAccountPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         model.addAttribute("username", user.getNickname());
         return "user/delete-account";
     }
 
-    @PostMapping("/delete-account")
+    @PostMapping("/user/delete-account")
     public String deleteAccount(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         userRepository.delete(user); // 사용자 삭제
@@ -93,7 +86,7 @@ public class UserController {
     }
 
     // 게시글 수정 페이지로 이동
-    @GetMapping("/edit-post/{id}")
+    @GetMapping("/user/edit-post/{id}")
     public String editPostPage(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         Post post = postRepository.findById(id).orElse(null);
@@ -106,7 +99,7 @@ public class UserController {
     }
 
     // 게시글 수정 기능
-    @PostMapping("/edit-post/{id}")
+    @PostMapping("/user/edit-post/{id}")
     public String editPost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, @ModelAttribute Post post) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         Post existingPost = postRepository.findById(id).orElse(null);
@@ -120,7 +113,7 @@ public class UserController {
     }
 
     // 게시글 삭제 기능
-    @PostMapping("/delete-post/{id}")
+    @PostMapping("/user/delete-post/{id}")
     public String deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername());
         Post post = postRepository.findById(id).orElse(null);
