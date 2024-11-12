@@ -21,8 +21,8 @@ public interface BoardService {
 
 void register(Board board, User user);
     List<Board> list();
-    Board findById(Long bno);
-    void modify(Board board);
+    BoardDTO findById(Long bno);
+    void modify(BoardDTO boardDTO);
     void remove(Long bno);
 
     PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO);
@@ -48,7 +48,6 @@ void register(Board board, User user);
                 .title(board.getTitle())
                 .content(board.getContent())
                 .writer(board.getWriter())
-                .regDate(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
                 .postType(board.getPostType())  // 추가된 필드들
                 .hitCount(board.getHitCount())

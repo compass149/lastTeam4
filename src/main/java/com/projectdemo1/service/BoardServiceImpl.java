@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;//list추가
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,21 +77,38 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board findById(Long bno) {
-        Board board = boardRepository.findById(bno).get();
-        board.setHitCount(board.getHitCount() + 1);
-        boardRepository.save(board);
-        return board;
+    public BoardDTO findById(Long bno) {
+        Optional<Board> result = boardRepository.findByIdWithImages(bno);
+        Board board = result.orElseThrow();
+        BoardDTO boardDTO = entityToDTO(board);
+        return boardDTO;
     }
 
     @Override
+    public void modify(BoardDTO boardDTO) {
+        Optional<Board> result = boardRepository.findById(boardDTO.getBno());
+        Board board = result.orElseThrow();
+
+        board.change(boardDTO.getTitle(), boardDTO.getContent());
+        board.clearImages();
+        if (boardDTO.getFileNames() != null) {
+            for (String fileName : boardDTO.getFileNames()) {
+                String[] arr = fileName.split("_");
+                board.addImage(arr[0], arr[1]);
+            }
+        }
+        boardRepository.save(board);
+
+    }
+
+ /*   @Override
     public void modify(Board board) {
         Board b = boardRepository.findById(board.getBno())
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         b.setContent(board.getContent());
         b.setTitle(board.getTitle());
         boardRepository.save(b);
-    }
+    }*/
 
     @Override
     public void remove(Long bno) {

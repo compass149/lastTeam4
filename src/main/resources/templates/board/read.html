@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
-      layout:decorate="~{layout/basic.html}">
+      layout:decorate="~{layout/basic.html}"
+      lang="ko">
 <head>
+<<<<<<< HEAD
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../static/css/read.css">
+    <title>[[${dto.title}]] 상세보기</title>
+    <style>
+        .law-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #F0F8F8;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+=======
   <link rel="shortcut icon" href="../../static/images/favicon3.png"/>
 
   <meta charset="UTF-8">
@@ -16,509 +30,470 @@
       width: 100%;
       border-collapse: collapse;
     }
+>>>>>>> 1fd9f4d09986b7399e5b55c85ad665cff8e6fe50
 
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
+        .law-section p {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+            padding-right: 10px;
+        }
 
-    th {
-      background-color: #a3a2a2; /* 연한 회색 배경 */
-    }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    /* 추가로, 테이블에 가로 너비를 고정하고, 필요한 경우 반응형 처리 */
-    table {
-      table-layout: fixed;
-      width: 100%;
-    }
+        .form-group label {
+            font-weight: bold;
+        }
 
-  </style>
+        .form-group input, .form-group textarea, .form-group select {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
 </head>
-
 <body>
 <div layout:fragment="content">
-  <div class="container mt-3">
-    <h3>[[${dto.bno}]]. <b>[[${dto.title}]]</b> 상세보기</h3>
-    <p style="color: dimgray; text-align: right;">
-      등록일 <b>[[${T(java.time.format.DateTimeFormatter).ofPattern('yyyy년 MM월 dd일').format(dto.createdAt)}]]</b>
-    </p>
-    <p style="color: dimgray; text-align: right;"> 조회수 [[${dto.hitCount}]]</p>
-    <!-- <p style="color: dimgray; text-align: right;"> 상태 [[${dto.status}]]</p> 상태 추가 후에 바꾸기-->
 
-    <br/>
-
-    <div class="form-group">
-      <label for="writer">글쓴이:</label>
-      <input type="text" class="form-control" id="writer" name="writer" th:value="${dto.writer}"
-             readonly="readonly">
-    </div>
-
-
-    <h4>분실 신고자 정보</h4>  <!--게시글 타입에 따라 주인 찾기라면 이부분 제공 하지 않기-->
-    <table class="table detail-table mt-0 mb-30">
-      <caption>분실신고자 정보로 연락처를 안내하고 있습니다.</caption>
-      <colgroup>
-        <col style="width: 500px">
-        <col style="width: 160px">
-        <col style="width: 500px">
-        <col style="width: 160px">
-      </colgroup>
-      <tbody>
-      <tr>
-        <th scope="row" class="first">신고자</th>
-        <td class="text-left">
-          [[${dto.user.nickname}]]
-        </td>
-        <th scope="row">연락처</th>
-        <td class="text-left last">
-          [[${dto.user.mobile}]]
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <h4>분실장소 및 날짜</h4> <!--타입에 따라 분실, 발견 이름 바꾸기-->
-    <table class="table detail-table mt-0 mb-30">
-      <caption>분실일시 및 장소 정보로 분실날짜, 분실장소, 주위의 특징적 건물, 관할지를 안내하고 있습니다.</caption>
-      <colgroup>
-        <col style="width: 160px">
-        <col style="width: 1460px">
-      </colgroup>
-      <tbody>
-      <tr>
-        <th scope="row" class="first">분실날짜</th>
-        <td class="text-left last">[[${dto.lostDate}]]</td>
-      </tr>
-      <tr>
-        <th scope="row" class="first">분실장소</th>
-        <td class="text-left last">[[${dto.location}]]  [[${dto.locationDetail}]]</td>
-      </tr>
-      </tbody>
-    </table>
-    <h4>분실동물 정보</h4>
-    <table class="table detail-table mt-0 mb-30">
-      <caption>분실동물 정보로 품종, 성별, 특징, 몸무게, 털색상, 길이, 나이, 발견장소를 안내하고있습니다.</caption>
-      <colgroup>
-        <col style="width: 17%">
-        <col style="width: 23%">
-        <col style="width: 17%">
-        <col style="width: 23%">
-        <col style="width: 17%">
-        <col style="width: 23%">
-      </colgroup>
-      <tbody>
-      <tr>
-        <th scope="row" class="first">품종</th>
-        <td class="text-left">[[${dto.petBreeds}]]</td>
-        <th scope="row">털 색상</th>
-        <td class="text-left last">[[${dto.petColor.color}]]</td>
-        <th scope="row">이름</th>
-        <td class="text-left last">[[${dto.petName}]]</td>
-      </tr>
-      <tr>
-        <th scope="row" class="first">성별</th>
-        <td class="text-left">[[${dto.petGender}]]</td>
-        <th scope="row">나이</th>
-        <td class="text-left last">[[${dto.petAge}]]</td>
-      </tr>
-      <tr>
-        <th scope="row" class="first">특징(구체적 묘사)</th>
-        <td class="text-left last" colspan="3">[[${dto.petDescription}]]</td>
-        <th scope="row" class="first">몸무게</th>
-        <td class="text-left last" colspan="3">[[${dto.petWeight}]]kg</td>
-      </tr>
-      <tr>
-        <th scope="row" class="first">잃어버린 장소</th> <!--타입에 따라 용어-->
-        <td class="text-left last" colspan="3">[[${dto.location}]] [[${dto.locationDetail}]]</td>
-      </tr>
-      </tbody>
-    </table>
-
-    <span class="input-group-text">첨부파일</span>
-    <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
-      <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
-        <img class="m-3" th:each="fileName : ${dto.fileNames}"
-             th:src="@{/board/view/s_${fileName}}" alt="Attachment" multiple>
-      </div>
-    </div>
-
-    <div id="map" style="width:500px;height:400px;"></div>
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=41caa1d7d9b7baa2f49d25f886b4dc1f"></script>
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script>
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services"></script>
-
-    <script>
-      var container = document.getElementById('map');
-      var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3
-      };
-
-      var map = new kakao.maps.Map(container, options);
-    </script>
-    <script>
-      var places = new kakao.maps.services.Places();
-
-      var callback = function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          console.log(result);
-        }
-      };
-
-      places.keywordSearch('dto.location', callback);
-    </script>
-
-    <div class="form-group">
-      <p for="replyCount">댓글 수: [[${dto.bno}]]</p>
-    </div>
-    <div class="form-group d-flex justify-content-end" style="margin-left: 5px;">
-      <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username==dto.getWriter()}"
-           class="d-flex">
-        <a th:href="|@{/board/modify(bno=${dto.bno})}|">
-          <button type="button" id="btnUpdate" class="btn btn-secondary mr-2">수정</button>
-        </a>
-        <form th:action="|@{/board/remove}|" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
-          <input type="hidden" name="bno" th:value="${dto.bno}"/>
-          <button type="submit" class="btn btn-danger">삭제</button>
-        </form>
-      </div>
-      <a th:href="|@{/board/list}|">
-        <button type="button" id="btnList" class="btn btn-info">목록 보기</button>
-      </a>
-    </div>
-    <!--    댓글 영역-->
-
-    <div class="modal-body">
-      <div class="input-group mb-3">
-        <span class="input-group-text">Reply Text</span>
-        <input type="text" class="form-control replyText">
-      </div>
-      <div class="input-group mb-3">
-        <span class="input-group-text">Replyer</span>
-        <input type="text" class="form-control replyer">
-      </div>
-    </div>
-    <div class="input-group mb-3">
-      <span class="input-group-text">Writer</span>
-      <input type="text" class="form-control" th:value="${dto.writer}" readonly>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary registerBtn">Register</button>
-        <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col-md-12">
-        <div class="my-4 ">
-          <button sec:authorize="isAuthenticated()" class="btn btn-info  addCommentBtn">ADD Comment
-          </button>
-        </div>
-        <ul class="list-group commentList">
-          댓글 리스트 영역
-        </ul>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col">
-        <ul class="pagination commentPaging">
-        </ul>
-      </div>
-    </div>
-
-    <div class="modal registerModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Register Replyer</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <div class="row mt-3">
-              <div class="col">
+        <div class="row mt-3">
+            <div class="col">
                 <div class="card">
-                  <div class="card-header">
-                    Board Read
-                  </div>
-                  <div class="card-body">
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Bno</span>
-                      <input type="text" class="form-control" th:value="${dto.bno}" readonly>
-                    </div>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Title</span>
-                      <input type="text" class="form-control" th:value="${dto.title}" readonly>
+                    <div class="card-header">
+                        <p>내 반려동물 찾기 - 상세 보기</p>
                     </div>
 
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Content</span>
-                      <textarea class="form-control col-sm-5" rows="5" readonly th:text="${dto.content}"></textarea>
-                    </div>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">첨부파일</span>
-                      <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
-                        <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
-                          <img class="m-3" th:each="fileName : ${dto.fileNames}"
-                               th:src="@{/board/view/s_${fileName}}" alt="Attachment">
-                        </div>
-                        <div class="modal-body">
-                          <div class="input-group mb-3">
-                            <span class="input-group-text">Reply Text</span>
-                            <input type="text" class="form-control replyText">
-                          </div>
-                          <div class="input-group mb-3">
-                            <span class="input-group-text">Replyer</span>
-                            <input type="text" class="form-control replyer">
-                          </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">No</span>
+                            <input type="text" class="form-control" th:value="${dto.bno}" readonly>
                         </div>
                         <div class="input-group mb-3">
-                          <span class="input-group-text">Writer</span>
-                          <input type="text" class="form-control" th:value="${dto.writer}" readonly>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-primary registerBtn">Register</button>
-                            <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
-                          </div>
+                            <span class="input-group-text">제목</span>
+                            <input type="text" class="form-control" th:value="${dto.title}" readonly>
                         </div>
-                      </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">내용</span>
+                            <textarea class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <span class="input-group-text">펫 종류</span>
+                            <select class="form-control" id="petType" name="petType" th:value="${dto.petType}" readonly>
+                                <option value="Dog">강아지</option>
+                                <option value="Cat">고양이</option>
+                                <option value="Other">기타</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="writer">작성자</label>
+                            <input type="text" class="form-control" id="writer" th:value="${dto.writer}" readonly>
+                                   readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">작성일</span>
+                            <input type="text" class="form-control"
+                                   th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd')}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">수정일</span>
+                            <input type="text" class="form-control"
+                                   th:value="${#temporals.format(dto.updatedAt, 'yyyy-MM-dd')}" readonly>
+                        </div>
+
+                        <h4>신고자 정보</h4>
+                        <table class="table detail-table mt-0 mb-30">
+                            <caption>
+                                분실신고자 정보로 신고자, 연락처를 안내하고 있습니다.
+                            </caption>
+                            <colgroup>
+                                <col style="width: 500px">
+                                <col style="width: 160px">
+                                <col style="width: 500px">
+                                <col style="width: 160px">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="first">신고자</th>
+                                <td class="text-left">[[${dto.user.nickname}]]</td>
+                                <th scope="row">연락처</th>
+                                <td class="text-left last">[[${dto.mobile}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h4>분실장소 및 날짜</h4>
+                        <table class="table detail-table mt-0 mb-30">
+                            <caption>
+                                분실장소 및 날짜를 안내하고 있습니다.
+                            </caption>
+                            <colgroup>
+                                <col style="width: 160px">
+                                <col style="width: 1460px">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="first">분실 날짜</th>
+                                <td class="text-left">[[${dto.lostDate}]]</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">분실 장소</th>
+                                <td class="text-left last">[[${dto.location}]] [[${dto.locationDetail}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h4>분실동물 정보</h4>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">첨부파일</span>
+                            <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
+                                <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
+                                    <img class="m-3" th:each="fileName : ${dto.fileNames}"
+                                         th:src="@{'/board/view/s_' + ${fileName}}" alt="Attachment">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table detail-table mt-0 mb-30">
+                            <caption>
+                                분실동물 정보로 품종, 성별, 특징, 몸무게, 털색상, 길이, 나이, 발견장소를 안내하고 있습니다.
+                            </caption>
+                            <colgroup>
+                                <col style="width: 17%">
+                                <col style="width: 23%">
+                                <col style="width: 17%">
+                                <col style="width: 23%">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="first">품종</th>
+                                <td class="text-left">[[${dto.petBreeds}]]</td>
+                                <th scope="row">털 색상</th>
+                                <td class="text-left last">[[${dto.petColor.color}]]</td>
+                                <th scope="row">이름</th>
+                                <td class="text-left last">[[${dto.petName}]]</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="first">성별</th>
+                                <td class="text-left">[[${dto.petGender}]]</td>
+                                <th scope="row">나이</th>
+                                <td class="text-left last">[[${dto.petAge}]]</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="first">특징(구체적 묘사)</th>
+                                <td class="text-left last" colspan="3">[[${dto.petDescription}]]</td>
+                                <th scope="row" class="first">몸무게</th>
+                                <td class="text-left last" colspan="3">[[${dto.petWeight}]]Kg</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="first">발견/잃어버린 장소</th>
+                                <td class="text-left last" colspan="3">[[${dto.lostDate}]] [[${dto.location}]]
+                                    [[${dto.locationDetail}]]
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="map" style="width:500px;height:400px;"></div>
+                        <script type="text/javascript"
+                                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=41caa1d7d9b7baa2f49d25f886b4dc1f"></script>
+                        <script type="text/javascript"
+                                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script>
+                        <script type="text/javascript"
+                                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services"></script>
+
+                        <script>
+                            var container = document.getElementById('map');
+                            var options = {
+                                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                                level: 3
+                            };
+
+                            var map = new kakao.maps.Map(container, options);
+                        </script>
+                        <script>
+                            var places = new kakao.maps.services.Places();
+
+                            var callback = function (result, status) {
+                                if (status === kakao.maps.services.Status.OK) {
+                                    console.log(result);
+                                }
+                            };
+
+                            places.keywordSearch('dto.location', callback);
+                        </script>
+
+                        <div class="my-4">
+                            <div class="float-end" th:with="link= ${pageRequestDTO.getLink()}">
+                                <a th:href="|@{/board/list}?${link}|" class="text-decoration-none">
+                                    <button type="button" class="btn btn-secondary">목록</button>
+                                </a>
+                                <a th:href="|@{/board/modify(bno=${dto.bno})}|" class="text-decoration-none">
+                                    <button type="button" class="btn btn-primary">수정</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-                    <script src="/js/reply.js"></script>
+                </div>
+            </div>
 
-                  </div>
-
-
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">RegDate</span>
-                    <input type="text" class="form-control" th:value="${#temporals.format(dto.regDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">ModDate</span>
-                    <input type="text" class="form-control" th:value="${#temporals.format(dto.modDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-                  </div>
-
-                  <div class="my-4">
-                    <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">
-                      <a th:href="@{/board/list(${link})}" class="text-decoration-none">
-                        <button type="button" class="btn btn-primary">List</button>
-                      </a>
-                      <a th:href="@{/board/modify(bno=${dto.bno})(${link})}" class="text-decoration-none">
-                        <button type="button" class="btn btn-secondary">Modify</button>
-                      </a>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="my-4">
+                        <button class="btn btn-info addReplyBtn">댓글 등록</button>
                     </div>
-                  </div>
-                </div><!--end card body-->
-              </div><!--end card-->
-            </div><!-- end col-->
-          </div><!-- end row-->
-          <div class="row mt-3">
-            <div class="col-md-12">
-              <div class="my-4 ">
-                <button class="btn btn-info addReplyBtn">ADD REPLY</button>
-              </div>
-              <ul class="list-group replyList">
-                <!-- 댓글 리스트는 자바스크립트로 동적으로 추가 -->
-              </ul>
+                    <ul class="list-group replyList">
+                    </ul>
+                </div>
             </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col">
-              <ul class="pagination replyPaging">
-                <!-- 페이지네이션은 자바스크립트로 동적으로 추가 -->
-              </ul>
+            <div class="row mt-3">
+                <div class="col">
+                    <ul class="pagination replyPaging">
+                    </ul>
+                </div>
             </div>
-          </div>
-
-          <!-- 댓글 등록 모달 -->
-          <div class="modal registerModal" tabindex="-1">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Register Reply</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal registerModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">댓글</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">댓글 내용</span>
+                                <input type="text" class="form-control replyText">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">작성자</span>
+                                <input type="text" class="form-control replyer">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary registerBtn">등록</button>
+                            <button type="button" class="btn btn-outline-dark closeRegisterBtn">취소</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">Reply Text</span>
-                    <input type="text" class="form-control replyText">
-                  </div>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">Replyer</span>
-                    <input type="text" class="form-control replyer">
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary registerBtn">Register</button>
-                  <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
-                </div>
-              </div>
             </div>
-          </div>
-          <!-- end regist modal -->
-
-          <!-- 댓글 수정 모달 -->
-          <div class="modal modifyModal" tabindex="-1">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title replyHeader"></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal modifyModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title replyHeader"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">댓글 내용</span>
+                                <input type="text" class="form-control modifyText">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info modifyBtn">수정</button>
+                            <button type="button" class="btn btn-danger removeBtn">삭제</button>
+                            <button type="button" class="btn btn-outline-dark closeModifyBtn">취소</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">Reply Text</span>
-                    <input type="text" class="form-control modifyText">
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-info modifyBtn">Modify</button>
-                  <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                  <button type="button" class="btn btn-outline-dark closeModifyBtn">Close</button>
-                </div>
-              </div>
             </div>
-          </div> <!-- modifyModal -->
-
-          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-          <script src="/js/reply.js"></script>
         </div>
-
-        <script layout:fragment="script" th:inline="javascript">
-          const bno = [[,{dto:bno}]];
-
-          const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
-          const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
-
-          function printList(dtoList) { // 댓글 목록 출력
-            let str = '';
-
-            if (dtoList && dtoList.length > 0) {
-              for (const dto of dtoList) {
-                str += `<li class="list-group-item d-flex replyItem">
-                            <span class="col-2">${dto.rno}</span>
-                            <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
-                            <span class="col-2">${dto.replyer}</span>
-                            <span class="col-2">${dto.regDate}</span>
-                         </li>`;
-              }
-            }
-            replyList.innerHTML = str;
-          }
-
-          function printPages(data) { // 페이지 목록 출력
-            let pageStr = '';
-
-            if (data.prev) {
-              pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">PREV</a></li>`;
-            }
-
-            for (let i = data.start; i <= data.end; i++) {
-              pageStr += `<li class="page-item ${i == data.page ? "active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
-            }
-
-            if (data.next) {
-              pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">NEXT</a></li>`;
-            }
-            replyPaging.innerHTML = pageStr;
-          }
-
-          function printReplies(page, size, goLast) {
-            getList({bno, page, size, goLast}).then(data => {
-              printList(data.dtoList); // 목록 처리
-              printPages(data); // 페이지 처리
-            }).catch(e => {
-              console.error(e);
-            });
-          }
-
-          printReplies(1, 10, true);
-
-          // 댓글 등록 모달
-          const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"));
-          const registerBtn = document.querySelector(".registerBtn");
-          const replyText = document.querySelector(".replyText");
-          const replyer = document.querySelector(".replyer");
-          // 댓글 등록
-          registerBtn.addEventListener("click", () => {
-            const replyObj = {
-              bno: bno,
-              replyText: replyText.value,
-              replyer: replyer.value
-            };
-
-            axios.post('/api/reply', replyObj)
-                    .then(response => {
-                      alert('댓글이 등록되었습니다.');
-                      registerModal.hide();
-                      replyText.value = '';
-                      replyer.value = '';
-                      printReplies(1, 10, true);  // 댓글 목록 갱신
-                    })
-                    .catch(e => alert('댓글 등록에 실패했습니다.'));
-          });
-
-          // 댓글 수정 및 삭제 모달
-          const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"));
-          const modifyBtn = document.querySelector(".modifyBtn");
-          const removeBtn = document.querySelector(".removeBtn");
-          const modifyText = document.querySelector(".modifyText");
-
-          // 댓글 수정 버튼 클릭 시
-          replyList.addEventListener("click", (e) => {
-            const target = e.target;
-
-            if (target.classList.contains("replyItem")) {
-              const replyItem = target.querySelector("[data-rno]");
-              const rno = replyItem.dataset.rno;
-
-              // 댓글 정보를 가져와서 수정 모달에 채우기
-              getReply(rno).then(reply => {
-                replyHeader.textContent = reply.rno; // rno 설정
-                modifyText.value = reply.replyText; // 댓글 내용 설정
-                modifyModal.show(); // 모달 표시
-              });
-            }
-          });
-
-          // 댓글 수정
-          modifyBtn.addEventListener("click", () => {
-            const replyObj = {
-              bno: bno,
-              rno: replyHeader.textContent,
-              replyText: modifyText.value
-            };
-
-            axios.put(`/api/reply/${replyObj.rno}`, replyObj)
-                    .then(response => {
-                      alert('댓글이 수정되었습니다.');
-                      modifyModal.hide();
-                      printReplies(1, 10, true); // 댓글 목록 갱신
-                    })
-                    .catch(e => alert('댓글 수정에 실패했습니다.'));
-          });
-
-          // 댓글 삭제
-          removeBtn.addEventListener("click", () => {
-            const rno = replyHeader.textContent;
-
-            axios.delete(`/api/reply/${rno}`)
-                    .then(response => {
-                      alert('댓글이 삭제되었습니다.');
-                      modifyModal.hide();
-                      printReplies(1, 10, true); // 댓글 목록 갱신
-                    })
-                    .catch(e => alert('댓글 삭제에 실패했습니다.'));
-          });
-
-          // 댓글 등록 모달 닫기
-          document.querySelector(".closeRegisterBtn").addEventListener("click", () => {
-            registerModal.hide();
-          });
-
-          // 수정 모달 닫기
-          document.querySelector(".closeModifyBtn").addEventListener("click", () => {
-            modifyModal.hide();
-          });
-        </script>
-      </div>
-    </div>
-  </div>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="/js/reply.js"></script>
 </div>
+<script layout:fragment="script" th:inline="javascript">
+    const bno = `[[${dto.bno}]]`;
+    if (!bno) {
+        console.error("bno is not defined");
+        alert("게시글 번호가 없습니다.");
+    }
+
+    const replyList = document.querySelector('.replyList');
+    const replyPaging = document.querySelector('.replyPaging');
+
+    function printList(dtoList) {
+        let str = '';
+        if (dtoList && dtoList.length > 0) {
+            for (const dto of dtoList) {
+                str += `<li class="list-group-item d-flex replyItem">
+                      <span class="col-1">${dto.rno}</span>
+                      <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
+                      <span class="col-2">${dto.replyer}</span>
+                      <span class="col-2">${dto.createdAt} </span>
+                    </li>`;
+            }
+        }
+        replyList.innerHTML = str;
+    }
+
+    function printPages(data) {
+        let pageStr = '';
+        if (data.prev) {
+            pageStr += `<li class="page-item">
+                <a class="page-link" data-page="${data.start - 1}">Previous</a>
+            </li>`;
+        }
+        for (let i = data.start; i <= data.end; i++) {
+            pageStr += `<li class="page-item ${i == data.page ? "active" : ""}">
+                <a class="page-link" data-page="${i}">${i}</a>
+            </li>`;
+        }
+        if (data.next) {
+            pageStr += `<li class="page-item">
+                <a class="page-link" data-page="${data.end + 1}">Next</a>
+            </li>`;
+        }
+        replyPaging.innerHTML = pageStr;
+    }
+
+    function printReplies(page, size, goLast) {
+        alert(cno)
+        getList({cno, page, size, goLast}).then(
+            data => {
+                printList(data.dtoList);
+                printPages(data);
+            }
+        ).catch(e => {
+            console.error(e);
+        });
+    }
+
+    printReplies(1, 10, true);
+
+    const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"));
+
+    const registerBtn = document.querySelector(".registerBtn");
+    const replyText = document.querySelector(".replyText");
+    const replyer = document.querySelector(".replyer");
+    const closeRegisterBtn = document.querySelector(".closeRegisterBtn");
+
+    document.querySelector(".addReplyBtn").addEventListener("click", function (e){
+        registerModal.show();
+    }, false);
+
+    closeRegisterBtn.addEventListener("click", function (e){
+        registerModal.hide();
+    }, false);
+
+    registerBtn.addEventListener("click", function(e){
+        if(!cno) {
+            alert("게시글 번호가 없습니다.");
+            return;
+        }
+
+        const replyObj = {
+            cno: cno,
+            replyText: replyText.value,
+            replyer: replyer.value
+        };
+
+        addReply(replyObj).then(result => {
+            alert(result.rno);
+            registerModal.hide();
+            replyText.value = '';
+            replyer.value = '';
+            printReplies(1, 10, true); // Refresh the comment list
+        }).catch(e => {
+            alert("Exception...");
+        });
+    }, false);
+
+    let page = 1;
+    let size = 10;
+
+    replyPaging.addEventListener("click", function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+
+        if(!target || target.tagName != 'A'){
+            return;
+        }
+
+        const pageNum = target.getAttribute("data-page");
+        page = pageNum;
+        printReplies(page, size);
+
+    }, false);
+
+    //modifyModal
+    const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"));
+
+    const replyHeader = document.querySelector(".replyHeader");
+    const modifyText = document.querySelector(".modifyText");
+    const modifyBtn = document.querySelector(".modifyBtn");
+    const removeBtn = document.querySelector(".removeBtn");
+    const closeModifyBtn = document.querySelector(".closeModifyBtn");
+
+    replyList.addEventListener("click", function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+
+        if(!target || target.tagName != 'SPAN'){
+            return;
+        }
+
+        const rno = target.getAttribute("data-rno");
+
+        if(!rno){
+            return;
+        }
+
+        getReply(rno).then(reply => { // Fill the modal with the reply content
+            console.log(reply);
+            replyHeader.innerHTML = reply.rno;
+            modifyText.value = reply.replyText;
+            modifyModal.show();
+        }).catch(e => alert('error'));
+
+    }, false);
+
+    modifyBtn.addEventListener("click", function(e) {
+        const replyObj = {
+            bno: bno,
+            rno: replyHeader.innerHTML,
+            replyText: modifyText.value
+        };
+
+        modifyReply(replyObj).then(result => {
+            alert(result.rno + ' 댓글이 수정되었습니다.');
+            replyText.value = '';
+            modifyModal.hide();
+            printReplies(page, size);
+        }).catch(e => {
+            console.log(e);
+        });
+    }, false);
+
+    closeModifyBtn.addEventListener("click", function(e){
+        modifyModal.hide();
+    }, false);
+
+    removeBtn.addEventListener("click", function(e) {
+        removeReply(replyHeader.innerHTML).then(result => {
+            alert(result.rno + ' 댓글이 삭제되었습니다.');
+            replyText.value = '';
+            modifyModal.hide();
+            page = 1; // Reset to the first page
+            printReplies(page, size);
+        }).catch(e => {
+            console.log(e);
+        });
+    }, false);
+</script>
+</body>
+</html>

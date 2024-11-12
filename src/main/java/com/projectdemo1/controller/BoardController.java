@@ -1,6 +1,7 @@
 package com.projectdemo1.controller; //  박경미 쌤 코드
 
 import com.projectdemo1.auth.PrincipalDetails;
+import com.projectdemo1.board4.dto.CpageRequestDTO;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
 import com.projectdemo1.domain.boardContent.color.PetColor;
@@ -128,7 +129,7 @@ public class BoardController {
         });
     }
 
-    @GetMapping("/read")
+    /*@GetMapping("/read")
     public String read(@RequestParam("bno") Long bno, Model model) {
         Board board = boardService.findById(bno);  // Board 엔티티 조회
         BoardDTO dto = new BoardDTO(board);  // BoardDTO로 변환
@@ -161,7 +162,57 @@ public class BoardController {
         boardService.modify(board);
         return "redirect:/board/read?bno=" + board.getBno();
     }
+*/
 
+
+    @GetMapping({"/read", "/modify"})
+    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model) {
+        BoardDTO boardDTO = boardService.findById(bno);
+
+        if (boardDTO.getUser() == null) {
+            User defaultUser = new User();
+            defaultUser.setNickname("Default Nickname"); // Set a default nickname
+            boardDTO.setUser(defaultUser);
+        }
+
+
+        log.info(boardDTO);
+        model.addAttribute("dto", boardDTO);
+
+    }
+
+
+    @PostMapping("/modify")
+    public String modify(UploadFileDTO uploadFileDTO, CpageRequestDTO pageRequestDTO,
+                         @Valid BoardDTO boardDTO, BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+
+        log.info("board POST modify.........." + boardDTO);
+
+        List<String> strFileNames = null;
+        if (uploadFileDTO.getFiles() != null && !uploadFileDTO.getFiles().get(0).getOriginalFilename().equals("")) {
+
+            List<String> fileNames = boardDTO.getFileNames();
+
+            if (fileNames != null && fileNames.size() > 0) {
+                removeFile(fileNames);
+            }
+            strFileNames = fileUload(uploadFileDTO);
+            log.info(strFileNames.size());
+            boardDTO.setFileNames(strFileNames);
+        }
+        if (bindingResult.hasErrors()) {
+            log.info("has errors");
+            String link = pageRequestDTO.getLink();
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addAttribute("bno", boardDTO.getBno());
+            return "redirect:/board/modify?" + link;
+        }
+        boardService.modify(boardDTO);
+        redirectAttributes.addFlashAttribute("result", "modified");
+        redirectAttributes.addAttribute("bno", boardDTO.getBno());
+        return "redirect:/board/read";
+    }
 
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
@@ -181,9 +232,9 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String getBoard(@PathVariable Long id, Model model) {
-        Board board = boardService.findById(id);
-        model.addAttribute("board", board); // 추가된 필드 사용
-        model.addAttribute("postType", board.getPostType()); // 추가된 필드 사용
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("board", boardDTO); // 추가된 필드 사용
+        model.addAttribute("postType", boardDTO.getPostType()); // 추가된 필드 사용
 
         return "board/list"; // 템플릿 이름
     }
@@ -246,17 +297,19 @@ public class BoardController {
     }*/
     @GetMapping("/view/{fileName}")
     @ResponseBody
-    public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName){
-        Resource resource = new FileSystemResource(uploadPath+File.separator + fileName);
+    public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName) {
+        Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
         String resourceName = resource.getFilename();
         HttpHeaders headers = new HttpHeaders();
 
-        try{
-            headers.add("Content-Type", Files.probeContentType( resource.getFile().toPath() ));
-        } catch(Exception e){
+        try {
+            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.ok().headers(headers).body(resource);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
     }
 
     private void removeFile(List<String> fileNames){

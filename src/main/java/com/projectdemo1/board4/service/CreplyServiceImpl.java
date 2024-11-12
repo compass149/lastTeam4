@@ -37,7 +37,7 @@ public class CreplyServiceImpl implements CreplyService{
                 .replyText(creplyDTO.getReplyText())
                 .replyer(creplyDTO.getReplyer())
                 .build();
-        Cboard cboard = cboardRepository.getOne(creplyDTO.getCno());
+        Cboard cboard = cboardRepository.findById(creplyDTO.getCno()).orElseThrow();
         creply.setCboard(cboard);
 
         //Creply creply = modelMapper.map(creplyDTO, Creply.class);

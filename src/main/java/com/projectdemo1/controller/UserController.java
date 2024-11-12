@@ -150,4 +150,8 @@ public class UserController {
         response.put("available", isAvailable);
         return response;
     }
+    @GetMapping("/admin/list")
+    public String adminList() {
+        return "admin/list";
+    }
 }
