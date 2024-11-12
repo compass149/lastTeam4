@@ -88,35 +88,46 @@
             font-size: 1rem;
             margin-bottom: 5px;
         }
+
         /* 페이지네이션 스타일 */
-        .page {
-            text-align: center; /* 페이지 번호를 중앙으로 정렬 */
-            margin-top: 20px;
+        .pagination {
+            display: flex;
+            justify-content: center; /* 페이지 버튼들을 수평으로 중앙 정렬 */
+            align-items: center;     /* 세로로 중앙 정렬 */
+            margin-top: 20px;        /* 위쪽 여백 */
         }
 
-        .page a {
-            text-decoration: none;
+        .pagination li {
             margin: 0 5px; /* 페이지 번호 간의 간격 설정 */
         }
 
-        .page span {
+        .pagination .page-link {
+            text-decoration: none;
             padding: 5px 10px;
             border: 1px solid #ccc; /* 테두리 스타일 */
             border-radius: 4px;
             cursor: pointer;
         }
 
-        .page .on {
-            background-color: #007bff; /* 현재 페이지 활성화 스타일 */
+        /* 활성화된 페이지 */
+        .pagination .active .page-link {
+            background-color: #007bff;
             color: white;
         }
 
-        .page .off {
-            background-color: #f8f9fa; /* 비활성화된 페이지 스타일 */
+        /* 비활성화된 페이지 */
+        .pagination .disabled .page-link {
+            background-color: #f8f9fa;
+            color: #007bff;
+            cursor: not-allowed;
+        }
+
+        .pagination .disabled .page-link:hover {
+            background-color: #f8f9fa;
             color: #007bff;
         }
 
-        .page .off:hover {
+        .pagination .page-link:hover {
             background-color: #007bff;
             color: white;
         }
@@ -133,8 +144,6 @@
             <button type="button" class="btn btn-secondary btn-sm" id="writeBtn">임시 글쓰기</button>
         </a>
     </div>
-    <!-- 날짜 범위 검색 추가 (시작 날짜만)-->
-    <!--   <input type="date" class="form-control" name="startDate" th:value="${pageRequestDTO.startDate}" placeholder="시작 날짜">-->
 
     <div class="row mt-3">
         <form action="/board/list" method="get">
@@ -160,6 +169,7 @@
             </div>
         </form>
     </div>
+
     <div class="row mt-3">
         <div class="gallery">
             <div th:each="boardItem : ${responseDTO.dtoList}" class="card"
@@ -170,8 +180,7 @@
                 </div>
                 <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image">
                 <div class="card-body">
-                    <a style="text-decoration: none; text-decoration-line: none; text-decoration-color: #333333;
-                        color: #333333"
+                    <a style="text-decoration: none; text-decoration-line: none; text-decoration-color: #333333; color: #333333"
                        th:href="@{/board/read(bno=${boardItem.bno})}">
                         <h5 class="card-title" th:text="${boardItem.title}"></h5>
                         <p>상태: <span th:text="${boardItem.status}"></span></p>
@@ -186,25 +195,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- 페이지네이션 -->
         <ul class="pagination flex-wrap">
-            <li class="page-item" th:if="${responseDTO.prev}">
+            <li class="page-item" th:if="${responseDTO.prev}" th:class="${responseDTO.prev ? 'enabled' : 'disabled'}">
                 <a class="page-link" th:data-num="${1}">처음</a>
             </li>
-            <li class="page-item" th:if="${responseDTO.prev}">
+            <li class="page-item" th:if="${responseDTO.prev}" th:class="${responseDTO.prev ? 'enabled' : 'disabled'}">
                 <a class="page-link" th:data-num="${responseDTO.start -1}">이전</a>
             </li>
             <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <li th:class="${responseDTO.page == i}?'page-item active':'page-item'" >
-                    <a class="page-link"  th:data-num="${i}">[[${i}]]</a>
+                <li th:class="${responseDTO.page == i}?'page-item active':'page-item'">
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                 </li>
             </th:block>
-            <li class="page-item" th:if="${responseDTO.next}">
-                <a class="page-link"  th:data-num="${responseDTO.end + 1}">다음</a>
+            <li class="page-item" th:if="${responseDTO.next}" th:class="${responseDTO.next ? 'enabled' : 'disabled'}">
+                <a class="page-link" th:data-num="${responseDTO.end + 1}">다음</a>
             </li>
         </ul>
     </div>
-    </div>
+</div>
 </body>
+</html>
+
 <script th:inline="javascript">
     document.querySelector(".pagination").addEventListener("click", function (e) {
         e.preventDefault();
@@ -219,4 +232,3 @@
         formObj.submit();
     }, false);
 </script>
-</html>
