@@ -21,6 +21,7 @@ header {
 
 
 nav {
+    font-size:20px;
     text-align: right; /* nav 요소를 오른쪽 정렬 */
     margin-top: -5px; /* h1과 nav 사이의 간격 조절 */
 }

@@ -30,4 +30,12 @@ public class UserService {
         Optional<Post> optionalPost = postRepository.findById(postId);
         return optionalPost.isPresent() && optionalPost.get().getUser().getUno().equals(userId);
     }
+    public boolean isUserIdAvailable(String userId) {
+        return !userRepository.existsByUsername(userId); // 리포지토리 메서드 호출
+    }
+
+    // 닉네임 사용 가능 여부 확인
+    public boolean isNicknameAvailable(String nickname) {
+        return !userRepository.existsByNickname(nickname); // 리포지토리 메서드 호출
+    }
 }
