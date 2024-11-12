@@ -161,6 +161,8 @@
                         </select>
                     </div>
                     <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                    <input type="date" name="startDate" min="${minDate}" max="${maxDate}">
+                    <input type="date" name="lastDate" min="${minDate}" max="${maxDate}">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-outline-secondary searchBtn">검색</button>
                         <button type="button" class="btn btn-outline-secondary clearBtn">목록</button>
@@ -187,6 +189,7 @@
                         <p>제목: <span th:text="${boardItem.title}"></span></p>
                         <p>성별: <span th:text="${boardItem.petGender}"></span></p>
                         <p>발견장소: <span th:text="${boardItem.location}+${boardItem.locationDetail}"></span></p>
+                        <p>발견날짜: <span th:text="${boardItem.createdAt}"></span></p>
                         <p>특징: <span th:text="${boardItem.content}"></span></p>
                     </a>
                 </div>

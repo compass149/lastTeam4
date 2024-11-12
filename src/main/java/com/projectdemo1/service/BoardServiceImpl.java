@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;//list추가
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,10 +55,14 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
+
+        LocalDate startDate = pageRequestDTO.getStartDate();
+        LocalDate lastDate = pageRequestDTO.getLastDate();
+
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
         Pageable pageable = pageRequestDTO.getPageable("bno");
-        Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
+        Page<Board> result = boardRepository.searchAll(types, keyword, pageable, startDate, lastDate);
 
         List<BoardDTO> dtoList = result.getContent().stream()
                 .map(board -> modelMapper.map(board, BoardDTO.class))
@@ -90,6 +96,7 @@ public class BoardServiceImpl implements BoardService {
     public void remove(Long bno) {
         boardRepository.deleteById(bno);
     }
+
     @Override
     public void savePetColor(PetColorType petColorType) {
         // PetColor 저장 로직
