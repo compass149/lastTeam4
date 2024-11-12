@@ -31,15 +31,12 @@ public class CustomSecurityConfig {
         return http
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests(authorizeHttpRequestsConfigurer -> authorizeHttpRequestsConfigurer
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        //.requestMatchers("/user/login", "/board/read","/board/list", "/user/**", "/", "/home", "/cboard/**").permitAll()
-                        //.requestMatchers(HttpMethod.GET).permitAll()
-                       .requestMatchers("/user/login", "/board/**", "/user/**", "/", "/home", "/cboard/**").permitAll()
-                       .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                        .requestMatchers("/home", "/user/**").permitAll() // antMatchers -> requestMatchers로 변경
+                        .requestMatchers("/user/login", "/board/**", "/user/**", "/", "/home", "/cboard/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/creplies/**").authenticated()
                         .anyRequest().authenticated())
-
                 .formLogin(formLoginConfigurer -> formLoginConfigurer
                         .loginPage("/user/login")
                         .loginProcessingUrl("/login")
@@ -48,17 +45,16 @@ public class CustomSecurityConfig {
                         .defaultSuccessUrl("/home", true)
                         .failureUrl("/error")
                         .permitAll())
-
                 .logout(logoutConfigurer -> logoutConfigurer
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/home")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true))
-
                 .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer
                         .accessDeniedPage("/user/login"))  // 접근 거부 시 로그인 페이지로 리다이렉션
                 .build();
     }
+
 
     @Bean  // 정적 자원을 Security 적용에 제외 시킴
     public WebSecurityCustomizer configure() {

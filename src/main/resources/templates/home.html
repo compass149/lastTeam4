@@ -18,20 +18,10 @@
         </div>
         <div class="container my-4">
             <div class="row">
-                <!--<div class="col-md-4 text-center">
-                    <div class="item">
-                        <p style="font-family: 'Nunito', sans-serif;">내 반려동물 찾기</p>
-                        <a th:href="@{/board/register}" title="동물찾기 글쓰기">
-                            <img th:src="@{/images/find-pet.PNG}" class="img-fluid rounded" alt="내 반려동물 찾기">
-                        </a>
-                    </div>
-                </div>-->
                 <div class="col-md-4 text-center">
                     <div class="item">
                         <p style="font-family: 'Nunito', sans-serif;">내 반려동물 찾기</p>
-                        <a th:href="@{/board/register}" title="동물찾기 글쓰기"
-                           th:unless="${#authentication != null}"
-                           onclick="alert('로그인이 필요합니다. 로그인 후 이용해 주세요.')">
+                        <a th:href="@{/board/register}" title="동물찾기 글쓰기">
                             <img th:src="@{/images/find-pet.PNG}" class="img-fluid rounded" alt="내 반려동물 찾기">
                         </a>
                     </div>

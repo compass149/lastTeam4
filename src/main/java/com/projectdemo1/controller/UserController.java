@@ -18,20 +18,25 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/user") // 클래스 레벨에서 /user로 설정
+@Log4j2
+
+//@RequestMapping("/user") // 클래스 레벨에서 /user로 설정
 
 public class UserController {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping("/join")
-    public void join(){
+    // @GetMapping("/join")
+    @GetMapping("/user/join")
+    public void join() {
     }
 
-    @PostMapping("/join")
-    public String register(User user){
-        System.out.println("register user: " + user);
+    @PostMapping("/user/join")
+    // @PostMapping("/join")
+    public String register(User user) {
+        // System.out.println("회원가입 진행 : " + user);
+        log.info("회원가입 진행 ----------------- " + user);
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
@@ -40,12 +45,12 @@ public class UserController {
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
 
- /*   @GetMapping("/login")
+    /*@GetMapping("/login")
     public void login(){
     }*/
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "user/login";
     }
 
@@ -59,7 +64,7 @@ public class UserController {
         return "user/edit-profile"; // 'edit-profile.html' 파일 경로 반환
     }
 
-    @GetMapping("home") // 홈화면
+    @GetMapping("/home") // 홈화면
     public String home() {
         return "home";
     }
