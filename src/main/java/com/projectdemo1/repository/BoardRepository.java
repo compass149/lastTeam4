@@ -20,5 +20,5 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch
 
     // User와 관련된 Board 엔티티 삭제 메서드 선언
     void deleteByUser(User user);
-    Page<Board> findByUser_UserName(String username, Pageable pageable);
+    Page<Board> findByUser_Username(String username, Pageable pageable);
 }

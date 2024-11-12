@@ -123,7 +123,7 @@ public class BoardServiceImpl implements BoardService {
 
     public PageResponseDTO<BoardDTO> findByUserName(String username, PageRequestDTO pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable("bno");
-        Page<Board> result = boardRepository.findByUser_UserName(username, pageable);
+        Page<Board> result = boardRepository.findByUser_Username(username, pageable);
 
         List<BoardDTO> dtoList = result.getContent().stream()
                 .map(board -> modelMapper.map(board, BoardDTO.class))
@@ -141,7 +141,7 @@ public class BoardServiceImpl implements BoardService {
         Pageable pageable = pageRequestDTO.getPageable("bno");
 
         // 페이징된 게시물 목록 조회
-        Page<Board> result = boardRepository.findByUser_UserName(username, pageable);  // 수정된 메서드 호출
+        Page<Board> result = boardRepository.findByUser_Username(username, pageable);  // 수정된 메서드 호출
 
         // Board를 BoardDTO로 변환하여 dtoList에 담기
         List<BoardDTO> dtoList = result.getContent().stream()

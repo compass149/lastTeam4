@@ -11,7 +11,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+
         }
 
         body {
@@ -21,7 +21,7 @@
         }
 
         .header {
-            background-color: #6a1b9a;
+            background-color: #1b9a2c;
             color: #fff;
             padding: 10px 20px;
             display: flex;
@@ -29,13 +29,9 @@
             align-items: center;
         }
 
-        .header .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
 
         .header .user-info {
-            font-size: 14px;
+            font-size: 1.5rem;
         }
 
         .header .user-info a {
@@ -44,7 +40,7 @@
             margin-left: 15px;
         }
 
-        .container {
+        body > .container {
             display: flex;
             max-width: 1200px;
             margin: 20px auto;
@@ -72,7 +68,7 @@
         }
 
         .sidebar ul li a.active {
-            color: #d63384;
+            color: #1b9a2c;
             font-weight: bold;
         }
 
@@ -136,25 +132,18 @@
         }
 
         .submit-button {
-            background-color: #d63384;
+            background-color: #1b9a2c;
             color: #fff;
         }
 
         .submit-button:hover {
-            background-color: #c72a75;
+            background-color: #206128;
         }
+
         /* CSS 코드 끝 */
     </style>
 </head>
-<body>
-<div layout:fragment="content" class="header">
-    <div class="logo">찾개냥</div> <!-- 왼쪽 상단 로고 -->
-    <div class="user-info">
-        <a href="/mypage">마이페이지</a>
-        <span th:text="'마이페이지 ' + ${user.nickname} + '님 환영합니다.'"></span>
-        <a href="/logout">로그아웃</a>
-    </div>
-</div>
+<body layout:fragment="content">
 
 <div class="container">
     <div class="sidebar">

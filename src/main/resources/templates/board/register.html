@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 반려동물 찾기</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../static/css/write1.css">
+    <link rel="stylesheet" th:href="@{/css/write1.css}">
+
 
     <style>
         body {
@@ -99,8 +100,7 @@
         </div>
         <div class="form-container">
             <form action="/board/register" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="postType" value="findPet">
-
+                <input type="hidden" name="postType" value="동물찾기">
                 <div class="form-group">
                     <label for="title">제목 *</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="제목" required>

@@ -148,11 +148,6 @@
     <div class="law-section">
         <p>＊동물보호법 제12조 제1항 및 같은 법 시행규칙 제8조 제1항 및 제9조제2항에 따라 동물분실신고를 하는 공간입니다.</p>
     </div>
-    <div class="form-group text-right">
-        <a href="/board/register">
-            <button type="button" class="btn btn-secondary btn-sm" id="writeBtn">임시 글쓰기</button>
-        </a>
-    </div>
 
     <div class="row mt-3">
         <form action="/board/list" method="get">
@@ -183,21 +178,22 @@
 
     <div class="row mt-3">
         <div class="gallery">
-            <div th:each="boardItem : ${responseDTO.dtoList}" class="card"
-                 th:classappend="${boardItem.postType} == '주인찾기' ? ' owner-find' : ''">
+            <div th:each="boardItem : ${responseDTO.dtoList}" class="card">
                 <div class="card-header">
-                    <span class="board-type" th:text="${boardItem.postType}"></span>
+            <span class="board-type"
+                  th:text="${boardItem.postType}"
+                  th:classappend="${boardItem.postType == '주인찾기' ? ' owner-find' : ' pet'}"></span>
                     <span th:text="${boardItem.createdAt}"></span>
                 </div>
-                <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image">
+                <!-- 이미지가 있을 경우에만 표시 -->
+                <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image"
+                     th:if="${boardItem.imageSet != null}">
                 <div class="card-body">
                     <a style="text-decoration: none; text-decoration-line: none; text-decoration-color: #333333; color: #333333"
-                       th:href="@{/board/read(bno=${boardItem.bno})}"> 
-                        <h5 class="card-title" th:text="${boardItem.title}"></h5>
-                        <p>상태: <span th:text="${boardItem.status}"></span></p>
-                        <p>제목: <span th:text="${boardItem.title}"></span></p>
+                       th:href="@{/board/read(bno=${boardItem.bno})}">
+                        <p><b><span th:text="${boardItem.title}"></span></b></p>
                         <p>성별: <span th:text="${boardItem.petGender}"></span></p>
-                        <p>발견장소: <span th:text="${boardItem.location}+${boardItem.locationDetail}"></span></p>
+                        <p>발견장소: <span th:text="${boardItem.location} + ${boardItem.locationDetail}"></span></p>
                         <p>발견날짜: <span th:text="${boardItem.createdAt}"></span></p>
                         <p>특징: <span th:text="${boardItem.content}"></span></p>
                     </a>
@@ -207,6 +203,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
         <!-- 페이지네이션 -->
         <ul class="pagination flex-wrap">

@@ -62,7 +62,16 @@ public class BoardDTO {
     // PetColor 객체로 수정
     private PetColor petColor;
     // private String petColor;
+    private PetColorType petColorType;  // Ensure this property exists
 
+    // Getter and Setter methods
+    public PetColorType getPetColorType() {
+        return petColorType;
+    }
+
+    public void setPetColorType(PetColorType petColorType) {
+        this.petColorType = petColorType;
+    }
     private User user;
     private String mobile;
     private String email;

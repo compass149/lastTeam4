@@ -80,8 +80,9 @@
 <div layout:fragment="content">
     <div class="container mt-5">
         <div class="form-container">
-            <h3 class="text-center mb-4">이곳은 펫보호자를 찾는 공간입니다</h3>
+            <h3 class="text-center mb-4">이곳은 반려동물 보호자를 찾는 공간입니다</h3>
             <form action="/board/register1" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="postType" value="주인찾기">
                 <div class="form-group">
                     <label for="title">제목 *</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="제목" required>
