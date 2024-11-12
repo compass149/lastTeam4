@@ -29,6 +29,7 @@ public class Post {
 
     private LocalDateTime createdAt;
 
+    @Builder.Default
     private Long views = 0L; // 조회수 필드, 기본값 0
 
     @ManyToOne
