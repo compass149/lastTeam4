@@ -65,7 +65,10 @@ public class UserController {
     public String home() {
         return "home";
     }
-
+    @GetMapping("/list")
+    public String list() {
+        return "admin/adminboard"; // adminboard.html을 반환
+    }
     // 내가 작성한 글 보기
     @GetMapping("/my-posts")
     public String viewMyPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
