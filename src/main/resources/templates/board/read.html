@@ -155,7 +155,7 @@
                     <h4>분실동물 정보</h4>
                     <div class="input-group mb-3">
                         <span class="input-group-text">첨부파일</span>
-                        <div class="col" th:if="${dto.fileNames != null && dto.fileNames.size() > 0}">
+                        <div class="col" th:if="${dto.fileNames != null && !dto.fileNames.isEmpty()}">
                             <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
                                 <img class="m-3" th:each="fileName : ${dto.fileNames}"
                                      th:src="@{'/board/view/s_' + ${fileName}}" alt="Attachment">

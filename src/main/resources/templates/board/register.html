@@ -12,23 +12,38 @@
     <link rel="stylesheet" href="../../static/css/write1.css">
 
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+        }
+
+        .law-section p {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            color: #007bff;
+            margin-top: 20px;
+        }
+
         .form-container {
-            max-width: 400px;
+            max-width: 600px;
             margin: auto;
             padding: 20px;
-            background-color: #f7f7f7;
+            background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
         .form-group label {
             font-weight: bold;
+            color: #333;
         }
 
         .form-group input, .form-group textarea, .form-group select {
             border-radius: 5px;
             width: 100%;
+            border: 1px solid #ced4da;
+            padding: 10px;
         }
 
         .input-group-text {
@@ -43,15 +58,13 @@
         .form-check {
             display: flex;
             align-items: center;
-            justify-content: center;
             margin-bottom: 5px;
         }
 
         .form-check-input {
-            width: 0.8rem;
-            height: 0.8rem;
+            width: 16px !important;
+            height: 16px !important;
             margin-right: 0.5rem;
-            transform: scale(0.8); /* 라디오 버튼 크기를 적절하게 설정 */
         }
 
         .form-buttons button {
@@ -67,6 +80,11 @@
         .form-buttons button[type="reset"] {
             background-color: #6c757d;
             border-color: #6c757d;
+        }
+
+        .form-buttons {
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 
@@ -91,17 +109,19 @@
                     <label for="content">내용 *</label>
                     <textarea class="form-control" id="content" name="content" rows="5" placeholder="내용을 입력해주십시오." required></textarea>
                 </div>
-                <label for="petType">동물 종류</label>
-                <select id="petType" name="petType" required>
-                    <option value="dog">개</option>
-                    <option value="cat">고양이</option>
-                    <option value="fish">포유류(개, 고양이 제외)</option>
-                    <option value="bird">조류</option>
-                    <option value="rodent">설치류</option>
-                    <option value="reptile">파충류</option>
-                    <option value="fish">어류</option>
-                    <option value="other">기타</option>
-                </select>
+                <div class="form-group">
+                    <label for="petType">동물 종류</label>
+                    <select id="petType" name="petType" class="form-control" required>
+                        <option value="dog">개</option>
+                        <option value="cat">고양이</option>
+                        <option value="fish">포유류(개, 고양이 제외)</option>
+                        <option value="bird">조류</option>
+                        <option value="rodent">설치류</option>
+                        <option value="reptile">파충류</option>
+                        <option value="fish">어류</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="writer">작성자 *</label>
                     <input type="text" class="form-control" id="writer" name="writer"
@@ -195,10 +215,10 @@
                 </div>
                 <div class="form-group">
                     <label for="petName">반려동물 이름 *</label>
-                    <input type="text" id="petName" name="petName" required>
+                    <input type="text" class="form-control" id="petName" name="petName" required>
                 </div>
                 <div class="form-group">
-                    <label for="female">반려동물 성별</label>
+                    <label for="female">반려동물 성별:</label>
                     <div class="form-check">
                         <input type="radio" id="female" name="petGender" value="FEMALE" class="form-check-input">
                         <label for="female" class="form-check-label">암컷</label>
@@ -222,9 +242,13 @@
                     <textarea class="form-control" id="petDescription" name="petDescription" rows="3" placeholder="자세한 설명은 소중한 반려동물을 찾는 데에 큰 도움이 됩니다." required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="petWeight">몸무게</label>
-                    <input type="number" class="form-control" id="petWeight" name="petWeight" placeholder="몸무게">
-                    <p>kg</p>
+                    <label for="petWeight">몸무게:</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="petWeight" name="petWeight" placeholder="몸무게" style="width: 100px;">
+                        <div class="input-group-append">
+                            <span class="input-group-text">kg</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-buttons">
                     <button type="reset">전체 삭제</button>
