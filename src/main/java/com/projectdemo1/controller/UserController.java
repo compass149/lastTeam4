@@ -125,4 +125,8 @@ public class UserController {
         }
         return "redirect:/user/my-posts";
     }
+    @GetMapping("/admin/list")
+    public String adminList() {
+        return "admin/list";
+    }
 }

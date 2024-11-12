@@ -3,7 +3,7 @@ package com.projectdemo1.dto;
 public class PetDTO {
     private String boardType; // 동물찾기 또는 주인찾기
     private String animalName; // 동물 이름
-    private String regDate; // 등록 날짜
+    private String createdAt; // 등록 날짜
     private String gender; // 성별
     private String foundLocation; // 발견 장소
     private String characteristics; // 특징

@@ -176,7 +176,7 @@
                  th:classappend="${boardItem.postType} == '주인찾기' ? ' owner-find' : ''">
                 <div class="card-header">
                     <span class="board-type" th:text="${boardItem.postType}"></span>
-                    <span th:text="${boardItem.regDate}"></span>
+                    <span th:text="${boardItem.createdAt}"></span>
                 </div>
                 <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image">
                 <div class="card-body">
