@@ -20,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 
-//@RequestMapping("/user") // 클래스 레벨에서 /user로 설정
 
+//@RequestMapping("/user") // 클래스 레벨에서 /user로 설정
 public class UserController {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -32,11 +32,9 @@ public class UserController {
     public void join() {
     }
 
-    @PostMapping("/user/join")
-    // @PostMapping("/join")
-    public String register(User user) {
-        // System.out.println("회원가입 진행 : " + user);
-        log.info("회원가입 진행 ----------------- " + user);
+    @PostMapping("/join")
+    public String register(User user){
+        System.out.println("register user: " + user);
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
@@ -45,12 +43,12 @@ public class UserController {
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
 
-    /*@GetMapping("/login")
+ /*   @GetMapping("/login")
     public void login(){
     }*/
 
     @GetMapping("/login")
-    public String login() {
+    public String login(){
         return "user/login";
     }
 
@@ -64,7 +62,7 @@ public class UserController {
         return "user/edit-profile"; // 'edit-profile.html' 파일 경로 반환
     }
 
-    @GetMapping("/home") // 홈화면
+    @GetMapping("home") // 홈화면
     public String home() {
         return "home";
     }
@@ -128,6 +126,26 @@ public class UserController {
         if (post != null && post.getUser().getUno().equals(user.getUno())) {
             postRepository.delete(post);
         }
-        return "redirect:/user/my-posts";
+        return "redirect:/user/my-posts"; // 삭제 후 내 게시글 페이지로 리디렉션
+    }
+
+    // 아이디 중복 체크
+    @GetMapping("/check-userId")
+    @ResponseBody
+    public Map<String, Object> checkUserId(@RequestParam String userId) {
+        Map<String, Object> response = new HashMap<>();
+        boolean isAvailable = userRepository.findByUsername(userId) == null; // 아이디 중복 체크
+        response.put("available", isAvailable);
+        return response;
+    }
+
+    // 닉네임 중복 체크
+    @GetMapping("/check-nickname")
+    @ResponseBody
+    public Map<String, Object> checkNickname(@RequestParam String nickname) {
+        Map<String, Object> response = new HashMap<>();
+        boolean isAvailable = userRepository.findByNickname(nickname) == null; // 닉네임 중복 체크
+        response.put("available", isAvailable);
+        return response;
     }
 }
