@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @Log4j2
-@EnableWebSecurity
+//@EnableWebSecurity
 @RequiredArgsConstructor
 public class CustomSecurityConfig {
 
@@ -35,7 +35,7 @@ public class CustomSecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/user/login", "/board/**", "/user/**","/", "/home", "/cboard/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+//                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/creplies/**").authenticated()
                         .anyRequest().authenticated())
 

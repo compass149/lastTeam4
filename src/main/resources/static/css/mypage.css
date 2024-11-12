@@ -18,6 +18,7 @@ header {
 }
 
 nav {
+    font-size:20px;
     text-align: right; /* 오른쪽 정렬 */
     margin-top: -5px; /* 필요시 조정 */
 }
