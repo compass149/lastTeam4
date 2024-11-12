@@ -1,9 +1,5 @@
 package com.projectdemo1.controller; //  박경미 쌤 코드
 import com.projectdemo1.auth.PrincipalDetails;
-import com.projectdemo1.board4.domain.Cboard;
-import com.projectdemo1.board4.dto.CboardDTO;
-import com.projectdemo1.board4.dto.CpageRequestDTO;
-import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.domain.Board;
 import com.projectdemo1.domain.User;
 import com.projectdemo1.domain.boardContent.color.PetColor;
@@ -17,20 +13,17 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.beans.PropertyEditorSupport;
 import java.io.File;
@@ -83,6 +76,7 @@ public class BoardController {
 
     @GetMapping("/register") //게시글 등록
     public String register() {
+        //return "register";
         return "/board/register";
     }
 
@@ -97,7 +91,10 @@ public class BoardController {
 
         return "redirect:/board/list";
     }
-
+    @RequestMapping("write.do") //폼으로 이동
+    public String write() {
+        return "board/register";
+    }
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(PetColor.class, new PropertyEditorSupport() {
@@ -134,12 +131,6 @@ public class BoardController {
     }
 
 
-//    @GetMapping("/modify")
-//    public String modify(@RequestParam Long bno, Model model) {
-//        model.addAttribute("board", boardService.findById(bno));
-//        return "board/modify";
-//    }
-
     @PostMapping("/modify")
     public String modify(Board board, @RequestParam("petColorType") PetColorType petColorType) {
         System.out.println(board);
@@ -171,8 +162,7 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String getBoard(@PathVariable Long id, Model model) {
         Board board = boardService.findById(id);
-        model.addAttribute("board", board);
-        model.addAttribute("postType", board.getPostType()); // 추가된 필드 사용
+        model.addAttribute("board", board); // 추가된 필드 사용
 
         return "board/list"; // 템플릿 이름
     }
@@ -221,135 +211,3 @@ public class BoardController {
         }
     }
 }
-/*
-package com.projectdemo1.controller;
-
-import com.projectdemo1.dto.BoardDTO;
-import com.projectdemo1.dto.BoardListReplyCountDTO;
-import com.projectdemo1.dto.PageRequestDTO;
-import com.projectdemo1.dto.PageResponseDTO;
-import com.projectdemo1.service.BoardService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-@Controller
-@RequestMapping("/board")
-@Log4j2
-@RequiredArgsConstructor
-public class BoardController {
-
-    private final BoardService boardService;
-
-    @GetMapping("/list")
-    public void list(PageRequestDTO pageRequestDTO, Model model){
-
-        // PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
-        PageResponseDTO<BoardListReplyCountDTO> responseDTO = boardService.listWithReplyCount(pageRequestDTO);
-
-        log.info(responseDTO);
-
-        model.addAttribute("responseDTO", responseDTO);
-
-    }
-
-    @GetMapping("/register")
-    public void registerGET(){
-
-    }
-
-    @PostMapping("/register")
-    public String registerPost(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-
-        log.info("board POST register.......");
-
-        if(bindingResult.hasErrors()) {
-            log.info("has errors.......");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
-            return "redirect:/board/register";
-        }
-
-        log.info(boardDTO);
-
-        Long bno  = boardService.register(boardDTO);
-
-        redirectAttributes.addFlashAttribute("result", bno);
-
-        return "redirect:/board/list";
-    }
-
-
-//    @GetMapping("/read")
-//    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
-//
-//        BoardDTO boardDTO = boardService.readOne(bno);
-//
-//        log.info(boardDTO);
-//
-//        model.addAttribute("dto", boardDTO);
-//
-//    }
-
-
-    @GetMapping({"/read", "/modify"})
-    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
-
-        BoardDTO boardDTO = boardService.readOne(bno);
-
-        log.info(boardDTO);
-
-        model.addAttribute("dto", boardDTO);
-
-    }
-
-    @PostMapping("/modify")
-    public String modify( PageRequestDTO pageRequestDTO,
-                          @Valid BoardDTO boardDTO,
-                          BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes){
-
-        log.info("board modify post......." + boardDTO);
-
-        if(bindingResult.hasErrors()) {
-            log.info("has errors.......");
-
-            String link = pageRequestDTO.getLink();
-
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
-
-            redirectAttributes.addAttribute("bno", boardDTO.getBno());
-
-            return "redirect:/board/modify?"+link;
-        }
-
-        boardService.modify(boardDTO);
-
-        redirectAttributes.addFlashAttribute("result", "modified");
-
-        redirectAttributes.addAttribute("bno", boardDTO.getBno());
-
-        return "redirect:/board/read";
-    }
-
-
-    @PostMapping("/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes) {
-
-        log.info("remove post.. " + bno);
-
-        boardService.remove(bno);
-
-        redirectAttributes.addFlashAttribute("result", "removed");
-
-        return "redirect:/board/list";
-
-    }
-}
-*/

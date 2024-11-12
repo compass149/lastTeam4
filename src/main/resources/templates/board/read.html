@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       layout:decorate="~{layout/basic.html}">
 <head>
-    <title>[[${dto.title}]] 상세보기</title>
-    <style>
-        /* 테이블 스타일 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../../static/css/read.css">
+  <title>Board Read</title>
+  <title>[[${dto.title}]] 상세보기</title>
+  <style>
+    /* 테이블 스타일 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
 
-        th {
-            background-color: #a3a2a2; /* 연한 회색 배경 */
-        }
+    th {
+      background-color: #a3a2a2; /* 연한 회색 배경 */
+    }
 
         /* 추가로, 테이블에 가로 너비를 고정하고, 필요한 경우 반응형 처리 */
         table {
             table-layout: fixed;
             width: 100%;
         }
+
     </style>
 </head>
+
 <body>
 <div layout:fragment="content">
-    <div class="container mt-3">
-        <h3>[[${dto.bno}]]. <b>[[${dto.title}]]</b> 상세보기</h3>
-        <p style="color: dimgray; text-align: right;">
-            등록일 <b>[[${T(java.time.format.DateTimeFormatter).ofPattern('yyyy년 MM월 dd일').format(dto.createdAt)}]]</b>
-        </p>
-        <p style="color: dimgray; text-align: right;"> 조회수 [[${dto.hitCount}]]</p>
-        <p style="color: dimgray; text-align: right;"> 상태 [[${dto.status}]]</p>
-        <br/>
+  <div class="container mt-3">
+    <h3>[[${dto.bno}]]. <b>[[${dto.title}]]</b> 상세보기</h3>
+    <p style="color: dimgray; text-align: right;">
+      등록일 <b>[[${T(java.time.format.DateTimeFormatter).ofPattern('yyyy년 MM월 dd일').format(dto.createdAt)}]]</b>
+    </p>
+    <p style="color: dimgray; text-align: right;"> 조회수 [[${dto.hitCount}]]</p>
+    <p style="color: dimgray; text-align: right;"> 상태 [[${dto.status}]]</p>
+    <br/>
 
-        <div class="form-group">
-            <label for="writer">글쓴이:</label>
-            <input type="text" class="form-control" id="writer" name="writer" th:value="${dto.writer}"
-                   readonly="readonly">
-        </div>
+    <div class="form-group">
+      <label for="writer">글쓴이:</label>
+      <input type="text" class="form-control" id="writer" name="writer" th:value="${dto.writer}"
+             readonly="readonly">
+    </div>
 
-        <h4>분실 신고자 정보</h4>
+
+        <h4>분실 신고자 정보</h4>  <!--게시글 타입에 따라 주인 찾기라면 이부분 제공 하지 않기-->
         <table class="table detail-table mt-0 mb-30">
             <caption>분실신고자 정보로 연락처를 안내하고 있습니다.</caption>
             <colgroup>
@@ -67,7 +72,7 @@
             </tr>
             </tbody>
         </table>
-        <h4>분실장소 및 날짜</h4>
+        <h4>분실장소 및 날짜</h4> <!--타입에 따라 분실, 발견 이름 바꾸기-->
         <table class="table detail-table mt-0 mb-30">
             <caption>분실일시 및 장소 정보로 분실날짜, 분실장소, 주위의 특징적 건물, 관할지를 안내하고 있습니다.</caption>
             <colgroup>
@@ -118,71 +123,103 @@
                 <td class="text-left last" colspan="3">[[${dto.petWeight}]]kg</td>
             </tr>
             <tr>
-                <th scope="row" class="first">잃어버린 장소</th>
+                <th scope="row" class="first">잃어버린 장소</th> <!--타입에 따라 용어-->
                 <td class="text-left last" colspan="3">[[${dto.lostLocation}]]</td>
             </tr>
             </tbody>
         </table>
+            <div id="map" style="width:500px;height:400px;"></div>
+            <script type="text/javascript"
+                    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=41caa1d7d9b7baa2f49d25f886b4dc1f"></script>
+            <script type="text/javascript"
+                    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script>
+            <script type="text/javascript"
+                    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services"></script>
 
-        <!-- 수정 및 삭제 버튼 -->
-        <div class="form-group d-flex justify-content-end" style="margin-left: 5px;">
-            <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == dto.getWriter()}" class="d-flex">
-                <a th:href="|@{/board/modify(bno=${dto.bno})}|">
-                    <button type="button" id="btnUpdate" class="btn btn-secondary mr-2">수정</button>
+            <script>
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667),
+                    level: 3
+                };
+
+                var map = new kakao.maps.Map(container, options);
+            </script>
+            <script>
+                var places = new kakao.maps.services.Places();
+
+                var callback = function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        console.log(result);
+                    }
+                };
+
+                places.keywordSearch('dto.lostLocation', callback);
+            </script>
+
+            <div class="form-group">
+                <p for="replyCount">댓글 수: [[${dto.bno}]]</p>
+            </div>
+            <div class="form-group d-flex justify-content-end" style="margin-left: 5px;">
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username==dto.getWriter()}"
+                     class="d-flex">
+                    <a th:href="|@{/board/modify(bno=${dto.bno})}|">
+                        <button type="button" id="btnUpdate" class="btn btn-secondary mr-2">수정</button>
+                    </a>
+                    <form th:action="|@{/board/remove}|" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
+                        <input type="hidden" name="bno" th:value="${dto.bno}"/>
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+                </div>
+                <a th:href="|@{/board/list}|">
+                    <button type="button" id="btnList" class="btn btn-info">목록 보기</button>
                 </a>
-                <form th:action="@{/board/delete/{id}(id=${dto.bno})}" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
-                    <button type="submit" class="btn btn-danger">삭제</button>
-                </form>
             </div>
-            <a th:href="|@{/board/list}|">
-                <button type="button" id="btnList" class="btn btn-info">목록 보기</button>
-            </a>
-        </div>
-
-        <!--    댓글 영역-->
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <div class="my-4">
-                    <button sec:authorize="isAuthenticated()" class="btn btn-info addCommentBtn">ADD Comment</button>
+            <!--    댓글 영역-->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="my-4 ">
+                        <button sec:authorize="isAuthenticated()" class="btn btn-info  addCommentBtn">ADD Comment
+                        </button>
+                    </div>
+                    <ul class="list-group commentList">
+                        댓글 리스트 영역
+                    </ul>
                 </div>
-                <ul class="list-group commentList">
-                    댓글 리스트 영역
-                </ul>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col">
-                <ul class="pagination commentPaging">
-                </ul>
+            <div class="row mt-3">
+                <div class="col">
+                    <ul class="pagination commentPaging">
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <div class="modal registerModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Register Replyer</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Reply Text</span>
-                            <input type="text" class="form-control replyText">
+            <div class="modal registerModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Register Replyer</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Replyer</span>
-                            <input type="text" class="form-control replyer">
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Reply Text</span>
+                                <input type="text" class="form-control replyText">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Replyer</span>
+                                <input type="text" class="form-control replyer">
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary registerBtn">Register</button>
-                        <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary registerBtn">Register</button>
+                            <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="/js/reply.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script src="/js/reply.js"></script>
 
     </div>
 </div>

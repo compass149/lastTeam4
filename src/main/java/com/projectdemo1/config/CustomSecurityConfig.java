@@ -44,8 +44,8 @@ public class CustomSecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/home")
-                        .failureUrl("/user/login?error=true")
+                        .defaultSuccessUrl("/home", true)
+                        .failureUrl("/home")
                         .permitAll())
 
                 .logout(logoutConfigurer -> logoutConfigurer

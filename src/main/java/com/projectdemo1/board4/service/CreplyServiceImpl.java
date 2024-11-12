@@ -1,13 +1,10 @@
 package com.projectdemo1.board4.service;
 
-import com.projectdemo1.board4.domain.Cboard;
 import com.projectdemo1.board4.domain.Creply;
 import com.projectdemo1.board4.dto.CpageRequestDTO;
 import com.projectdemo1.board4.dto.CpageResponseDTO;
 import com.projectdemo1.board4.dto.CreplyDTO;
-import com.projectdemo1.board4.repository.CboardRepository;
 import com.projectdemo1.board4.repository.CreplyRepository;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,8 +31,8 @@ public class CreplyServiceImpl implements CreplyService{
     @Override
     public Long register(CreplyDTO creplyDTO) {
         Creply creply = modelMapper.map(creplyDTO, Creply.class);
-        Long rno = creplyRepository.save(creply).getRno();
-        return rno;
+        creplyRepository.save(creply);
+        return creply.getRno();
     }
 
     @Override
