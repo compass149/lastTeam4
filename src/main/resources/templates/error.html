@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>에러 페이지</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f2f2f2;
+    }
+    .error-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+    }
+    h1 {
+      color: #e74c3c;
+    }
+    p {
+      color: #333;
+    }
+    a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content" class="error-container">
+  <h1>오류가 발생했습니다!</h1>
+  <p>요청을 처리하는 중에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.</p>
+  <p><a th:href="@{/}">홈으로 돌아가기</a></p>
+</div>
+</body>
+</html>
