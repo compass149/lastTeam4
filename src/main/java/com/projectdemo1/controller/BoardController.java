@@ -47,7 +47,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-   
+
     private List<String> fileUload(UploadFileDTO uploadFileDTO){
 
         List<String> list = new ArrayList<>();
