@@ -34,37 +34,42 @@
             <h3 class="text-center mb-4">이곳은 펫보호자를 찾는 공간입니다</h3>
             <form action="/board/register1" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="title">Title:</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" required>
+                    <label for="title">제목 *</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="제목" required>
                 </div>
                 <div class="form-group">
-                    <label for="content">Content:</label>
-                    <textarea class="form-control" id="content" name="content" rows="5" placeholder="Content" required></textarea>
+                    <label for="content">내용 *</label>
+                    <textarea class="form-control" id="content" name="content" rows="5" placeholder="내용을 입력해주십시오." required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="writer">Writer:</label>
-                    <input type="text" class="form-control" id="writer" name="writer" th:value="${#authentication.principal.username}" readonly>
+                    <label for="writer">작성자 *:</label>
+                    <input type="text" class="form-control" id="writer" name="writer"
+                           th:value="${#authentication.principal.username}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="reporter">신고자:</label>
                     <input type="text" class="form-control" id="reporter" name="reporter" placeholder="Reporter" required>
                 </div>
                 <div class="form-group">
-                    <label for="contact">연락처:</label>
-                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
+                    <label for="contact">연락처 *:</label>
+                    <input type="number" class="form-control" id="contact" name="contact" placeholder="숫자만 입력해주십시오" maxlength="11" minlength="9"
+                           th:value="${#authentication.principal.username}"
+                           required>
                 </div>
                 <div class = "input-group mb-3">
-                    <label for="files">펫 사진 첨부</label>
+                    <label for="files">동물사진 첨부</label>
                     <span class="input-group-text">FileUpload</span>
                     <input type="file" class="form-control" id="files" name="files" multiple>
+                    <p>최대 3장까지 가능합니다.</p>
                 </div> <!--grace: add file upload-->
                 <div class="form-group">
                     <label for="petColor">동물 색상:</label>
                     <select id="petColor" name="petColorType" class="form-control">
                         <option th:each="color : ${T(com.projectdemo1.domain.boardContent.color.PetColorType).values()}"
                                 th:value="${color.name()}"
-                                th:text="#{${'enum.petcolor.' + color.name()}}">색상</option>
+                                th:text="#{${'enum.petcolor.' + color.name()}}">색상
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -72,33 +77,47 @@
                     <input type="date" class="form-control" id="foundDate" name="foundDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="foundLocation">찾은 장소:</label>
-                    <input type="text" class="form-control" id="foundLocation" name="foundLocation" placeholder="foundLocation" required>
+                    <input type="text" class="form-control" id="location1" name="location" placeholder="도로명 주소" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="petBreeds">품종:</label>
+                    <label for="petBreeds">품종 *:</label>
                     <input type="text" class="form-control" id="petBreeds" name="petBreeds" placeholder="Pet Breeds" required>
                 </div>
                 <div class="form-group">
-                    <label for="petGender">성별:</label>
-                    <select id="petGender" name="petGender" class="form-control">
-                        <option value="MALE">Male</option>
-                        <option value="FEMALE">Female</option>
-                        <option value="UNKNOWN">Unknown</option>
+                    <label for="female"> 반려동물 성별:</label>
+                    <div class="form-check">
+                        <input type="radio" id="female" name="petGender" value="FEMALE" class="form-check-input" >
+                        <label for="female" class="form-check-label">암컷</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="male" name="petGender" value="Male" class="form-check-input" >
+                        <label for="male" class="form-check-label">수컷</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="other" name="petGender" value="OTHER" class="form-check-input" >
+                        <label for="other" class="form-check-label">모름</label>
+                    </div>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="petDescription">특징(구체적 묘사):</label>
-                    <textarea class="form-control" id="petDescription" name="petDescription" rows="3" placeholder="Pet Description" required></textarea>
+                    <label for="petDescription">특징(구체적 묘사)*:</label>
+                    <textarea class="form-control" id="petDescription" name="petDescription" rows="3" placeholder="자세한 설명은 소중한 반려동물을 찾는 데에 큰 도움이 됩니다." required></textarea>
                 </div>
+
                 <div class="form-group">
                     <label for="petWeight">몸무게:</label>
-                    <input type="number" class="form-control" id="petWeight" name="petWeight" placeholder="Pet Weight" required>
+                    <input type="number" class="form-control" id="petWeight" name="petWeight" placeholder="몸무게">
+                    <p>kg</p>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                <div class="form-buttons">
+                    <button type="reset">전체 삭제</button>
+                    <button type="submit">저장</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 </body>
 </html>
+
+

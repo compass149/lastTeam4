@@ -122,11 +122,13 @@ public class Board {
         BoardImage image = BoardImage.builder()
                 .uuid(uuid)
                 .fileName(fileName)
+                .board(this)
+                .ord(imageSet.size())
                 .build();
         imageSet.add(image);
     }
 
-    public void ClearImages() {
+    public void clearImages() {
         imageSet.forEach(boardImage -> boardImage.changeBoard(null));
         this.imageSet.clear();
     }
@@ -136,6 +138,7 @@ public class Board {
         this.title = title;
         this.content = content;
     }
+
 
 
 }
