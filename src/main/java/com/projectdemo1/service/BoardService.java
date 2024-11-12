@@ -62,6 +62,7 @@ void register(Board board, User user);
                 .petWeight(board.getPetWeight())
                 .petType(board.getPetType())
                 .mobile(User.getMobile)
+                .user(board.getUser())
                 .build();
 
         // 파일 이름 처리

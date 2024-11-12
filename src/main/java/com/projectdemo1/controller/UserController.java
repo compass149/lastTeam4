@@ -5,11 +5,13 @@ import com.projectdemo1.domain.User;
 import com.projectdemo1.repository.PostRepository;
 import com.projectdemo1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,17 +19,18 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/user") // 클래스 레벨에서 /user로 설정
+
 public class UserController {
     private final UserRepository userRepository;
-    private final PostRepository postRepository; // PostRepository 주입 추가
+    private final PostRepository postRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/join")
-    public void join() {
+    public void join(){
     }
 
     @PostMapping("/join")
-    public String register(User user) {
+    public String register(User user){
         System.out.println("register user: " + user);
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
@@ -37,8 +40,13 @@ public class UserController {
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 이동
     }
 
+ /*   @GetMapping("/login")
+    public void login(){
+    }*/
+
     @GetMapping("/login")
-    public void login() {
+    public String login(){
+        return "user/login";
     }
 
     @GetMapping("/edit-profile") // /user/edit-profile로 매핑
@@ -51,7 +59,7 @@ public class UserController {
         return "user/edit-profile"; // 'edit-profile.html' 파일 경로 반환
     }
 
-    @GetMapping("/home") // 홈화면
+    @GetMapping("home") // 홈화면
     public String home() {
         return "home";
     }

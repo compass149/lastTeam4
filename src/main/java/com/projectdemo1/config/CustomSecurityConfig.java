@@ -25,16 +25,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class CustomSecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("security config...........");
 
         return http
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
-                //.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable())
                 .authorizeHttpRequests(authorizeHttpRequestsConfigurer -> authorizeHttpRequestsConfigurer
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/user/login", "/board/**", "/user/**","/", "/home", "/cboard/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                        //.requestMatchers("/user/login", "/board/read","/board/list", "/user/**", "/", "/home", "/cboard/**").permitAll()
+                        //.requestMatchers(HttpMethod.GET).permitAll()
+                       .requestMatchers("/user/login", "/board/**", "/user/**", "/", "/home", "/cboard/**").permitAll()
+                       .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/creplies/**").authenticated()
                         .anyRequest().authenticated())
@@ -45,7 +46,7 @@ public class CustomSecurityConfig {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/home", true)
-                        .failureUrl("/home")
+                        .failureUrl("/error")
                         .permitAll())
 
                 .logout(logoutConfigurer -> logoutConfigurer
@@ -54,6 +55,8 @@ public class CustomSecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true))
 
+                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer
+                        .accessDeniedPage("/user/login"))  // 접근 거부 시 로그인 페이지로 리다이렉션
                 .build();
     }
 
