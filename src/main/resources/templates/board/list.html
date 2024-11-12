@@ -183,7 +183,7 @@
                 <img th:src="@{/images/{image}(image=${boardItem.imageSet})}" alt="Pet Image">
                 <div class="card-body">
                     <a style="text-decoration: none; text-decoration-line: none; text-decoration-color: #333333; color: #333333"
-                       th:href="@{/board/read(bno=${boardItem.bno})}">
+                       th:href="@{/board/read(bno=${boardItem.bno})}"> 
                         <h5 class="card-title" th:text="${boardItem.title}"></h5>
                         <p>상태: <span th:text="${boardItem.status}"></span></p>
                         <p>제목: <span th:text="${boardItem.title}"></span></p>
