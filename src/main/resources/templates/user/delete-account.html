@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원탈퇴</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .header {
+      background-color: #6a1b9a;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .header .user-info {
+      font-size: 14px;
+    }
+
+    .header .user-info a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 15px;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .sidebar {
+      width: 200px;
+      padding: 20px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .sidebar ul li a.active {
+      color: #d63384;
+      font-weight: bold;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      margin-left: 20px;
+    }
+
+    .content h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .content .notice {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .form-actions {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .delete-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #d63384;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+      background-color: #c72a75;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">찾개냥</div>
+  <div class="user-info">
+    <a href="/mypage">마이페이지</a>
+    <span th:text="${username} + '님 환영합니다.'">사용자님 환영합니다.</span>
+    <a href="/logout">로그아웃</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <ul>
+      <li><a href="/user/delete-account" class="active">회원탈퇴</a></li>
+      <li><a href="/user/edit-profile">회원정보 수정</a></li>
+      <li><a href="/user/my-posts">내가 작성한 글 보기</a></li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <h2>회원탈퇴</h2>
+    <p>회원탈퇴 안내</p>
+    <div class="notice">
+      - 탈퇴한 아이디는 재사용이 불가능합니다.<br>
+      - 회원탈퇴 시 작성하셨던 게시글은 보존됩니다.<br>
+      - 탈퇴 전에 확인해야 할 정보가 있으면 미리 확인하시기 바랍니다.<br>
+      - 탈퇴 시 회원 정보는 영구 삭제되며, 복구가 불가능합니다.
+    </div>
+
+    <form th:action="@{/user/delete-account}" method="post">
+      <div class="form-group">
+        <label for="confirmPassword">비밀번호 확인</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 입력하세요" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="delete-button">회원탈퇴</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
