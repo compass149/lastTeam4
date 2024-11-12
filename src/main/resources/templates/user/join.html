@@ -94,17 +94,143 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
+<!--<style>-->
+<!--    button[type="button"],-->
+<!--    button[type="submit"] {-->
+<!--        width: 45.33%;!important; /* 버튼 너비를 1/3로 설정 */-->
+<!--        padding: 0.5rem; /* 필요에 따라 패딩 조정 */-->
+<!--    }-->
+
+<!--    /* Hover 효과 */-->
+<!--    button[type="button"]:hover,-->
+<!--    button[type="submit"]:hover {-->
+<!--        background-color: #a3d879;-->
+<!--    }-->
+<!--</style>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>회원가입</title>-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="../../static/css/join.css">-->
+<!--</head>-->
+<!--<body layout:fragment="content">-->
+<!--<main class="container mt-5">-->
+<!--    <h2 class="text-center mb-4">회원가입</h2>-->
+<!--    <form action="/user/join" method="post" class="signup-form border p-4 rounded">-->
+<!--        <div class="form-group">-->
+<!--            <label for="email">이메일</label>-->
+<!--            <input type="email" id="email" name="email" class="form-control" placeholder="email@example.com" required>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="username">아이디</label>-->
+<!--            <input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력해주세요" required>-->
+<!--            <button type="button" class="btn btn-outline-secondary mt-2" onclick="checkUsername()">아이디 중복 확인</button>-->
+<!--            <span id="username-status" class="ml-2"></span>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="nickname">닉네임</label>-->
+<!--            <input type="text" id="nickname" name="nickname" class="form-control" placeholder="닉네임을 입력해주세요" required>-->
+<!--            <button type="button" class="btn btn-outline-secondary mt-2" onclick="checkNickname()">닉네임 중복 확인</button>-->
+<!--            <span id="nickname-status" class="ml-2"></span>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="password">비밀번호</label>-->
+<!--            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요" required>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="mobile">휴대전화번호</label>-->
+<!--            <input type="text" id="mobile" name="mobile" class="form-control" placeholder="휴대전화번호를 입력해주세요" required>-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="btn btn-primary btn-block">회원가입하기</button>-->
+<!--    </form>-->
+<!--</main>-->
+<!--<script layout:fragment="script" th:inline="javascript">-->
+<!--    function checkUsername() {-->
+<!--        const userId = document.getElementById('username').value;-->
+<!--        const status = document.getElementById('username-status');-->
+<!--        if (!userId) {-->
+<!--            alert('아이디를 입력해주세요.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        fetch(`/check-userId?userId=${userId}`)-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                if (data.available) {-->
+<!--                    status.innerText = '사용 가능한 아이디입니다.';-->
+<!--                    status.style.color = 'green';-->
+<!--                } else {-->
+<!--                    status.innerText = '이미 사용 중인 아이디입니다.';-->
+<!--                    status.style.color = 'red';-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error:', error);-->
+<!--                alert('아이디 확인 중 문제가 발생했습니다.');-->
+<!--            });-->
+<!--    }-->
+
+<!--    function checkNickname() {-->
+<!--        const nickname = document.getElementById('nickname').value;-->
+<!--        const status = document.getElementById('nickname-status');-->
+<!--        if (!nickname) {-->
+<!--            alert('닉네임을 입력해주세요.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        fetch(`/check-nickname?nickname=${nickname}`)-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                if (data.available) {-->
+<!--                    status.innerText = '사용 가능한 닉네임입니다.';-->
+<!--                    status.style.color = 'green';-->
+<!--                } else {-->
+<!--                    status.innerText = '이미 사용 중인 닉네임입니다.';-->
+<!--                    status.style.color = 'red';-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error:', error);-->
+<!--                alert('닉네임 확인 중 문제가 발생했습니다.');-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../static/css/join.css">
+    <style>
+        .signup-form {
+            max-width: 600px; /* 폼의 최대 너비를 600px로 늘림 */
+            margin: auto; /* 중앙 정렬 */
+            padding: 30px; /* 내부 여백을 추가 */
+        }
+        .form-control {
+            width: 100%; /* 입력창 너비를 100%로 설정 */
+        }
+        .btn-block {
+            width: 100%; /* 버튼을 100% 너비로 설정 */
+            margin-top: 20px; /* 버튼 위 여백 추가 */
+        }
+        .status-message {
+            margin-top: 5px; /* 상태 메시지 위 여백 추가 */
+        }
+    </style>
 </head>
 <body layout:fragment="content">
 <main class="container mt-5">
     <h2 class="text-center mb-4">회원가입</h2>
-    <form action="/user/join" method="post" class="signup-form border p-4 rounded">
+    <form action="/user/join" method="post" class="signup-form border p-4 rounded" onsubmit="return validatePassword()">
         <div class="form-group">
             <label for="email">이메일</label>
             <input type="email" id="email" name="email" class="form-control" placeholder="email@example.com" required>
@@ -114,17 +240,25 @@
             <label for="username">아이디</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="아이디를 입력해주세요" required>
             <button type="button" class="btn btn-outline-secondary mt-2" onclick="checkUsername()">아이디 중복 확인</button>
+            <span id="username-status" class="status-message"></span>
         </div>
 
         <div class="form-group">
             <label for="nickname">닉네임</label>
             <input type="text" id="nickname" name="nickname" class="form-control" placeholder="닉네임을 입력해주세요" required>
             <button type="button" class="btn btn-outline-secondary mt-2" onclick="checkNickname()">닉네임 중복 확인</button>
+            <span id="nickname-status" class="status-message"></span>
         </div>
 
         <div class="form-group">
             <label for="password">비밀번호</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">비밀번호 확인</label>
+            <input type="password" id="confirm-password" name="confirm-password" class="form-control" placeholder="비밀번호를 다시 입력해주세요" required>
+            <span id="password-status" class="status-message"></span>
         </div>
 
         <div class="form-group">
@@ -138,6 +272,7 @@
 <script layout:fragment="script" th:inline="javascript">
     function checkUsername() {
         const userId = document.getElementById('username').value;
+        const status = document.getElementById('username-status');
         if (!userId) {
             alert('아이디를 입력해주세요.');
             return;
@@ -147,9 +282,11 @@
             .then(response => response.json())
             .then(data => {
                 if (data.available) {
-                    alert('사용 가능한 아이디입니다.');
+                    status.innerText = '사용 가능한 아이디입니다.';
+                    status.style.color = 'green';
                 } else {
-                    alert('이미 사용 중인 아이디입니다.');
+                    status.innerText = '이미 사용 중인 아이디입니다.';
+                    status.style.color = 'red';
                 }
             })
             .catch(error => {
@@ -160,6 +297,7 @@
 
     function checkNickname() {
         const nickname = document.getElementById('nickname').value;
+        const status = document.getElementById('nickname-status');
         if (!nickname) {
             alert('닉네임을 입력해주세요.');
             return;
@@ -169,15 +307,32 @@
             .then(response => response.json())
             .then(data => {
                 if (data.available) {
-                    alert('사용 가능한 닉네임입니다.');
+                    status.innerText = '사용 가능한 닉네임입니다.';
+                    status.style.color = 'green';
                 } else {
-                    alert('이미 사용 중인 닉네임입니다.');
+                    status.innerText = '이미 사용 중인 닉네임입니다.';
+                    status.style.color = 'red';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('닉네임 확인 중 문제가 발생했습니다.');
             });
+    }
+
+    function validatePassword() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        const status = document.getElementById('password-status');
+
+        if (password !== confirmPassword) {
+            status.innerText = '비밀번호가 일치하지 않습니다.';
+            status.style.color = 'red';
+            return false; // 폼 제출 중단
+        } else {
+            status.innerText = ''; // 상태 메시지 초기화
+            return true; // 폼 제출 허용
+        }
     }
 </script>
 </body>

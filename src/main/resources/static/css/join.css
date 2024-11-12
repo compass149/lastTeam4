@@ -71,18 +71,30 @@ button[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+
+
+< style > button [ type = "button" ],
+button [ type = "submit" ] {
+    width: 45.33%; /* 버튼 너비를 1/3로 설정 */
+    padding: 0.5rem; /* 필요에 따라 패딩 조정 */
+    margin: 20px;
+
+    /* Hover 효과 */
+
+    button[type="button"]:hover,
+    button[type="submit"]:hover {
+        background-color: #a3d879;
+    }
+
+< / style >
 }
 
-button[type="button"]:hover,
-button[type="submit"]:hover {
-    background-color: #a3d879;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #f1f1f1;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #f1f1f1;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
 }
