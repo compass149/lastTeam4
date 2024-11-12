@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;//list추가
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -16,12 +16,12 @@ import java.net.URLEncoder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageRequestDTO {
-
+    private LocalDate startDate;//list추가
     @Builder.Default
     private int page = 1;
 
     @Builder.Default
-    private int size = 10;
+    private int size = 6;
 
     private String type; // 검색의 종류 t,c, w, tc,tw, twc
 
@@ -39,6 +39,7 @@ public class PageRequestDTO {
     }
 
     private String link;
+
 
     public String getLink() {
 
@@ -65,6 +66,7 @@ public class PageRequestDTO {
 
         return link;
     }
+
 
 
 
