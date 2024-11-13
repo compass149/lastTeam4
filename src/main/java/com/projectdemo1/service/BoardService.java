@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public interface BoardService {
 
 void register(Board board, User user);
+Long register(BoardDTO boardDTO);
     List<Board> list();
     BoardDTO findById(Long bno);
     void modify(BoardDTO boardDTO);

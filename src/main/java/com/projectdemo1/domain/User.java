@@ -36,6 +36,19 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> boards;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uno=" + uno +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
 
 
