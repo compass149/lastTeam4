@@ -3929,6 +3929,7 @@ textarea.form-control-lg {
     flex-wrap: wrap;
     padding-left: 0;
     margin-bottom: 0;
+    margin: 15px;
     list-style: none;
 }
 
@@ -4030,6 +4031,7 @@ textarea.form-control-lg {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     box-shadow: 0 2px 5px rgba(19, 14, 14, 0.1);
+    margin:15px;
 
 }
 .navbar > .container,

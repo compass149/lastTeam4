@@ -8,12 +8,6 @@ body {
     padding: 0;
 }
 
-.header {
-    background-color: #a3d879;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
 
 .header h1 {
     margin: 0;
@@ -22,12 +16,6 @@ body {
 .nav {
     font-size:20px;
     margin-top: 10px;
-}
-
-.nav-link {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
 }
 
 .main {
