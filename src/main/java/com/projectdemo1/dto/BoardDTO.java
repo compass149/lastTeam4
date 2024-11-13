@@ -46,6 +46,7 @@ public class BoardDTO {
     private Status status;
     private String petDescription;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lostDate;
 
     private String location;

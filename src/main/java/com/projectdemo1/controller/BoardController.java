@@ -22,6 +22,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -82,13 +83,37 @@ public class BoardController {
     }
 
     @GetMapping("/register") //게시글 등록
-    public String register() {
-        //return "register";
-        return "/board/register";
+    public void register() {
     }
 
 
+
     @PostMapping("/register")
+    public String register(@Valid @ModelAttribute Board board,
+                           @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
+                           UploadFileDTO uploadFileDTO, BoardDTO boardDTO,
+                           RedirectAttributes redirectAttributes, BindingResult bindingResult,
+                           @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        PetColor petColor = new PetColor(petColorType);  // PetColorType을 사용하여 PetColor 객체 생성
+        board.setPetColor(petColor);
+        boardService.register(board, principalDetails.getUser());
+
+        log.info("boardDTO: " + boardDTO);
+        List<String> strFileNames = null;
+        if (uploadFileDTO.getFiles() != null && !uploadFileDTO.getFiles().get(0).getOriginalFilename().equals("")) {
+            strFileNames = fileUload(uploadFileDTO);
+            log.info(strFileNames.size());
+        }
+        boardDTO.setFileNames(strFileNames);
+        boardDTO.setBno(principalDetails.getUser().getUno());
+
+        log.info("board POST register.........." + boardDTO);
+        log.info((boardDTO));
+        Long bno = boardService.register(boardDTO);
+        redirectAttributes.addFlashAttribute("result", bno);
+        return "redirect:/board/list";
+    }
+  /*  @PostMapping("/register")
     public String register(@Valid @ModelAttribute Board board,
                            @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
                            PrincipalDetails principal) {
@@ -97,7 +122,8 @@ public class BoardController {
         boardService.register(board, principal.getUser());
 
         return "redirect:/board/list";
-    }
+    }*/
+
 
     @GetMapping("/register1")
     public String register1() {
