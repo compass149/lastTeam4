@@ -36,7 +36,7 @@ public class BoardServiceImpl implements BoardService {
     //     this.petColorRepository = petColorRepository;
     // }
 
-    /*@Override
+    @Override
     public void register(Board board, User user) {
         board.setUser(user);
         // PetColor 저장
@@ -46,10 +46,8 @@ public class BoardServiceImpl implements BoardService {
         }
         board.setPetColor(petColor);
         boardRepository.save(board);
-    }*/
-
-
-    @Override
+    }
+    /*@Override
     public void register(Board board, User user) {
         board.setUser(user);
         PetColor petColor = board.getPetColor();
@@ -58,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
         }
         board.setPetColor(petColor);
         boardRepository.save(board);
-    }
+    }*/
 
     @Override
     public Long register(BoardDTO boardDTO) {

@@ -59,15 +59,18 @@ public class Board {
     private String petType; //동물 종류(개, 고양이 등)
 
 
-/*    @JoinColumn(name = "petColor")
+ /*   @JoinColumn(name = "petColorId")
     @Enumerated(EnumType.STRING)
     @OneToOne(mappedBy = "board")
-    private PetColor petColor;*/
+    private PetColor petColor;
     //private PetColorType petColor; //동물 색상
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "petColorId") // 컬럼명 설정
     private PetColor petColor;
+*/@OneToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "petColorId") // 컬럼명 설정
+ private PetColor petColor; // 이 부분만 유지
 
     private String writer;
     private String content; // board3 content
@@ -95,9 +98,11 @@ public class Board {
 
     @ColumnDefault("0")
     private Long replyCount;
+/*
 
     @Enumerated(EnumType.STRING)
     private PetColorType petColorType;
+*/
 
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)

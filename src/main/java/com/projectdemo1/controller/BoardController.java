@@ -151,7 +151,7 @@ public class BoardController {
                     setValue(petColor);
                 } catch (IllegalArgumentException e) {
                     // 예외 처리 로직 추가 (예: 기본 색상 설정)
-                    PetColor petColor = new PetColor(PetColorType.OTHER);  // 기본값 설정
+                    PetColor petColor = new PetColor(PetColorType.기타);  // 기본값 설정
                     setValue(petColor);
                 }
             }

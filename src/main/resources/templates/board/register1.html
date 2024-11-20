@@ -80,7 +80,7 @@
 <div layout:fragment="content">
     <div class="container mt-5">
         <div class="form-container">
-            <h3 class="text-center mb-4">이곳은 반려동물 보호자를 찾는 공간입니다</h3>
+            <h3 class="text-center mb-4">반려동물 보호자 찾기</h3>
             <form action="/board/register1" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="postType" value="주인찾기">
                 <div class="form-group">
@@ -109,8 +109,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <label for="files">동물사진 첨부</label>
-                    <span class="input-group-text">FileUpload</span>
-                    <input type="file" class="form-control" id="files" name="files" multiple>
+                    <input type="file" class="form-control" id="files" name="files" multiple><br>
                     <p>최대 3장까지 가능합니다.</p>
                 </div>
                 <div class="form-group">
@@ -118,7 +117,7 @@
                     <select id="petColor" name="petColorType" class="form-control">
                         <option th:each="color : ${T(com.projectdemo1.domain.boardContent.color.PetColorType).values()}"
                                 th:value="${color.name()}"
-                                th:text="#{${'enum.petcolor.' + color.name()}}">색상
+                                th:text="${color.name()}">색상
                         </option>
                     </select>
                 </div>

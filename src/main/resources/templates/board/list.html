@@ -165,8 +165,9 @@
                         </select>
                     </div>
                     <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
-                    <input type="date" name="startDate" min="${minDate}" max="${maxDate}">
-                    <input type="date" name="lastDate" min="${minDate}" max="${maxDate}">
+                    <input type="date" name="startDate" th:value="${pageRequestDTO.startDate}" min="2024-01-01" max="2024-12-31">
+                    <input type="date" name="lastDate" th:value="${pageRequestDTO.lastDate}" min="2024-01-01" max="2024-12-31">
+
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-outline-secondary searchBtn">검색</button>
                         <button type="button" class="btn btn-outline-secondary clearBtn">목록</button>
