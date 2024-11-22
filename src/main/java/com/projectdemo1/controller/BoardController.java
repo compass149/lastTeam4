@@ -82,35 +82,19 @@ public class BoardController {
         return list;
     }
 
-    @GetMapping("/register") //게시글 등록
-    public void register() {
+    @GetMapping("/register")
+    public String register() {
+        return "board/register";
     }
-
-
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute Board board,
-                           @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
-                           UploadFileDTO uploadFileDTO, BoardDTO boardDTO,
-                           RedirectAttributes redirectAttributes, BindingResult bindingResult,
-                           @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        PetColor petColor = new PetColor(petColorType);  // PetColorType을 사용하여 PetColor 객체 생성
+                            @RequestBody PetColorType petColorType,  // PetColorType as a request parameter
+                            PrincipalDetails principal) {
+        PetColor petColor = new PetColor(petColorType);  // Create PetColor object using PetColorType
         board.setPetColor(petColor);
-        boardService.register(board, principalDetails.getUser());
+        boardService.register(board, principal.getUser());
 
-        log.info("boardDTO: " + boardDTO);
-        List<String> strFileNames = null;
-        if (uploadFileDTO.getFiles() != null && !uploadFileDTO.getFiles().get(0).getOriginalFilename().equals("")) {
-            strFileNames = fileUload(uploadFileDTO);
-            log.info(strFileNames.size());
-        }
-        boardDTO.setFileNames(strFileNames);
-        boardDTO.setBno(principalDetails.getUser().getUno());
-
-        log.info("board POST register.........." + boardDTO);
-        log.info((boardDTO));
-        Long bno = boardService.register(boardDTO);
-        redirectAttributes.addFlashAttribute("result", bno);
         return "redirect:/board/list";
     }
   /*  @PostMapping("/register")
@@ -263,7 +247,7 @@ public class BoardController {
     public String getBoard(@PathVariable Long id, Model model) {
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO); // 추가된 필드 사용
-        model.addAttribute("postType", boardDTO.getPostType()); // 추가된 필드 사용
+        model.addAttribute("postType", boardDTO.getPostType()); //
 
         return "board/list"; // 템플릿 이름
     }

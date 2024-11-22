@@ -1,6 +1,7 @@
 package com.projectdemo1.repository;
 
 import com.projectdemo1.domain.Board;
+import com.projectdemo1.domain.User;
 import com.projectdemo1.dto.BoardListReplyCountDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -21,20 +22,34 @@ public class BoardRepositoryTests {
 
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testInsert() {
-        IntStream.rangeClosed(1,100).forEach(i -> {
-            Board board = Board.builder()
-                    .title("title..." +i)
-                    .content("content..." + i)
-                    .writer("user"+ (i % 10))
-                    .build();
+        // UserRepository가 필요하다고 가정합니다.
+        IntStream.rangeClosed(1, 100).forEach(i -> {
+            // userId 또는 user 객체를 데이터베이스에서 가져온다고 가정
+            Long userId = (long) (i % 10 + 1); // userId를 1~10 사이로 설정
+            Optional<User> userOptional = userRepository.findById(userId);
 
-            Board result = boardRepository.save(board);
-            log.info("BNO: " + result.getBno());
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+
+                Board board = Board.builder()
+                        .title("title..." + i)
+                        .content("content..." + i)
+                        .user(user) // User 객체를 설정
+                        .build();
+
+                Board result = boardRepository.save(board);
+                log.info("BNO: " + result.getBno());
+            } else {
+                log.warn("User with ID " + userId + " not found.");
+            }
         });
     }
+
 
     @Test
     public void testSelect() {

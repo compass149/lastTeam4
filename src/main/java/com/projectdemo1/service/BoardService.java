@@ -33,7 +33,6 @@ Long register(BoardDTO boardDTO);
                 .bno(boardDTO.getBno())
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())
-                .writer(boardDTO.getWriter())
                 .build();
         if(boardDTO.getFileNames()!=null){
             boardDTO.getFileNames().forEach(fileName -> {
@@ -48,7 +47,6 @@ Long register(BoardDTO boardDTO);
                 .bno(board.getBno())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .writer(board.getWriter())
                 .updatedAt(board.getUpdatedAt())
                 .postType(board.getPostType())  // 추가된 필드들
                 .hitCount(board.getHitCount())

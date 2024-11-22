@@ -1,14 +1,11 @@
 package com.projectdemo1.service;
 
 import com.projectdemo1.domain.Board;
-import com.projectdemo1.domain.Post;
 import com.projectdemo1.domain.User;
-import com.projectdemo1.domain.boardContent.color.PetColorType;
 import com.projectdemo1.dto.BoardDTO;
 import com.projectdemo1.dto.PageRequestDTO;
 import com.projectdemo1.dto.PageResponseDTO;
 import com.projectdemo1.repository.BoardRepository;
-import com.projectdemo1.repository.PostRepository;
 import com.projectdemo1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,10 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -72,7 +72,7 @@ public class Board {
  @JoinColumn(name = "petColorId") // 컬럼명 설정
  private PetColor petColor; // 이 부분만 유지
 
-    private String writer;
+   // private String writer;
     private String content; // board3 content
 
     @Enumerated(EnumType.STRING)
@@ -96,8 +96,8 @@ public class Board {
         this.hitCount =  this.hitCount+1; //조회수 증가
     }
 
-    @ColumnDefault("0")
-    private Long replyCount;
+  /*  @ColumnDefault("0")  이부분은 쿼리로 해결하기
+    private Long replyCount;*/
 /*
 
     @Enumerated(EnumType.STRING)
@@ -112,7 +112,7 @@ public class Board {
     @PrePersist
     public void prePersist() { //DB에 insert 되기 전에 실행 (조회수, 댓글 수 초기화)
         this.hitCount = this.hitCount == null ? 0 : this.hitCount;
-        this.replyCount = this.replyCount == null ? 0 : this.replyCount;
+       // this.replyCount = this.replyCount == null ? 0 : this.replyCount;
     }
 
 

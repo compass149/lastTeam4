@@ -17,7 +17,7 @@ public class PrincipalDetailService  implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Override
+    /*@Override
     @Transactional
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,6 +27,24 @@ public class PrincipalDetailService  implements UserDetailsService {
         if(user==null) return null;
         PrincipalDetails puser=new PrincipalDetails(user);
         log.info(puser);
+        return puser;*/
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("Attempting to load user by username: {}", username);
+
+        // 사용자 검색
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            log.warn("User not found: {}", username);
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        // UserDetails 생성
+        log.info("User found: {}", user);
+        PrincipalDetails puser = new PrincipalDetails(user);
+        log.info("PrincipalDetails created: {}", puser);
+
         return puser;
     }
 }

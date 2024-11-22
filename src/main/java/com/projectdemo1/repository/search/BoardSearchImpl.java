@@ -69,7 +69,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                         booleanBuilder.or(board.content.contains(keyword));
                         break;
                     case "w":
-                        booleanBuilder.or(board.writer.contains(keyword));
+                        booleanBuilder.or(board.user.nickname.contains(keyword));
                         break;
                 }
             }
@@ -116,7 +116,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                             booleanBuilder.or(board.content.contains(keyword));
                             break;
                             case "w":
-                                booleanBuilder.or(board.writer.contains(keyword));
+                                booleanBuilder.or(board.user.nickname.contains(keyword));
                                 break;
                 }
             }//end for
@@ -130,7 +130,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                 bean(BoardListReplyCountDTO.class,
                         board.bno,
                         board.title,
-                        board.writer,
+                        board.user.nickname,
                         board.createdAt,
                         comment.count().as("Comment Count")
                 ));
