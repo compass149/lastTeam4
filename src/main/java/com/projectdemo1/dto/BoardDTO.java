@@ -33,8 +33,6 @@ public class BoardDTO {
     private Long bno;
     private String title;
     private String content;
-    private String writer;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

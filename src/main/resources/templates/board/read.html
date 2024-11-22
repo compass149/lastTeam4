@@ -99,7 +99,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="writer">작성자</label>
-                        <input type="text" class="form-control" id="writer" th:value="${dto.writer}" readonly>
+                        <input type="text" class="form-control" id="writer" th:value="${dto.user.username}" readonly>
 
                     </div>
                     <div class="input-group mb-3">
@@ -180,14 +180,14 @@
                             <td class="text-left">[[${dto.petBreeds}]]</td>
                             <th scope="row">털 색상</th>
                             <td class="text-left last">[[${dto.petColorType}]]</td>
-                            <th scope="row">이름</th>
-                            <td class="text-left last">[[${dto.petName}]]</td>
+                            <th scope="row"  th:unless="${dto.postType == '주인찾기'}">이름</th>
+                            <td class="text-left last"  th:unless="${dto.postType == '주인찾기'}">[[${dto.petName}]]</td>
                         </tr>
                         <tr>
                             <th scope="row" class="first">성별</th>
                             <td class="text-left">[[${dto.petGender}]]</td>
-                            <th scope="row">나이</th>
-                            <td class="text-left last">[[${dto.petAge}]]</td>
+                            <th scope="row"  th:unless="${dto.postType == '주인찾기'}">나이</th>
+                            <td class="text-left last" th:unless="${dto.postType == '주인찾기'}">[[${dto.petAge}]]</td>
                         </tr>
                         <tr>
                             <th scope="row" class="first">특징(구체적 묘사)</th>
@@ -196,10 +196,9 @@
                             <td class="text-left last" colspan="3">[[${dto.petWeight}]]Kg</td>
                         </tr>
                         <tr>
-                            <th scope="row" class="first">발견/잃어버린 장소</th>
-                            <td class="text-left last" colspan="3">[[${dto.lostDate}]] [[${dto.location}]]
-                                [[${dto.locationDetail}]]
-                            </td>
+                            <th scope="row" class="first"
+                                th:text="${dto.postType == '주인찾기' ? '발견장소' : '잃어버린 장소'}"></th>
+                            <td class="text-left last" colspan="3">[[${dto.lostDate}]] [[${dto.location}]] [[${dto.locationDetail}]]</td>
                         </tr>
                         </tbody>
                     </table>
@@ -225,11 +224,17 @@
 
                         var callback = function (result, status) {
                             if (status === kakao.maps.services.Status.OK) {
-                                console.log(result);
+                                var lat = result[0].y;
+                                var lng = result[0].x;
+                                var mapOptions = {
+                                    center: new kakao.maps.LatLng(lat, lng),
+                                    level: 3
+                                };
+                                var map = new kakao.maps.Map(container, mapOptions);
                             }
                         };
 
-                        places.keywordSearch('dto.location', callback);
+                        places.keywordSearch('[[${dto.location}]]', callback);
                     </script>
 
                     <div class="my-4">

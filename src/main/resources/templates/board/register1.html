@@ -95,7 +95,7 @@
                 <div class="form-group">
                     <label for="writer">작성자 *:</label>
                     <input type="text" class="form-control" id="writer" name="writer"
-                           th:value="${#authentication.principal.username}" readonly>
+                           th:value="${#authentication.principal}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="reporter">신고자:</label>
@@ -103,8 +103,8 @@
                 </div>
                 <div class="form-group">
                     <label for="contact">연락처 *:</label>
-                    <input type="number" class="form-control" id="contact" name="contact" placeholder="숫자만 입력해주십시오" maxlength="11" minlength="9"
-                           th:value="${#authentication.principal.username}"
+                    <input type="number" class="form-control" id="contact" name="contact" placeholder="숫자만 입력해주십시오"
+                           maxlength="11" minlength="9"
                            required>
                 </div>
                 <div class="input-group mb-3">
@@ -113,7 +113,7 @@
                     <p>최대 3장까지 가능합니다.</p>
                 </div>
                 <div class="form-group">
-                    <label for="petColor">동물 색상:</label>
+                    <label for="petColor">동물 색상 *:</label>
                     <select id="petColor" name="petColorType" class="form-control">
                         <option th:each="color : ${T(com.projectdemo1.domain.boardContent.color.PetColorType).values()}"
                                 th:value="${color.name()}"
@@ -122,11 +122,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="foundDate">찾은 날짜:</label>
-                    <input type="date" class="form-control" id="foundDate" name="foundDate" required>
+                    <label for="lostDate">찾은 날짜 *:</label>
+                    <input type="date" class="form-control" id="lostDate" name="lostDate" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" style="top:5px;" placeholder="도로명 주소" name="location" id="location1" type="text" readonly>
+                    <input class="form-control" style="top:5px;" placeholder="도로명 주소" name="location" id="location" type="text" readonly>
                 </div>
                 <div class="form-group">
                     <input class="form-control" placeholder="상세 주소" name="locationDetail" id="locationDetail" type="text">

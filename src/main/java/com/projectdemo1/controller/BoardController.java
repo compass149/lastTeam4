@@ -97,16 +97,6 @@ public class BoardController {
 
         return "redirect:/board/list";
     }
-  /*  @PostMapping("/register")
-    public String register(@Valid @ModelAttribute Board board,
-                           @RequestParam PetColorType petColorType,  // PetColorType을 URL 쿼리 파라미터로 받음
-                           PrincipalDetails principal) {
-        PetColor petColor = new PetColor(petColorType);  // PetColorType을 사용하여 PetColor 객체 생성
-        board.setPetColor(petColor);
-        boardService.register(board, principal.getUser());
-
-        return "redirect:/board/list";
-    }*/
 
 
     @GetMapping("/register1")
@@ -141,41 +131,6 @@ public class BoardController {
             }
         });
     }
-
-    /*@GetMapping("/read")
-    public String read(@RequestParam("bno") Long bno, Model model) {
-        Board board = boardService.findById(bno);  // Board 엔티티 조회
-        BoardDTO dto = new BoardDTO(board);  // BoardDTO로 변환
-
-        // 기본값 설정 - PetColor 객체 생성 후 PetColorType 설정
-        if (dto.getPetColor() == null) {
-            dto.setPetColor(new PetColor(PetColorType.OTHER)); // 기본값을 PetColor 객체로 설정
-        }
-
-        // user 객체가 null이면 기본값 설정
-        if (dto.getUser() == null) {
-            dto.setUser(new User());  // 기본 User 객체 설정
-        }
-
-        model.addAttribute("dto", dto);
-        return "board/read";  // "board/read" 템플릿을 반환
-    }
-    @GetMapping("/modify")
-    public String modify(@RequestParam Long bno, Model model) {
-        model.addAttribute("board", boardService.findById(bno));
-        return "board/modify";
-    }
-
-    @PostMapping("/modify")
-    public String modify(Board board, @RequestParam("petColorType") PetColorType petColorType) {
-        System.out.println(board);
-        PetColor petColor = new PetColor(petColorType);
-        // petColor.setColor(petColorType);
-        board.setPetColor(petColor);  // Board에 PetColor 설정
-        boardService.modify(board);
-        return "redirect:/board/read?bno=" + board.getBno();
-    }
-*/
 
 
     @GetMapping({"/read", "/modify"})
@@ -251,12 +206,6 @@ public class BoardController {
 
         return "board/list"; // 템플릿 이름
     }
-  /*  @GetMapping("/edit/{id}")
-    public String editPost(@PathVariable Long id, Model model) {
-        Board board = boardService.findById(id);
-        model.addAttribute("board", board);
-        return "board/edit"; // 수정 페이지로 이동하는 템플릿 이름
-    } 아마 필요 없을 것*/
 
     // @GetMapping을 통해 삭제 요청을 GET 방식으로 처리하도록 수정
     @GetMapping("/delete/{id}")
@@ -266,48 +215,6 @@ public class BoardController {
         return "redirect:/board/list";  // 삭제 후 게시글 목록 페이지로 리다이렉트
     }
 
-    /*@GetMapping("/view/{fileName}")
-    @ResponseBody
-    public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName) {
-        Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
-        String resourceName = resource.getFilename();
-        HttpHeaders headers = new HttpHeaders();
-
-        try {
-            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-        return ResponseEntity.ok().headers(headers).body(resource);
-    }
-
-    private void removeFile(List<String> fileNames) {
-        log.info("----------" + fileNames.size());
-
-        for (String fileName : fileNames) {
-            log.info("fileRemove method: " + fileName);
-            Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
-            String resourceName = resource.getFilename();
-
-            // Map<String, Boolean> resultMap = new HashMap<>();
-            boolean removed = false;
-
-            try {
-                String contentType = Files.probeContentType(resource.getFile().toPath());
-                removed = resource.getFile().delete();
-
-                //섬네일이 존재한다면
-                if (contentType.startsWith("image")) {
-                    String fileName1 = fileName.replace("s_", "");
-                    File originalFile = new File(uploadPath + File.separator + fileName1);
-                    originalFile.delete();
-                }
-
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
-        }
-    }*/
     @GetMapping("/view/{fileName}")
     @ResponseBody
     public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName) {
